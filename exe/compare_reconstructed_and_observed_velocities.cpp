@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 
     const auto inputDistanceCatalogLatitudes = inputDistanceCatalogFile.column<double>(2);
     const auto inputDistanceCatalogLongitudes = inputDistanceCatalogFile.column<double>(3);
-    const auto inputDistanceCatalogRedshiftVelocitities = inputDistanceCatalogFile.column<double>(4);
+    const auto inputDistanceCatalogRedshiftVelocities = inputDistanceCatalogFile.column<double>(4);
     const auto inputDistanceCatalogDistanceModuli = inputDistanceCatalogFile.column<double>(5);
     const auto inputDistanceCatalogDistanceModulusErrors = inputDistanceCatalogFile.column<double>(6);
 
@@ -164,7 +164,7 @@ int main(int argc, char **argv)
 
         std::vector<double> tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonRadialCoordinates, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors;
 
-        prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocitities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
+        prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
                                       distanceCatalogInputToReferenceFrame, 0.0, DISTANCE_CATALOG_MAX_REDSHIFT_VELOCITY, FIDUCIAL_OMEGA_MATTER,
                                       fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
                                       tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonRadialCoordinates, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors);
@@ -266,7 +266,7 @@ int main(int argc, char **argv)
 
         std::vector<double> correlationFunctionComparisonRedshiftVelocities, correlationFunctionComparisonRadialCoordinates, correlationFunctionComparisonThetaCoordinates, correlationFunctionComparisonPhiCoordinates, correlationFunctionComparisonDistanceModuli, correlationFunctionComparisonDistanceModulusErrors;
 
-        prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocitities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
+        prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
                                       distanceCatalogInputToReferenceFrame, 0.0, CORRELATION_FUNCTION_MAX_REDSHIFT_VELOCITY, FIDUCIAL_OMEGA_MATTER,
                                       fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
                                       correlationFunctionComparisonRedshiftVelocities, correlationFunctionComparisonRadialCoordinates, correlationFunctionComparisonThetaCoordinates, correlationFunctionComparisonPhiCoordinates, correlationFunctionComparisonDistanceModuli, correlationFunctionComparisonDistanceModulusErrors);
