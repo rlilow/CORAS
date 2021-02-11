@@ -177,7 +177,6 @@ void prepare_distance_catalog_data(const std::vector<double> &inputRedshiftVeloc
                                    const ReferenceFrameChange inputToReferenceFrame, const double minRedshiftVelocity, const double maxRedshiftVelocity, const double omegaMatter,
                                    const SphericalGridFunction &fiducialRadialVelocity, const ReferenceFrameChange cmbToReferenceFrame, const double fiducialHubble, const double maxSigmaDeviation,
                                    std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputDistanceModuli, std::vector<double> &outputDistanceModulusErrors)
-//  std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputThetas, std::vector<double> &outputPhis, std::vector<double> &outputDistanceModuli, std::vector<double> &outputDistanceModulusErrors)
 {
   outputRedshiftVelocities.clear();
   outputRadialCoordinates.clear();

@@ -57,7 +57,6 @@ void prepare_distance_catalog_data(const std::vector<double> &inputRedshiftVeloc
                                    ReferenceFrameChange inputToReferenceFrame, double minRedshiftVelocity, double maxRedshiftVelocity, double omegaMatter,
                                    const SphericalGridFunction &fiducialRadialVelocity, ReferenceFrameChange cmbToReferenceFrame, double fiducialHubble, double maxSigmaDeviation,
                                    std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputDistanceModuli, std::vector<double> &outputDistanceModulusErrors);
-//    std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputThetas, std::vector<double> &outputPhis, std::vector<double> &outputDistanceModuli, std::vector<double> &outputDistanceModulusErrors);
 
 /**
  * Estimate the mean galaxy number density within the radius \a radius given the distances \a galaxyDistances to the

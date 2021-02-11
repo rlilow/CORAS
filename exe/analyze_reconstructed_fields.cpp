@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     NormalizedPowerSpectrum normalizedPowerSpectrum(inputWavenumbers, inputPowerSpectrumValues,
                                                     FIDUCIAL_HUBBLE, SIGMA_SCALE);
 
-    const FileTable inputRedshiftCatalogFile(REDSHIFT_CATALOG_FILE_NAME, 10, '\t'); // read the 2MRS galaxy properties from file
+    const FileTable inputRedshiftCatalogFile(REDSHIFT_CATALOG_FILE_NAME, 10, '\t'); // read the redshift catalog properties from file
 
     const auto inputRedshiftCatalogLatitudes = inputRedshiftCatalogFile.column<double>(1);
     const auto inputRedshiftCatalogLongitudes = inputRedshiftCatalogFile.column<double>(2);

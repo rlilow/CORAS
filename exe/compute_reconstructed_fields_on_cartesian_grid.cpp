@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     NormalizedPowerSpectrum normalizedPowerSpectrum(inputWavenumbers, inputPowerSpectrumValues,
                                                     FIDUCIAL_HUBBLE, SIGMA_SCALE);
 
-    const FileTable inputRedshiftCatalogFile(REDSHIFT_CATALOG_FILE_NAME, 10, '\t'); // read the 2MRS galaxy properties from file
+    const FileTable inputRedshiftCatalogFile(REDSHIFT_CATALOG_FILE_NAME, 10, '\t'); // read the redshift catalog properties from file
 
     const auto inputRedshiftCatalogLatitudes = inputRedshiftCatalogFile.column<double>(1);
     const auto inputRedshiftCatalogLongitudes = inputRedshiftCatalogFile.column<double>(2);
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
         const std::string redshiftReferenceFrameComment = "_z" + redshiftReferenceFrameName;
         const std::string reconstructionComment = redshiftReferenceFrameComment + CONFIGURATION_COMMENT;
 
-        const std::string cartesianGridDensityDensityContrastFileName = DATA_DIRECTORY + "cartesian_grid_density" + reconstructionComment + ".dat";
+        const std::string cartesianGridDensityContrastFileName = DATA_DIRECTORY + "cartesian_grid_density" + reconstructionComment + ".dat";
         const std::string cartesianGridVelocityFileName = DATA_DIRECTORY + "cartesian_grid_velocity" + reconstructionComment + ".dat";
 
         std::vector<double> reconstructionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentKsMagnitudes;
@@ -176,15 +176,15 @@ int main(int argc, char **argv)
                                                                     return evaluate_in_enclosing_box(reconstructedZVelocitySpherical, x, y, z);
                                                                 });
 
-        std::ofstream cartesianGridDensityDensityContrastFile(cartesianGridDensityDensityContrastFileName);
+        std::ofstream cartesianGridDensityContrastFile(cartesianGridDensityContrastFileName);
         std::ofstream cartesianGridVelocityFile(cartesianGridVelocityFileName);
 
-        cartesianGridDensityDensityContrastFile.setf(std::ios::fixed);
+        cartesianGridDensityContrastFile.setf(std::ios::fixed);
         cartesianGridVelocityFile.setf(std::ios::fixed);
 
-        cartesianGridDensityDensityContrastFile << "# "
-                                                << "deltaNorm"
-                                                << std::endl;
+        cartesianGridDensityContrastFile << "# "
+                                         << "deltaNorm"
+                                         << std::endl;
 
         cartesianGridVelocityFile << "# "
                                   << "vX[km/s]\t"
@@ -198,9 +198,9 @@ int main(int argc, char **argv)
             const double yVelocity = reconstructedYVelocityCartesian.value(i_x, i_y, i_z);
             const double zVelocity = reconstructedZVelocityCartesian.value(i_x, i_y, i_z);
 
-            cartesianGridDensityDensityContrastFile << std::setprecision(4)
-                                                    << normalizedDensityContrast
-                                                    << std::endl;
+            cartesianGridDensityContrastFile << std::setprecision(4)
+                                             << normalizedDensityContrast
+                                             << std::endl;
 
             cartesianGridVelocityFile << std::setprecision(2)
                                       << xVelocity << "\t"
@@ -209,7 +209,7 @@ int main(int argc, char **argv)
                                       << std::endl;
         });
 
-        cartesianGridDensityDensityContrastFile.close();
+        cartesianGridDensityContrastFile.close();
         cartesianGridVelocityFile.close();
 
         const auto time3 = std::chrono::high_resolution_clock::now();

@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
     const double fiducialNormalizedGrowthRate = FIDUCIAL_GROWTH_RATE * std::sqrt(normalizedPowerSpectrum.variance());
 
-    const FileTable inputRedshiftCatalogFile(REDSHIFT_CATALOG_FILE_NAME, 10, '\t'); // read the 2MRS galaxy properties from file
+    const FileTable inputRedshiftCatalogFile(REDSHIFT_CATALOG_FILE_NAME, 10, '\t'); // read the redshift catalog properties from file
 
     const auto inputRedshiftCatalogLatitudes = inputRedshiftCatalogFile.column<double>(1);
     const auto inputRedshiftCatalogLongitudes = inputRedshiftCatalogFile.column<double>(2);
