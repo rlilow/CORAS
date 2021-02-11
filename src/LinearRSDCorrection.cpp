@@ -1,10 +1,7 @@
 #include "LinearRSDCorrection.hpp"
 
-#include <cstddef>
 #include <fstream>
-#include <functional>
 #include <iostream>
-#include <string>
 #include <tr1/cmath>
 
 #include <gsl/gsl_blas.h>

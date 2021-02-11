@@ -1,7 +1,5 @@
 #include "ConstrainedRealizations.hpp"
 
-#include <cstddef>
-#include <functional>
 #include <iostream>
 
 #include <gsl/gsl_integration.h>

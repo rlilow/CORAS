@@ -1,11 +1,8 @@
 #include "Cartesian3DGridFunction.hpp"
 
 #include <cmath>
-#include <cstddef>
 #include <fstream>
 #include <iostream>
-#include <string>
-#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // public

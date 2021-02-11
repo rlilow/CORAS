@@ -3,9 +3,11 @@
 
 #include <cstddef>
 #include <functional>
+#include <string>
 
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_multimin.h>
+#include <gsl/gsl_vector.h>
 
 /**
  * \addtogroup AUXILIARY

@@ -3,6 +3,7 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <fftw3.h>

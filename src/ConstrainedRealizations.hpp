@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <string>
 #include <vector>
 
 #include <gsl/gsl_rng.h>
