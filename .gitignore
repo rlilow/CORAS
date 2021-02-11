@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+*.x
+
+# Documentation
+doc
+
+# Data
+data/*
+!data/2MRS_group_member_catalog.dat
+!CF3_group_catalog.dat
+!CosmicEmu_spectrum_Planck18.dat
+
+# Hidden files
+.*
+!.gitignore
