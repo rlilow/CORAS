@@ -16,7 +16,7 @@ The `data` directory contains all input data needed to apply CORAS to 2MRS (Huch
 
 ### Reconstructed fields
 
-For easy access, the normalized density contrast (density contrast divided by sigma_8) and peculiar velocity fields reconstructed with CORAS using the parameter values inferred from the velocity-velocity comparison are directly available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0). These fields have been smoothed with a 5 Mpc/h Gaussian, and were reconstructed using redshifts in either CMB or LG frame. They are discretized on a regular 201^3 Cartesian grid in galactic coordinates, with each coordinate running from -200 Mpc/h to +200 Mpc/h in steps of 2 Mpc/h. The field values at the coordinates (x_i, y_j, z_k) with
+For easy access, the normalized density contrast (density contrast divided by sigma_8) and peculiar velocity fields (with respect to the CMB frame) reconstructed with CORAS using the parameter values inferred from the velocity-velocity comparison are directly available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0). These fields have been smoothed with a 5 Mpc/h Gaussian, and were reconstructed using observed redshifts in the LG frame. They are discretized on a regular 201^3 Cartesian grid in galactic coordinates, with each coordinate running from -200 Mpc/h to +200 Mpc/h in steps of 2 Mpc/h. The field values at the coordinates (x_i, y_j, z_k) with
 
 > x/y/z_i = 2 \* (i - 100), 0 <= i <= 200
 
