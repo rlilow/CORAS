@@ -9,6 +9,14 @@ By combining this estimator with random log-normal Poisson realizations of the d
 By comparing the reconstructed velocities with those obtained from a galaxy distance catalog, CORAS can furthermore infer the normalized growth rate of structures and the external bulk flow contribution from sources beyond the survey volume.
 As a nuisance parameter, it also fixes the Hubble constant used to translate observed distance moduli to velocities.
 
+### Reference
+
+The methodology behind CORAS, its application to the Two-Micron All-Sky Redshift Survey (2MRS), and the comparison to the velocities inferred from the galaxy distance catalog Cosmicflows-3 are described in detail in the following publication:
+
+> Robert Lilow & Adi Nusser, [arXiv:2102.07291](https://arxiv.org/abs/2102.07291)
+
+If you want to use or modify CORAS or any data generated with it, please cite this publication and link to this repository.
+
 ## Data
 
 ### Input data
@@ -36,7 +44,7 @@ The original 2MRS data are available alongside their publications, the 2MRS grou
 
 ### Reconstructed fields on a grid
 
-The reconstructed normalized density contrast and peculiar velocity fields on a grid are available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0).
+The reconstructed normalized density contrast and peculiar velocity fields on a grid, described in [Lilow & Nusser (2021)](https://arxiv.org/abs/2102.07291), are available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0).
 The normalized density contrast is the density contrast divided by sigma_8.
 The peculiar velocity field is with respect to the CMB frame, and its components point along the Galactic coordinate axes.
 Both fields have been smoothed with a 5 Mpc/h Gaussian, and were reconstructed using observed redshifts in the Local Group (LG) frame.
