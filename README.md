@@ -56,19 +56,21 @@ These files can also be generated using the `compute_reconstructed_fields_on_car
 
 ### Reconstructed velocities of Cosmicflows-3 galaxies and groups
 
-The reconstructed peculiar velocities at the positions of the Cosmicflows-3 galaxies and groups are available in the [Extragalactic Distance Database](http://edd.ifa.hawaii.edu) in the table _Lilow-Nusser CF3 Peculiar Velocities_.
-Both the galaxy and group velocities have been obtained by evaluating the velocity field at the comoving LG-frame redshift distance of the group.
+The reconstructed peculiar velocities at the positions of the Cosmicflows-3 galaxies and their associated groups are available in the [Extragalactic Distance Database](http://edd.ifa.hawaii.edu) in the table _Lilow-Nusser CF3 Peculiar Velocities_.
+Both the galaxy and group velocities have been obtained by evaluating the velocity field at the comoving LG-frame redshift distance to the group.
 This minimizes the Malmquist bias and reduces the contamination by incoherent small-scale motions (e.g. fingers-of-god).
 Thus, the only difference between galaxy and group velocities is the angular position at which they have been evaluated.
 The table also contains the uncertainty in the peculiar velocity components, estimated from the scatter between 50 constrained realizations.
 This uncertainty is the same for each velocity component and only depends on distance.
 
-A small number of galaxies has negative LG-frame group redshifts.
-Since all of their actual distances are small compared to the 5 Mpc/h smoothing scale, their peculiar velocities have simply been evaluated at zero distance.
-They additionally carry the flag -1.
-Another small number of galaxies have LG-frame group redshift distances beyond the reconstruction boundary at 200 Mpc/h (corresponding to cz = 20,300 km/s).
-They carry the flag 1, and their peculiar velocities are set to zero.
-All remaining galaxies carry the flag 0.
+Each galaxy has a flag indicating the following:
+- flag = -1: The LG-frame redshift of its group is negative.
+  Since the actual distances to these galaxies are small compared to the 5 Mpc/h smoothing scale, their peculiar velocities have simply been evaluated at zero distance.
+- flag = 1: The LG-frame redshift distance to its group is beyond the reconstruction boundary of 200 Mpc/h (corresponding to cz = 20,300 km/s). The peculiar 
+  velocities of these galaxies can thus not be reconstructed and are set to zero.
+- flag = 0: All remaining galaxies.
+
+Of the total 17647 galaxies only 20 have flag = -1 and 76 have flag = 1.
 
 ## Installation
 
