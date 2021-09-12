@@ -28,6 +28,7 @@ void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelociti
                                 const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
                                 std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
                                 bool excludeFaintGalaxies = true);
+
 /**
  * Prepare the 2MRS data for the reconstruction process. The input data consist of the redshift velocities \a
  * inputRedshiftVelocities, k-correction redshift velocities \a inputKCorrectionRedshiftVelocities, galactic latitudes

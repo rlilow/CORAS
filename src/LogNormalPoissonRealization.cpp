@@ -26,9 +26,9 @@ LogNormalPoissonRealization::LogNormalPoissonRealization(const double periodicBo
       BinNumber3D(2 * binNumber + 1),            // number of bins per full box length
       BoxPointNumber(BinNumber3D * BinNumber3D * BinNumber3D),
       BinNumbers3D{BinNumber3D, BinNumber3D, BinNumber3D},
-      FourierTrafoTypes1D{FFTW_RODFT11},                                                       // use discrete cosine transform of type IV (DCT-IV) to perform the radial Fourier transform between power spectrum and correlation function because it is symmetric and automatically avoids evaluating the correlation function at zero distance
+      FourierTrafoTypes1D{FFTW_RODFT11},                                                       // use discrete cosine transform of type IV (DST-IV) to perform the radial Fourier transform between power spectrum and correlation function because it is symmetric and automatically avoids evaluating the correlation function at zero distance
       RealBinWidth1D(BoxLength / static_cast<double>(BinNumber1D - 1) * 2.0 / std::sqrt(3.0)), // 1D bin width chosen such that the maximal absolute value of the 3D Fourier vector is reached
-      FourierBinWidth1D(M_PI / RealBinWidth1D / static_cast<double>(BinNumber1D)),             // 1D bin width in Fourier space chosen to match the definition of the DCT-IV in FFTW3 (see FFTW3 documentation for details)
+      FourierBinWidth1D(M_PI / RealBinWidth1D / static_cast<double>(BinNumber1D)),             // 1D bin width in Fourier space chosen to match the definition of the DST-IV in FFTW3 (see FFTW3 documentation for details)
       RealBinWidth3D(BoxLength / static_cast<double>(BinNumber3D - 1)),
       FourierBinWidth3D(2.0 * M_PI / RealBinWidth3D / static_cast<double>(BinNumber3D)), // 3D bin width in Fourier space chosen to match the definition of the discrete Fourier transform (DFT) in FFTW3 (see FFTW3 documentation for details)
       BackwardTrafoNormalization1D(FourierBinWidth1D / gsl_pow_2(2.0 * M_PI)),           // normalizations of 1D transforms correspond to the radial Fourier transform obtained by integrating out the angular parts of a standard 3D Fourier transform
@@ -421,12 +421,12 @@ LogNormalPoissonRealization::~LogNormalPoissonRealization()
 
 double LogNormalPoissonRealization::real_coordinate_1D(const int bin) const
 {
-  return static_cast<double>(2 * bin + 1) / 2.0 * RealBinWidth1D; // discretization chosen to match the definition of the DCT-IV in FFTW3 (see FFTW3 documentation for details)
+  return static_cast<double>(2 * bin + 1) / 2.0 * RealBinWidth1D; // discretization chosen to match the definition of the DST-IV in FFTW3 (see FFTW3 documentation for details)
 }
 
 double LogNormalPoissonRealization::fourier_coordinate_1D(const int bin) const
 {
-  return static_cast<double>(2 * bin + 1) / 2.0 * FourierBinWidth1D; // discretization chosen to match the definition of the DCT-IV in FFTW3 (see FFTW3 documentation for details)
+  return static_cast<double>(2 * bin + 1) / 2.0 * FourierBinWidth1D; // discretization chosen to match the definition of the DST-IV in FFTW3 (see FFTW3 documentation for details)
 }
 
 double LogNormalPoissonRealization::real_coordinate_3D(const int bin) const

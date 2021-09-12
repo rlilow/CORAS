@@ -100,6 +100,7 @@ double ObjectGrid::distance(const double xDifference, const double yDifference, 
 
     return std::sqrt(gsl_pow_2(xDistance) + gsl_pow_2(yDistance) + gsl_pow_2(zDistance));
 }
+
 void ObjectGrid::evaluate_for_all_objects(const std::function<void(std::size_t index)> &function) const
 {
     for (std::size_t i_x = 0; i_x < GridBinNumber; ++i_x)
