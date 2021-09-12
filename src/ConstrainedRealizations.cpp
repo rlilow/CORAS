@@ -1,6 +1,7 @@
 #include "ConstrainedRealizations.hpp"
 
 #include <iostream>
+#include <tr1/cmath>
 
 #include <gsl/gsl_integration.h>
 
@@ -398,6 +399,26 @@ void ConstrainedRealizations::update_survey_estimate_decomposition(const double 
         SurveySFBD = RawSurveySFBD;
 
         SurveyRSDCorrection.transform_redshift_to_configuration_space(SurveySFBD, normalizedGrowthRate);
+
+        double meanRealSpaceNormalizedDensityContrast = 0.0;
+
+        for (std::size_t n = 1; n <= SurveySFBD.radial_mode_number(); ++n) // compute mean density contrast via sum over monopole coefficients
+        {
+            const double k_0n = SurveySFBD.radial_wavenumber(0, n);
+            const double C_0n = SurveySFBD.radial_normalization_constant(0, n);
+            const double delta_00n = (SurveySFBD.SFB_coefficient(0, 0, n)).real();
+
+            meanRealSpaceNormalizedDensityContrast += C_0n * delta_00n * 3.0 / 2.0 / std::sqrt(M_PI) * std::tr1::sph_bessel(1, k_0n * MaxRadius) / k_0n / MaxRadius;
+        }
+
+        for (std::size_t n = 1; n <= SurveySFBD.radial_mode_number(); ++n) // subtract the SFB projection of this mean density contrast
+        {
+            const double k_0n = SurveySFBD.radial_wavenumber(0, n);
+            const double monopoleCorrection = meanRealSpaceNormalizedDensityContrast * 2.0 * std::sqrt(M_PI) * std::tr1::sph_bessel(1, k_0n * MaxRadius) / k_0n * gsl_pow_2(MaxRadius);
+
+            SurveySFBD.SFB_coefficient(0, 0, n) -= monopoleCorrection;
+        }
+
         SurveyWienerFilter.apply_to(SurveySFBD, MeanGalaxyDensity, NormalizedPowerSpectrum, NormalizedPowerSpectrum);
 
         SurveyEstimateGrowthRate = normalizedGrowthRate;
