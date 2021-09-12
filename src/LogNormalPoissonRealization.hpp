@@ -108,7 +108,7 @@ private:
 	 * Types of Discrete Cosine Transformations used to perform the 1D FFT between power spectra and correlation
 	 * functions (see FFTW3 documentation for details).
    */
-  fftw_r2r_kind FourierTrafoTypes1D[2];
+  fftw_r2r_kind FourierTrafoTypes1D[1];
 
   /**
 	 * Real space bin width used for the 1D FFT between power spectra and correlation functions.
