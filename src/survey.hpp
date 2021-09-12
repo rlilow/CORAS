@@ -26,7 +26,8 @@
 void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputKCorrectionRedshiftVelocities, const std::vector<double> &inputThetaCoordinates, const std::vector<double> &inputPhiCoordinates, const std::vector<double> &inputApparentMagnitudes,
                                 ReferenceFrameChange referenceFrameChange, double maxRadius, double volumeLimitRadius, double maxApparentMagnitude, double omegaMatter,
                                 const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
-                                std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes);
+                                std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
+                                bool excludeFaintGalaxies = true);
 /**
  * Prepare the 2MRS data for the reconstruction process. The input data consist of the redshift velocities \a
  * inputRedshiftVelocities, k-correction redshift velocities \a inputKCorrectionRedshiftVelocities, galactic latitudes
@@ -40,7 +41,8 @@ void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelociti
  * evolution and k-correction, respectively. After that, if \a fillZOA (default: \c true) is \c true, the zone of
  * avoidance in the galactic plane is filled up with mock galaxies sampled from the adjacent regions, using a GSL random
  * number generator of type \a randomNumberGeneratorType (default: gsl_rng_ranlxd2) with seed \a
- * randomNumberGeneratorSeed (default: 1) (see GSL documentation for details). The output consists of the redshift
+ * randomNumberGeneratorSeed (default: 1) (see GSL documentation for details). If \a excludeFaintGalaxies (default: \c
+ * true) is \c true, all galaxies fainter than \a maxApparentMagnitude are excluded. The output consists of the redshift
  * velocities \a outputRedshiftVelocities, k-correction redshift velocities \a outputKCorrectionRedshiftVelocities,
  * comoving radial redshift coordinates \a outputRadialCoordinates, theta coordinates \a outputThetaCoordinates, phi
  * coordinates \a outputPhiCoordinates and apparent magnitudes \a outputApparentMagnitudes of the resulting set of
@@ -50,7 +52,7 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
                        ReferenceFrameChange referenceFrameChange, double maxRadius, double volumeLimitRadius, double maxApparentMagnitude, double omegaMatter,
                        const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
                        std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
-                       bool fillZOA = true,
+                       bool fillZOA = true, bool excludeFaintGalaxies = true,
                        std::size_t randomNumberGeneratorSeed = 1, const gsl_rng_type *randomNumberGeneratorType = gsl_rng_ranlxd2);
 
 void prepare_distance_catalog_data(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputLatitudes, const std::vector<double> &inputLongitudes, const std::vector<double> &inputDistanceModuli, const std::vector<double> &inputDistanceModulusErrors,

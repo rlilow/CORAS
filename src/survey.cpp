@@ -11,7 +11,8 @@
 void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputKCorrectionRedshiftVelocities, const std::vector<double> &inputThetaCoordinates, const std::vector<double> &inputPhiCoordinates, const std::vector<double> &inputApparentMagnitudes,
                                 const ReferenceFrameChange referenceFrameChange, const double maxRadius, const double volumeLimitRadius, const double maxApparentMagnitude, const double omegaMatter,
                                 const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
-                                std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes)
+                                std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
+                                const bool excludeFaintGalaxies)
 {
   outputRedshiftVelocities.clear();
   outputKCorrectionRedshiftVelocities.clear();
@@ -38,7 +39,7 @@ void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelociti
     const double absoluteMagnitude = absolute_magnitude(redshiftVelocity, kCorrectionRedshiftVelocity, apparentMagnitude, omegaMatter, 1.0,
                                                         luminosityEvolutionCorrection, kCorrection);
 
-    if ((radius > 0.0) and (radius <= maxRadius) and (apparentMagnitude <= maxApparentMagnitude) and (absoluteMagnitude <= absoluteMagnitudeThreshold)) // include all objects within the maximal radius that are bright enough and not blueshifted
+    if ((radius > 0.0) and (radius <= maxRadius) and (not excludeFaintGalaxies or apparentMagnitude <= maxApparentMagnitude) and (absoluteMagnitude <= absoluteMagnitudeThreshold)) // include all objects within the maximal radius that are bright enough and not blueshifted
     {
       outputRedshiftVelocities.push_back(redshiftVelocity);
       outputKCorrectionRedshiftVelocities.push_back(kCorrectionRedshiftVelocity);
@@ -54,7 +55,7 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
                        const ReferenceFrameChange referenceFrameChange, const double maxRadius, const double volumeLimitRadius, double maxApparentMagnitude, const double omegaMatter,
                        const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
                        std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
-                       const bool fillZOA,
+                       const bool fillZOA, const bool excludeFaintGalaxies,
                        const std::size_t randomNumberGeneratorSeed, const gsl_rng_type *randomNumberGeneratorType)
 {
   const std::size_t inputGalaxyNumber = inputRedshiftVelocities.size();
@@ -71,7 +72,8 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
   apply_partial_volume_limit(inputRedshiftVelocities, inputKCorrectionRedshiftVelocities, inputThetaCoordinates, inputPhiCoordinates, inputApparentMagnitudes,
                              referenceFrameChange, maxRadius, volumeLimitRadius, maxApparentMagnitude, omegaMatter,
                              luminosityEvolutionCorrection, kCorrection,
-                             outputRedshiftVelocities, outputKCorrectionRedshiftVelocities, outputRadialCoordinates, outputThetaCoordinates, outputPhiCoordinates, outputApparentMagnitudes);
+                             outputRedshiftVelocities, outputKCorrectionRedshiftVelocities, outputRadialCoordinates, outputThetaCoordinates, outputPhiCoordinates, outputApparentMagnitudes,
+                             excludeFaintGalaxies);
 
   if (fillZOA)
   {
