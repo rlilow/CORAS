@@ -89,14 +89,14 @@ double k_correction_2MRS(const double redshiftVelocity)
 {
   const double z = redshiftVelocity / SPEED_OF_LIGHT;
 
-  return -6.0 * std::log10(1.0 + z);
+  return -2.1 * z; // Bell et al. ApJS 149 (2003) 289
 }
 
 double luminosity_evolution_correction_2MRS(const double redshiftVelocity)
 {
   const double z = redshiftVelocity / SPEED_OF_LIGHT;
 
-  return -3.04 * z;
+  return 0.8 * z; // Bell et al. ApJS 149 (2003) 289
 }
 
 double absolute_magnitude(const double redshiftVelocity, const double apparentMagnitude, const double omegaMatter, const double hubble,
