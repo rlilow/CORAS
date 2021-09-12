@@ -254,7 +254,9 @@ void estimate_selection_function(const std::vector<double> &redshiftVelocities, 
 
   const double radialBinWidth = maxRadius / static_cast<double>(radialBinNumber - 1);
 
-  for (std::size_t i_b = 0; i_b < radialBinNumber; ++i_b)
+  double FT_prev = 0.0;
+
+  for (std::size_t i_b = 1; i_b < radialBinNumber; ++i_b)
   {
     const double binRadius = selectionFunction.coordinate(i_b);
     const double nextBinRadius = binRadius + radialBinWidth;
@@ -297,28 +299,15 @@ void estimate_selection_function(const std::vector<double> &redshiftVelocities, 
       }
     }
 
-    if (T != 0)
-    {
-      const double FT = static_cast<double>(F) / static_cast<double>(T);
+    const double FT = (T != 0) ? static_cast<double>(F) / static_cast<double>(T)
+                               : FT_prev; // if there are no sufficiently bright galaxies in the bin, assume that F/T stays constant
 
-      selectionFunctionLogDerivative.value(i_b) = -FT / radialBinWidth * binRadius; // the logarithmic derivative of the selection function is estimated as -F/T * r/dr
+    selectionFunctionLogDerivative.value(i_b) = (FT_prev != 0.0) ? -FT / radialBinWidth * binRadius // the logarithmic derivative of the selection function is estimated as -F/T * r/dr
+                                                                 : 0.0;                             // unless the previous value of F/T was zero, implying that the selection function did not change from the previous bin (this case ensures that the derivative is zero up to and including the partial volume limit radius)
+    selectionFunction.value(i_b) = selectionFunction.value(i_b - 1) * (1.0 - FT_prev);              // the selection function itself is then obtained by (binned) integration over the radius
+    radialDistributionFunction.value(i_b) = static_cast<double>(dN) / radialBinWidth;               // the radial distribution function is estimated as dN/dr
 
-      selectionFunction.value(i_b) *= std::exp(-FT / 2.0); // the selection function itself is then obtained by (binned) integration over the radius
-
-      if (i_b + 1 < radialBinNumber)
-      {
-        selectionFunction.value(i_b + 1) = selectionFunction.value(i_b) * std::exp(-FT / 2.0);
-      }
-    }
-    else
-    {
-      if (i_b + 1 < radialBinNumber)
-      {
-        selectionFunction.value(i_b + 1) = selectionFunction.value(i_b);
-      }
-    }
-
-    radialDistributionFunction.value(i_b) = static_cast<double>(dN) / radialBinWidth; // the radial distribution function is estimated as dN/dr
+    FT_prev = FT;
   }
 }
 
