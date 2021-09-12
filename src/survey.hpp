@@ -19,7 +19,7 @@
 /**
  * \name Survey
  *
- * Preparation and analysis of survey data.
+ * Methods for the preparation and analysis of survey data.
  */
 ///@{
 
