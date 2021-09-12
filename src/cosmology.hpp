@@ -43,26 +43,24 @@ double k_correction_2MRS(double redshiftVelocity);
 double luminosity_evolution_correction_2MRS(double redshiftVelocity);
 
 /**
- * Return the absolute magnitude of an object at redshift velocity \a redshiftVelocity with apparent magnitude \a
+ * Return the absolute magnitude of an object with cosmological and observed redshift velocities \a
+ * observedRedshiftVelocity and \a cosmologicalRedshiftVelocity, respectively, and apparent magnitude \a
  * apparentMagnitude, using the dimensionless matter density parameter \a omegaMatter, the dimensionless Hubble constant
- * \a hubble, and the functions of redshift velocity \a luminosityEvolutionCorrection default:
- * luminosity_evolution_correction_2MRS) and \a kCorrection (default: k_correction_2MRS) accounting for galaxy
- * luminosity evolution and k-correction, respectively. By default these are set to the functions found to be suitable
- * for 2MRS in [Branchini+ MNRAS 424 (2012) 472].
+ * \a hubble, and the functions \a luminosityEvolutionCorrection and \a kCorrection accounting for galaxy luminosity
+ * evolution and k-correction, depending on the cosmological and observed redshift velocities, respectively.
  */
-double absolute_magnitude(double redshiftVelocity, double apparentMagnitude, double omegaMatter, double hubble,
-                          const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection = luminosity_evolution_correction_2MRS, const std::function<double(double redshiftVelocity)> &kCorrection = k_correction_2MRS);
+double absolute_magnitude(double cosmologicalRedshiftVelocity, double observedRedshiftVelocity, double apparentMagnitude, double omegaMatter, double hubble,
+                          const std::function<double(double cosmologicalRedshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double observedRedshiftVelocity)> &kCorrection);
 
 /**
- * Return the apparent magnitude of an object at redshift velocity \a redshiftVelocity with absolute magnitude \a
- * absoluteMagnitude, using the dimensionless matter density parameter \a omegaMatter, the dimensionless Hubble constant
- * \a hubble, and the functions of redshift velocity \a luminosityEvolutionCorrection default:
- * luminosity_evolution_correction_2MRS) and \a kCorrection (default: k_correction_2MRS) accounting for galaxy
- * luminosity evolution and k-correction, respectively. By default these are set to the functions found to be suitable
- * for 2MRS in [Branchini+ MNRAS 424 (2012) 472].
+ * Return the apparent magnitude of an object with cosmological and observed redshift velocities \a
+ * observedRedshiftVelocity and \a cosmologicalRedshiftVelocity, respectively, and apparent magnitude \a
+ * apparentMagnitude, using the dimensionless matter density parameter \a omegaMatter, the dimensionless Hubble constant
+ * \a hubble, and the functions \a luminosityEvolutionCorrection and \a kCorrection accounting for galaxy luminosity
+ * evolution and k-correction, depending on the cosmological and observed redshift velocities, respectively.
  */
-double apparent_magnitude(double redshiftVelocity, double absoluteMagnitude, double omegaMatter, double hubble,
-                          const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection = luminosity_evolution_correction_2MRS, const std::function<double(double redshiftVelocity)> &kCorrection = k_correction_2MRS);
+double apparent_magnitude(double cosmologicalRedshiftVelocity, double observedRedshiftVelocity, double absoluteMagnitude, double omegaMatter, double hubble,
+                          const std::function<double(double cosmologicalRedshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double observedRedshiftVelocity)> &kCorrection);
 
 /** @} */
 

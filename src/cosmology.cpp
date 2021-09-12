@@ -99,14 +99,14 @@ double luminosity_evolution_correction_2MRS(const double redshiftVelocity)
   return 0.8 * z; // Bell et al. ApJS 149 (2003) 289
 }
 
-double absolute_magnitude(const double redshiftVelocity, const double apparentMagnitude, const double omegaMatter, const double hubble,
-                          const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double redshiftVelocity)> &kCorrection)
+double absolute_magnitude(const double cosmologicalRedshiftVelocity, const double observedRedshiftVelocity, const double apparentMagnitude, const double omegaMatter, const double hubble,
+                          const std::function<double(double cosmologicalRedshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double observedRedshiftVelocity)> &kCorrection)
 {
-  return apparentMagnitude - distance_modulus(redshiftVelocity, omegaMatter, hubble) - kCorrection(redshiftVelocity) + luminosityEvolutionCorrection(redshiftVelocity);
+  return apparentMagnitude - distance_modulus(cosmologicalRedshiftVelocity, omegaMatter, hubble) - kCorrection(observedRedshiftVelocity) + luminosityEvolutionCorrection(cosmologicalRedshiftVelocity);
 }
 
-double apparent_magnitude(const double redshiftVelocity, const double absoluteMagnitude, const double omegaMatter, const double hubble,
-                          const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double redshiftVelocity)> &kCorrection)
+double apparent_magnitude(const double cosmologicalRedshiftVelocity, const double observedRedshiftVelocity, const double absoluteMagnitude, const double omegaMatter, const double hubble,
+                          const std::function<double(double cosmologicalRedshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double observedRedshiftVelocity)> &kCorrection)
 {
-  return absoluteMagnitude + distance_modulus(redshiftVelocity, omegaMatter, hubble) + kCorrection(redshiftVelocity) - luminosityEvolutionCorrection(redshiftVelocity);
+  return absoluteMagnitude + distance_modulus(cosmologicalRedshiftVelocity, omegaMatter, hubble) + kCorrection(observedRedshiftVelocity) - luminosityEvolutionCorrection(cosmologicalRedshiftVelocity);
 }

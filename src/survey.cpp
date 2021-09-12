@@ -8,12 +8,13 @@
 #include "ObjectGrid.hpp"
 #include "SphericalGridFunction.hpp"
 
-void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputThetaCoordinates, const std::vector<double> &inputPhiCoordinates, const std::vector<double> &inputApparentMagnitudes,
+void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputKCorrectionRedshiftVelocities, const std::vector<double> &inputThetaCoordinates, const std::vector<double> &inputPhiCoordinates, const std::vector<double> &inputApparentMagnitudes,
                                 const ReferenceFrameChange referenceFrameChange, const double maxRadius, const double volumeLimitRadius, const double maxApparentMagnitude, const double omegaMatter,
-                                std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
-                                const std::function<double(double redshift)> &luminosityEvolutionCorrection, const std::function<double(double redshift)> &kCorrection)
+                                const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
+                                std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes)
 {
   outputRedshiftVelocities.clear();
+  outputKCorrectionRedshiftVelocities.clear();
   outputRadialCoordinates.clear();
   outputThetaCoordinates.clear();
   outputPhiCoordinates.clear();
@@ -21,11 +22,12 @@ void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelociti
 
   const double volumeLimitRedshiftVelocity = redshift_velocity_from_comoving_distance(volumeLimitRadius, omegaMatter);
 
-  const double absoluteMagnitudeThreshold = absolute_magnitude(volumeLimitRedshiftVelocity, maxApparentMagnitude, omegaMatter, 1.0, // absolute magnitude threshold used for partial volume limit; set dimensionless Hubble constant h to 1 since its actual value does not matter
+  const double absoluteMagnitudeThreshold = absolute_magnitude(volumeLimitRedshiftVelocity, volumeLimitRedshiftVelocity, maxApparentMagnitude, omegaMatter, 1.0, // absolute magnitude threshold used for partial volume limit; set dimensionless Hubble constant h to 1 since its actual value does not matter
                                                                luminosityEvolutionCorrection, kCorrection);
 
   for (std::size_t i_input = 0; i_input < inputRedshiftVelocities.size(); ++i_input)
   {
+    const double kCorrectionRedshiftVelocity = inputKCorrectionRedshiftVelocities[i_input];
     const double theta = inputThetaCoordinates[i_input];
     const double phi = inputPhiCoordinates[i_input];
     const double apparentMagnitude = inputApparentMagnitudes[i_input];
@@ -33,12 +35,13 @@ void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelociti
     const double redshiftVelocity = change_reference_frame(inputRedshiftVelocities[i_input], theta, phi, referenceFrameChange);
     const double radius = comoving_distance(redshiftVelocity, omegaMatter);
 
-    const double absoluteMagnitude = absolute_magnitude(redshiftVelocity, apparentMagnitude, omegaMatter, 1.0,
+    const double absoluteMagnitude = absolute_magnitude(redshiftVelocity, kCorrectionRedshiftVelocity, apparentMagnitude, omegaMatter, 1.0,
                                                         luminosityEvolutionCorrection, kCorrection);
 
     if ((radius > 0.0) and (radius <= maxRadius) and (apparentMagnitude <= maxApparentMagnitude) and (absoluteMagnitude <= absoluteMagnitudeThreshold)) // include all objects within the maximal radius that are bright enough and not blueshifted
     {
       outputRedshiftVelocities.push_back(redshiftVelocity);
+      outputKCorrectionRedshiftVelocities.push_back(kCorrectionRedshiftVelocity);
       outputRadialCoordinates.push_back(radius);
       outputThetaCoordinates.push_back(theta);
       outputPhiCoordinates.push_back(phi);
@@ -47,11 +50,12 @@ void apply_partial_volume_limit(const std::vector<double> &inputRedshiftVelociti
   }
 }
 
-void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputLatitudes, const std::vector<double> &inputLongitudes, const std::vector<double> &inputApparentMagnitudes,
+void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const std::vector<double> &inputKCorrectionRedshiftVelocities, const std::vector<double> &inputLatitudes, const std::vector<double> &inputLongitudes, const std::vector<double> &inputApparentMagnitudes,
                        const ReferenceFrameChange referenceFrameChange, const double maxRadius, const double volumeLimitRadius, double maxApparentMagnitude, const double omegaMatter,
-                       std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
-                       const std::function<double(double redshift)> &luminosityEvolutionCorrection, const std::function<double(double redshift)> &kCorrection,
-                       const bool fillZOA, const std::size_t randomNumberGeneratorSeed, const gsl_rng_type *randomNumberGeneratorType)
+                       const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
+                       std::vector<double> &outputRedshiftVelocities, std::vector<double> &outputKCorrectionRedshiftVelocities, std::vector<double> &outputRadialCoordinates, std::vector<double> &outputThetaCoordinates, std::vector<double> &outputPhiCoordinates, std::vector<double> &outputApparentMagnitudes,
+                       const bool fillZOA,
+                       const std::size_t randomNumberGeneratorSeed, const gsl_rng_type *randomNumberGeneratorType)
 {
   const std::size_t inputGalaxyNumber = inputRedshiftVelocities.size();
 
@@ -64,10 +68,10 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
                                                  inputThetaCoordinates[i_g], inputPhiCoordinates[i_g]);
   }
 
-  apply_partial_volume_limit(inputRedshiftVelocities, inputThetaCoordinates, inputPhiCoordinates, inputApparentMagnitudes,
+  apply_partial_volume_limit(inputRedshiftVelocities, inputKCorrectionRedshiftVelocities, inputThetaCoordinates, inputPhiCoordinates, inputApparentMagnitudes,
                              referenceFrameChange, maxRadius, volumeLimitRadius, maxApparentMagnitude, omegaMatter,
-                             outputRedshiftVelocities, outputRadialCoordinates, outputThetaCoordinates, outputPhiCoordinates, outputApparentMagnitudes,
-                             luminosityEvolutionCorrection, kCorrection);
+                             luminosityEvolutionCorrection, kCorrection,
+                             outputRedshiftVelocities, outputKCorrectionRedshiftVelocities, outputRadialCoordinates, outputThetaCoordinates, outputPhiCoordinates, outputApparentMagnitudes);
 
   if (fillZOA)
   {
@@ -99,10 +103,7 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
         const double binPhiMax = (i_p < phiBinNumber - 1) ? binPhiMin + phiBinWidth
                                                           : 2.0 * M_PI;
 
-        std::vector<double> adjacentBinRedshiftVelocity;
-        std::vector<double> adjacentBinRadius;
-        std::vector<double> adjacentBinPhi;
-        std::vector<double> adjacentBinApparentMagnitude;
+        std::vector<double> adjacentBinRedshiftVelocity, adjacentBinKCorrectionRedshiftVelocity, adjacentBinRadius, adjacentBinPhi, adjacentBinApparentMagnitude;
 
         std::size_t maskBinGalaxyNumber = 0;
         std::size_t adjacentBinGalaxyNumber = 0;
@@ -114,6 +115,7 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
         for (std::size_t i_g = 0; i_g < outputRadialCoordinates.size(); ++i_g)
         {
           const double redshiftVelocity = outputRedshiftVelocities[i_g];
+          const double kCorrectionRedshiftVelocity = outputKCorrectionRedshiftVelocities[i_g];
           const double radius = outputRadialCoordinates[i_g];
           const double theta = outputThetaCoordinates[i_g];
           const double phi = outputPhiCoordinates[i_g];
@@ -128,6 +130,7 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
             else if (std::fabs(theta - thetaMaskCenter) < thetaMaskHalfWidth + thetaBinWidth) // count the galaxies adjacent to the mask region and remember their redshifts, radial and phi coordinates, and apparent magnitudes
             {
               adjacentBinRedshiftVelocity.push_back(redshiftVelocity);
+              adjacentBinKCorrectionRedshiftVelocity.push_back(kCorrectionRedshiftVelocity);
               adjacentBinRadius.push_back(radius);
               adjacentBinPhi.push_back(phi);
               adjacentBinApparentMagnitude.push_back(apparentMagnitude);
@@ -155,12 +158,14 @@ void prepare_2MRS_data(const std::vector<double> &inputRedshiftVelocities, const
           std::size_t adjacentSampleGalaxy = gsl_rng_uniform_int(randomNumberGenerator, adjacentBinGalaxyNumber);
 
           const double mockRedshiftVelocity = adjacentBinRedshiftVelocity[adjacentSampleGalaxy];
+          const double mockKCorrectionRedshiftVelocity = adjacentBinKCorrectionRedshiftVelocity[adjacentSampleGalaxy];
           const double mockRadius = adjacentBinRadius[adjacentSampleGalaxy];
           const double mockTheta = thetaMaskCenter + thetaMaskHalfWidth * (gsl_rng_uniform_pos(randomNumberGenerator) * 2.0 - 1.0);
           const double mockPhi = adjacentBinPhi[adjacentSampleGalaxy];
           const double mockApparentMagnitude = adjacentBinApparentMagnitude[adjacentSampleGalaxy];
 
           outputRedshiftVelocities.push_back(mockRedshiftVelocity);
+          outputKCorrectionRedshiftVelocities.push_back(mockKCorrectionRedshiftVelocity);
           outputRadialCoordinates.push_back(mockRadius);
           outputThetaCoordinates.push_back(mockTheta);
           outputPhiCoordinates.push_back(mockPhi);
@@ -234,10 +239,10 @@ double estimate_mean_density(const double maxRadius, const std::vector<double> &
   return expectedGalaxyNumber / 4.0 * 3.0 / M_PI / gsl_pow_3(maxRadius);
 }
 
-void estimate_selection_function(const std::vector<double> &redshiftVelocities, const std::vector<double> &apparentMagnitudes, const double maxApparentMagnitude,
+void estimate_selection_function(const std::vector<double> &redshiftVelocities, const std::vector<double> &kCorrectionRedshiftVelocities, const std::vector<double> &apparentMagnitudes, const double maxApparentMagnitude,
                                  const double maxRadius, const std::size_t radialBinNumber, const double omegaMatter,
-                                 Cartesian1DGridFunction &selectionFunction, Cartesian1DGridFunction &selectionFunctionLogDerivative, Cartesian1DGridFunction &radialDistributionFunction,
-                                 const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double redshiftVelocity)> &kCorrection)
+                                 const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
+                                 Cartesian1DGridFunction &selectionFunction, Cartesian1DGridFunction &selectionFunctionLogDerivative, Cartesian1DGridFunction &radialDistributionFunction)
 {
   const std::size_t galaxyNumber = redshiftVelocities.size();
 
@@ -255,9 +260,9 @@ void estimate_selection_function(const std::vector<double> &redshiftVelocities, 
     const double binRedshiftVelocity = redshift_velocity_from_comoving_distance(binRadius, omegaMatter);
     const double nextBinRedshiftVelocity = redshift_velocity_from_comoving_distance(nextBinRadius, omegaMatter);
 
-    const double binAbsoluteMagnitudeThreshold = absolute_magnitude(binRedshiftVelocity, maxApparentMagnitude, omegaMatter, 1.0, // set dimensionless Hubble constant h to 1 since it's value does not affect the F/T estimator
+    const double binAbsoluteMagnitudeThreshold = absolute_magnitude(binRedshiftVelocity, binRedshiftVelocity, maxApparentMagnitude, omegaMatter, 1.0, // set dimensionless Hubble constant h to 1 since it's value does not affect the F/T estimator
                                                                     luminosityEvolutionCorrection, kCorrection);
-    const double nextBinAbsoluteMagnitudeThreshold = absolute_magnitude(nextBinRedshiftVelocity, maxApparentMagnitude, omegaMatter, 1.0,
+    const double nextBinAbsoluteMagnitudeThreshold = absolute_magnitude(nextBinRedshiftVelocity, nextBinRedshiftVelocity, maxApparentMagnitude, omegaMatter, 1.0,
                                                                         luminosityEvolutionCorrection, kCorrection);
 
     std::size_t F = 0;
@@ -267,10 +272,11 @@ void estimate_selection_function(const std::vector<double> &redshiftVelocities, 
     for (std::size_t i_g = 0; i_g < galaxyNumber; ++i_g)
     {
       const double redshiftVelocity = redshiftVelocities[i_g];
+      const double kCorrectionRedshiftVelocity = kCorrectionRedshiftVelocities[i_g];
       const double apparentMagnitude = apparentMagnitudes[i_g];
 
       const double radius = comoving_distance(redshiftVelocity, omegaMatter);
-      const double absoluteMagnitude = absolute_magnitude(redshiftVelocity, apparentMagnitude, omegaMatter, 1.0,
+      const double absoluteMagnitude = absolute_magnitude(redshiftVelocity, kCorrectionRedshiftVelocity, apparentMagnitude, omegaMatter, 1.0,
                                                           luminosityEvolutionCorrection, kCorrection);
 
       if ((radius < binRadius) and (absoluteMagnitude < binAbsoluteMagnitudeThreshold)) // for every radial bin, T counts all galaxies within that radius bright enough to be detectable also at larger radii
@@ -314,10 +320,10 @@ void estimate_selection_function(const std::vector<double> &redshiftVelocities, 
   }
 }
 
-void estimate_sigma_galaxy(const std::vector<double> &redshiftVelocities, const std::vector<double> &thetaCoordinates, const std::vector<double> &phiCoordinates, const std::vector<double> &apparentMagnitudes,
+void estimate_sigma_galaxy(const std::vector<double> &redshiftVelocities, const std::vector<double> &kCorrectionRedshiftVelocities, const std::vector<double> &thetaCoordinates, const std::vector<double> &phiCoordinates, const std::vector<double> &apparentMagnitudes,
                            const double minRadius, const double maxRadius, const std::size_t radialBinNumber, const double maxApparentMagnitude, const double omegaMatter, const double smoothingScale,
-                           Cartesian1DGridFunction &sigmaGalaxy, std::vector<std::size_t> &galaxyNumbers,
-                           const std::function<double(double redshift)> &luminosityEvolutionCorrection, const std::function<double(double redshift)> &kCorrection)
+                           const std::function<double(double redshiftVelocity)> &luminosityEvolutionCorrection, const std::function<double(double kCorrectionRedshiftVelocity)> &kCorrection,
+                           Cartesian1DGridFunction &sigmaGalaxy, std::vector<std::size_t> &galaxyNumbers)
 {
   sigmaGalaxy = Cartesian1DGridFunction(minRadius, maxRadius, radialBinNumber);
   galaxyNumbers = std::vector<std::size_t>(radialBinNumber);
@@ -331,12 +337,12 @@ void estimate_sigma_galaxy(const std::vector<double> &redshiftVelocities, const 
     const std::size_t reconstructionThetaBinNumber = reconstructionRadialBinNumber * 6;
     const std::size_t reconstructionPhiBinNumber = reconstructionRadialBinNumber * 3;
 
-    std::vector<double> volumeLimitedRedshiftVelocities, volumeLimitedRadialCoordinates, volumeLimitedThetaCoordinates, volumeLimitedPhiCoordinates, volumeLimitedApparentMagnitudes;
+    std::vector<double> volumeLimitedRedshiftVelocities, volumeLimitedKCorrectionRedshiftVelocities, volumeLimitedRadialCoordinates, volumeLimitedThetaCoordinates, volumeLimitedPhiCoordinates, volumeLimitedApparentMagnitudes;
 
-    apply_partial_volume_limit(redshiftVelocities, thetaCoordinates, phiCoordinates, apparentMagnitudes,
+    apply_partial_volume_limit(redshiftVelocities, kCorrectionRedshiftVelocities, thetaCoordinates, phiCoordinates, apparentMagnitudes,
                                NO_REFERENCE_FRAME_CHANGE, volumeLimitRadius, volumeLimitRadius, maxApparentMagnitude, omegaMatter,
-                               volumeLimitedRedshiftVelocities, volumeLimitedRadialCoordinates, volumeLimitedThetaCoordinates, volumeLimitedPhiCoordinates, volumeLimitedApparentMagnitudes,
-                               luminosityEvolutionCorrection, kCorrection);
+                               luminosityEvolutionCorrection, kCorrection,
+                               volumeLimitedRedshiftVelocities, volumeLimitedKCorrectionRedshiftVelocities, volumeLimitedRadialCoordinates, volumeLimitedThetaCoordinates, volumeLimitedPhiCoordinates, volumeLimitedApparentMagnitudes);
 
     std::vector<double> xCoordinates, yCoordinates, zCoordinates;
 

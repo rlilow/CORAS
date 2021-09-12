@@ -43,6 +43,7 @@ int main(int argc, char **argv)
     const auto inputRedshiftCatalogLongitudes = inputRedshiftCatalogFile.column<double>(2);
     const auto inputRedshiftCatalogRedshiftVelocities = REDSHIFT_CATALOG_COLLAPSE_FINGERS_OF_GOD ? inputRedshiftCatalogFile.column<double>(9)
                                                                                                  : inputRedshiftCatalogFile.column<double>(3);
+    const auto inputRedshiftCatalogKCorrectionRedshiftVelocities = inputRedshiftCatalogFile.column<double>(3);
     const auto inputRedshiftCatalogApparentMagnitudes = inputRedshiftCatalogFile.column<double>(4);
 
     const FileTable inputDistanceCatalogFile(DISTANCE_CATALOG_FILE_NAME, 7); // read the distance catalog properties from file
@@ -83,17 +84,19 @@ int main(int argc, char **argv)
         const auto time1 = std::chrono::high_resolution_clock::now();
         std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
 
-        std::vector<double> reconstructionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentMagnitudes;
+        std::vector<double> reconstructionRedshiftVelocities, kCorrectionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentMagnitudes;
 
-        prepare_2MRS_data(inputRedshiftCatalogRedshiftVelocities, inputRedshiftCatalogLatitudes, inputRedshiftCatalogLongitudes, inputRedshiftCatalogApparentMagnitudes,
+        prepare_2MRS_data(inputRedshiftCatalogRedshiftVelocities, inputRedshiftCatalogKCorrectionRedshiftVelocities, inputRedshiftCatalogLatitudes, inputRedshiftCatalogLongitudes, inputRedshiftCatalogApparentMagnitudes,
                           redshiftCatalogInputToReferenceFrame, RECONSTRUCTION_MAX_RADIUS, REDSHIFT_CATALOG_VOLUME_LIMIT_RADIUS, REDSHIFT_CATALOG_MAX_APPARENT_MAGNITUDE, FIDUCIAL_OMEGA_MATTER,
-                          reconstructionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentMagnitudes);
+                          luminosity_evolution_correction_2MRS, k_correction_2MRS,
+                          reconstructionRedshiftVelocities, kCorrectionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentMagnitudes);
 
         Cartesian1DGridFunction sigmaGalaxyAboveVolumeLimit;
         std::vector<std::size_t> volumeLimitGalaxyNumbers;
 
-        estimate_sigma_galaxy(reconstructionRedshiftVelocities, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentMagnitudes,
+        estimate_sigma_galaxy(reconstructionRedshiftVelocities, kCorrectionRedshiftVelocities, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentMagnitudes,
                               REDSHIFT_CATALOG_VOLUME_LIMIT_RADIUS, RECONSTRUCTION_MAX_RADIUS, SIGMA_GALAXY_RADIAL_BIN_NUMBER, REDSHIFT_CATALOG_MAX_APPARENT_MAGNITUDE, FIDUCIAL_OMEGA_MATTER, SIGMA_SCALE,
+                              luminosity_evolution_correction_2MRS, k_correction_2MRS,
                               sigmaGalaxyAboveVolumeLimit, volumeLimitGalaxyNumbers);
 
         auto sigmaGalaxy = [&](double radius) {
@@ -109,8 +112,9 @@ int main(int argc, char **argv)
 
         Cartesian1DGridFunction selectionFunction, selectionFunctionLogDerivative, radialDistributionFunction;
 
-        estimate_selection_function(reconstructionRedshiftVelocities, reconstructionApparentMagnitudes, REDSHIFT_CATALOG_MAX_APPARENT_MAGNITUDE,
+        estimate_selection_function(reconstructionRedshiftVelocities, kCorrectionRedshiftVelocities, reconstructionApparentMagnitudes, REDSHIFT_CATALOG_MAX_APPARENT_MAGNITUDE,
                                     RECONSTRUCTION_MAX_RADIUS, SELECTION_FUNCTION_BIN_NUMBER, FIDUCIAL_OMEGA_MATTER,
+                                    luminosity_evolution_correction_2MRS, k_correction_2MRS,
                                     selectionFunction, selectionFunctionLogDerivative, radialDistributionFunction);
 
         const double meanGalaxyDensity = estimate_mean_density(RECONSTRUCTION_MAX_RADIUS, reconstructionRadialCoordinates, selectionFunction);
