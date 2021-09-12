@@ -9,7 +9,7 @@ CC=g++
 CFLAGS=-O3 -Wall -pedantic -std=c++11 -fopenmp
 
 INCLUDE=-I $(GSL_INCLUDE_PATH) -I $(FFTW3_INCLUDE_PATH)
-LINK=-L $(GSL_LIB_PATH) -lgsl -lgslcblas -L $(FFTW3_LIB_PATH) -lfftw3_omp -lfftw3
+LINK=-L $(GSL_LIB_PATH) -lgsl -lgslcblas -L $(FFTW3_LIB_PATH) -lfftw3_omp -lfftw3 -ffast-math -flto -march=native
 
 DOX_NAME=Doxyfile
 MAKE_NAME=Makefile
