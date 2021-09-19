@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     const auto inputRedshiftCatalogKCorrectionRedshiftVelocities = inputRedshiftCatalogFile.column<double>(3);
     const auto inputRedshiftCatalogApparentMagnitudes = inputRedshiftCatalogFile.column<double>(4);
 
-    const FileTable inputDistanceCatalogFile(DISTANCE_CATALOG_FILE_NAME, 7); // read the distance catalog properties from file
+    const FileTable inputDistanceCatalogFile(DISTANCE_CATALOG_FILE_NAME, 7, '\t'); // read the distance catalog properties from file
 
     const auto inputDistanceCatalogLatitudes = inputDistanceCatalogFile.column<double>(2);
     const auto inputDistanceCatalogLongitudes = inputDistanceCatalogFile.column<double>(3);
