@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 
         const auto time2 = std::chrono::high_resolution_clock::now();
         std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(time2 - time1).count() << "s)" << std::endl;
-        std::cout << "Comparing reconstructed and observed velocities... " << std::flush;
+        std::cout << "Comparing reconstructed and observed velocities..." << std::flush;
 
         for (std::size_t i_s = 0; i_s < TENSOR_SMOOTHING_SCALES.size(); ++i_s)
         {

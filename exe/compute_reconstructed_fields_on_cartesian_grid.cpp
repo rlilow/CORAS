@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 
         const auto time2 = std::chrono::high_resolution_clock::now();
         std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(time2 - time1).count() << "s)" << std::endl;
-        std::cout << "Computing reconstructed fields... " << std::flush;
+        std::cout << "Computing reconstructed fields..." << std::flush;
 
         SphericalGridFunction reconstructedNormalizedDensityContrastSpherical = constrainedRealizations.get_survey_estimate_density_contrast(1.0, ESTIMATED_NORMALIZED_GROWTH_RATE, RECONSTRUCTED_FIELD_SMOOTHING_SCALE); // these fields will be used for the SGP and angular average output
         SphericalGridFunction reconstructedRadialVelocitySpherical = constrainedRealizations.get_survey_estimate_radial_velocity(ESTIMATED_NORMALIZED_GROWTH_RATE, RECONSTRUCTED_FIELD_SMOOTHING_SCALE);
