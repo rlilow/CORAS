@@ -38,7 +38,7 @@ double gaussian_volume_average(const SphericalGridFunction &field, double effect
 
 int main(int argc, char **argv)
 {
-    fftw_init_threads(); // initialize parallel execution of the FFTs used to generate random realizations
+    fftw_init_threads(); // initialize parallel execution of FFTs used in ConstrainedRealizations::generate
     fftw_plan_with_nthreads(omp_get_max_threads());
 
     const FileTable inputPowerSpectrumFileTable(FIDUCIAL_POWER_SPECTRUM_FILE_NAME, 2); // read the power spectrum from file

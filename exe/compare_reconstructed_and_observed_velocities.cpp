@@ -6,9 +6,6 @@
 #include <string>
 #include <vector>
 
-#include <fftw3.h>
-#include <omp.h>
-
 #include "../src/Cartesian1DGridFunction.hpp"
 #include "../src/ConstrainedRealizations.hpp"
 #include "../src/FileTable.hpp"
@@ -22,9 +19,6 @@
 
 int main(int argc, char **argv)
 {
-    fftw_init_threads(); // initialize parallel execution of the FFTs used to generate random realizations
-    fftw_plan_with_nthreads(omp_get_max_threads());
-
     const FileTable inputPowerSpectrumFileTable(FIDUCIAL_POWER_SPECTRUM_FILE_NAME, 2); // read the power spectrum from file
 
     const auto inputWavenumbers = inputPowerSpectrumFileTable.column<double>(0);
@@ -123,7 +117,7 @@ int main(int argc, char **argv)
 
         ConstrainedRealizations constrainedRealizations(reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, redshiftReferenceFrame,
                                                         RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_RESOLUTION, RECONSTRUCTION_MAX_MULTIPOLE, RECONSTRUCTION_RADIAL_BIN_NUMBER, RECONSTRUCTION_THETA_BIN_NUMBER, RECONSTRUCTION_PHI_BIN_NUMBER,
-                                                        RECONSTRUCTION_FFT_PERIODIC_BOUNDARY_DISTANCE, RECONSTRUCTION_FFT_BIN_NUMBER, RECONSTRUCTION_LOG_TRAFO_SMOOTHING_SCALE, // set FFT bin number to 1, as no random realizations will be generated
+                                                        RECONSTRUCTION_FFT_PERIODIC_BOUNDARY_DISTANCE, 1, RECONSTRUCTION_LOG_TRAFO_SMOOTHING_SCALE, // set FFT bin number to 1, as no random realizations will be generated
                                                         meanGalaxyDensity, selectionFunction, selectionFunctionLogDerivative, sigmaGalaxy, normalizedPowerSpectrum,
                                                         DATA_DIRECTORY, precomputedRSDCorrectionAndWienerFilterComment,
                                                         RECONSTRUCTION_USE_PRECOMPUTED_RSD_CORRECTION_AND_WIENER_FILTER);
@@ -314,8 +308,6 @@ int main(int argc, char **argv)
         const auto time3 = std::chrono::high_resolution_clock::now();
         std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(time3 - time2).count() << "s)" << std::endl;
     }
-
-    fftw_cleanup_threads();
 
     return 0;
 }
