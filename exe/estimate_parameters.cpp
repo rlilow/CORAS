@@ -161,20 +161,20 @@ int main(int argc, char **argv)
         const std::size_t cutNumber = PARAMETER_ESTIMATE_SMOOTHING_SCALES.size() * PARAMETER_ESTIMATE_MIN_REDSHIFT_VELOCITIES.size();
 
         std::vector<double> averageNormalizedGrowthRateEstimates(cutNumber, 0.0);
-        std::vector<double> averageNormalizedGrowthRateCRVariances(cutNumber, 0.0);
-        std::vector<double> averageNormalizedGrowthRateMLVariances(cutNumber, 0.0);
+        std::vector<double> averageNormalizedGrowthRateShotVariances(cutNumber, 0.0);
+        std::vector<double> averageNormalizedGrowthRateDistVariances(cutNumber, 0.0);
         std::vector<double> averageExternalBulkXVelocityEstimates(cutNumber, 0.0);
-        std::vector<double> averageExternalBulkXVelocityCRVariances(cutNumber, 0.0);
-        std::vector<double> averageExternalBulkXVelocityMLVariances(cutNumber, 0.0);
+        std::vector<double> averageExternalBulkXVelocityShotVariances(cutNumber, 0.0);
+        std::vector<double> averageExternalBulkXVelocityDistVariances(cutNumber, 0.0);
         std::vector<double> averageExternalBulkYVelocityEstimates(cutNumber, 0.0);
-        std::vector<double> averageExternalBulkYVelocityCRVariances(cutNumber, 0.0);
-        std::vector<double> averageExternalBulkYVelocityMLVariances(cutNumber, 0.0);
+        std::vector<double> averageExternalBulkYVelocityShotVariances(cutNumber, 0.0);
+        std::vector<double> averageExternalBulkYVelocityDistVariances(cutNumber, 0.0);
         std::vector<double> averageExternalBulkZVelocityEstimates(cutNumber, 0.0);
-        std::vector<double> averageExternalBulkZVelocityCRVariances(cutNumber, 0.0);
-        std::vector<double> averageExternalBulkZVelocityMLVariances(cutNumber, 0.0);
+        std::vector<double> averageExternalBulkZVelocityShotVariances(cutNumber, 0.0);
+        std::vector<double> averageExternalBulkZVelocityDistVariances(cutNumber, 0.0);
         std::vector<double> averageHubbleEstimates(cutNumber, 0.0);
-        std::vector<double> averageHubbleCRVariances(cutNumber, 0.0);
-        std::vector<double> averageHubbleMLVariances(cutNumber, 0.0);
+        std::vector<double> averageHubbleShotVariances(cutNumber, 0.0);
+        std::vector<double> averageHubbleDistVariances(cutNumber, 0.0);
         std::vector<double> averageReducedChiSquares(cutNumber, 0.0);
 
         for (std::size_t i_CR = INITIAL_CONSTRAINED_REALIZATION; i_CR <= FINAL_CONSTRAINED_REALIZATION; ++i_CR)
@@ -187,27 +187,27 @@ int main(int argc, char **argv)
             const std::string realizationComment = "_CR" + std::to_string(i_CR);
             const std::string individualComment = redshiftReferenceFrameComment + realizationComment + CONFIGURATION_COMMENT;
 
-            const std::string parameterFitIndividualFileName = DATA_DIRECTORY + "parameters" + individualComment + ".dat";
+            const std::string individualParameterFileName = DATA_DIRECTORY + "parameters" + individualComment + ".dat";
 
-            std::ofstream parameterFitIndividualFile = std::ofstream(parameterFitIndividualFileName);
+            std::ofstream individualParameterFile = std::ofstream(individualParameterFileName);
 
-            parameterFitIndividualFile.setf(std::ios::fixed);
+            individualParameterFile.setf(std::ios::fixed);
 
-            parameterFitIndividualFile << "# "
-                                       << "rSmooth[Mpc/h]\t"
-                                       << "czMin[km/s]\t"
-                                       << "fsig8\t"
-                                       << "fsig8_e\t"
-                                       << "vExtX[km/s]\t"
-                                       << "vExtX_e[km/s]\t"
-                                       << "vExtY[km/s]\t"
-                                       << "vExtY_e[km/s]\t"
-                                       << "vExtZ[km/s]\t"
-                                       << "vExtZ_e[km/s]\t"
-                                       << "h\t"
-                                       << "h_e\t"
-                                       << "chiSq/dof"
-                                       << std::endl;
+            individualParameterFile << "# "
+                                    << "rSmooth[Mpc/h]\t"
+                                    << "czMin[km/s]\t"
+                                    << "fSig8\t"
+                                    << "fSig8_e\t"
+                                    << "BExtX[km/s]\t"
+                                    << "BExtX_e[km/s]\t"
+                                    << "BExtY[km/s]\t"
+                                    << "BExtY_e[km/s]\t"
+                                    << "BExtZ[km/s]\t"
+                                    << "BExtZ_e[km/s]\t"
+                                    << "h\t"
+                                    << "h_e\t"
+                                    << "chiSq/dof"
+                                    << std::endl;
 
             for (std::size_t i_rSmooth = 0; i_rSmooth < PARAMETER_ESTIMATE_SMOOTHING_SCALES.size(); ++i_rSmooth)
             {
@@ -249,45 +249,45 @@ int main(int argc, char **argv)
                     gsl_matrix_free(covarianceMatrix);
 
                     averageNormalizedGrowthRateEstimates[i_cut] += normalizedGrowthRateEstimate;
-                    averageNormalizedGrowthRateCRVariances[i_cut] += gsl_pow_2(normalizedGrowthRateEstimate);
-                    averageNormalizedGrowthRateMLVariances[i_cut] += gsl_pow_2(normalizedGrowthRateError);
+                    averageNormalizedGrowthRateShotVariances[i_cut] += gsl_pow_2(normalizedGrowthRateEstimate);
+                    averageNormalizedGrowthRateDistVariances[i_cut] += gsl_pow_2(normalizedGrowthRateError);
                     averageExternalBulkXVelocityEstimates[i_cut] += externalBulkXVelocityEstimate;
-                    averageExternalBulkXVelocityCRVariances[i_cut] += gsl_pow_2(externalBulkXVelocityEstimate);
-                    averageExternalBulkXVelocityMLVariances[i_cut] += gsl_pow_2(externalBulkXVelocityError);
+                    averageExternalBulkXVelocityShotVariances[i_cut] += gsl_pow_2(externalBulkXVelocityEstimate);
+                    averageExternalBulkXVelocityDistVariances[i_cut] += gsl_pow_2(externalBulkXVelocityError);
                     averageExternalBulkYVelocityEstimates[i_cut] += externalBulkYVelocityEstimate;
-                    averageExternalBulkYVelocityCRVariances[i_cut] += gsl_pow_2(externalBulkYVelocityEstimate);
-                    averageExternalBulkYVelocityMLVariances[i_cut] += gsl_pow_2(externalBulkYVelocityError);
+                    averageExternalBulkYVelocityShotVariances[i_cut] += gsl_pow_2(externalBulkYVelocityEstimate);
+                    averageExternalBulkYVelocityDistVariances[i_cut] += gsl_pow_2(externalBulkYVelocityError);
                     averageExternalBulkZVelocityEstimates[i_cut] += externalBulkZVelocityEstimate;
-                    averageExternalBulkZVelocityCRVariances[i_cut] += gsl_pow_2(externalBulkZVelocityEstimate);
-                    averageExternalBulkZVelocityMLVariances[i_cut] += gsl_pow_2(externalBulkZVelocityError);
+                    averageExternalBulkZVelocityShotVariances[i_cut] += gsl_pow_2(externalBulkZVelocityEstimate);
+                    averageExternalBulkZVelocityDistVariances[i_cut] += gsl_pow_2(externalBulkZVelocityError);
                     averageHubbleEstimates[i_cut] += hubbleEstimate;
-                    averageHubbleCRVariances[i_cut] += gsl_pow_2(hubbleEstimate);
-                    averageHubbleMLVariances[i_cut] += gsl_pow_2(hubbleError);
+                    averageHubbleShotVariances[i_cut] += gsl_pow_2(hubbleEstimate);
+                    averageHubbleDistVariances[i_cut] += gsl_pow_2(hubbleError);
                     averageReducedChiSquares[i_cut] += reducedChiSquare;
 
-                    parameterFitIndividualFile << std::setprecision(1)
-                                               << smoothingScale << "\t"
-                                               << minRedshiftVelocity << "\t"
-                                               << std::setprecision(5)
-                                               << normalizedGrowthRateEstimate << "\t"
-                                               << normalizedGrowthRateError << "\t"
-                                               << std::setprecision(2)
-                                               << externalBulkXVelocityEstimate << "\t"
-                                               << externalBulkXVelocityError << "\t"
-                                               << externalBulkYVelocityEstimate << "\t"
-                                               << externalBulkYVelocityError << "\t"
-                                               << externalBulkZVelocityEstimate << "\t"
-                                               << externalBulkZVelocityError << "\t"
-                                               << std::setprecision(5)
-                                               << hubbleEstimate << "\t"
-                                               << hubbleError << "\t"
-                                               << std::setprecision(3)
-                                               << reducedChiSquare
-                                               << std::endl;
+                    individualParameterFile << std::setprecision(1)
+                                            << smoothingScale << "\t"
+                                            << minRedshiftVelocity << "\t"
+                                            << std::setprecision(5)
+                                            << normalizedGrowthRateEstimate << "\t"
+                                            << normalizedGrowthRateError << "\t"
+                                            << std::setprecision(2)
+                                            << externalBulkXVelocityEstimate << "\t"
+                                            << externalBulkXVelocityError << "\t"
+                                            << externalBulkYVelocityEstimate << "\t"
+                                            << externalBulkYVelocityError << "\t"
+                                            << externalBulkZVelocityEstimate << "\t"
+                                            << externalBulkZVelocityError << "\t"
+                                            << std::setprecision(5)
+                                            << hubbleEstimate << "\t"
+                                            << hubbleError << "\t"
+                                            << std::setprecision(3)
+                                            << reducedChiSquare
+                                            << std::endl;
                 }
             }
 
-            parameterFitIndividualFile.close();
+            individualParameterFile.close();
 
             const auto timeCR2 = std::chrono::high_resolution_clock::now();
             std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(timeCR2 - timeCR1).count() << "s)" << std::endl;
@@ -296,32 +296,32 @@ int main(int argc, char **argv)
         const std::string realizationRangeComment = "_CR" + std::to_string(INITIAL_CONSTRAINED_REALIZATION) + "-" + std::to_string(FINAL_CONSTRAINED_REALIZATION);
         const std::string averageComment = redshiftReferenceFrameComment + realizationRangeComment + CONFIGURATION_COMMENT;
 
-        const std::string parameterFitAverageFileName = DATA_DIRECTORY + "parameters" + averageComment + ".dat";
+        const std::string averageParameterFileName = DATA_DIRECTORY + "parameters" + averageComment + ".dat";
 
-        std::ofstream parameterFitAverageFile = std::ofstream(parameterFitAverageFileName);
+        std::ofstream averageParameterFile = std::ofstream(averageParameterFileName);
 
-        parameterFitAverageFile << "# "
-                                << "rSmooth[Mpc/h]\t"
-                                << "czMin[km/s]\t"
-                                << "fsig8\t"
-                                << "fsig8_eShot\t"
-                                << "fsig8_eDist\t"
-                                << "vExtX[km/s]\t"
-                                << "vExtX_eShot[km/s]\t"
-                                << "vExtX_eDist[km/s]\t"
-                                << "vExtY[km/s]\t"
-                                << "vExtY_eShot[km/s]\t"
-                                << "vExtY_eDist[km/s]\t"
-                                << "vExtZ[km/s]\t"
-                                << "vExtZ_eShot[km/s]\t"
-                                << "vExtZ_eDist[km/s]\t"
-                                << "h\t"
-                                << "h_eShot\t"
-                                << "h_eDist\t"
-                                << "chiSq/dof"
-                                << std::endl;
+        averageParameterFile << "# "
+                             << "rSmooth[Mpc/h]\t"
+                             << "czMin[km/s]\t"
+                             << "fSig8\t"
+                             << "fSig8_eShot\t"
+                             << "fSig8_eDist\t"
+                             << "BExtX[km/s]\t"
+                             << "BExtX_eShot[km/s]\t"
+                             << "BExtX_eDist[km/s]\t"
+                             << "BExtY[km/s]\t"
+                             << "BExtY_eShot[km/s]\t"
+                             << "BExtY_eDist[km/s]\t"
+                             << "BExtZ[km/s]\t"
+                             << "BExtZ_eShot[km/s]\t"
+                             << "BExtZ_eDist[km/s]\t"
+                             << "h\t"
+                             << "h_eShot\t"
+                             << "h_eDist\t"
+                             << "chiSq/dof"
+                             << std::endl;
 
-        parameterFitAverageFile.setf(std::ios::fixed);
+        averageParameterFile.setf(std::ios::fixed);
 
         for (std::size_t i_rSmooth = 0; i_rSmooth < PARAMETER_ESTIMATE_SMOOTHING_SCALES.size(); ++i_rSmooth)
         {
@@ -336,50 +336,50 @@ int main(int argc, char **argv)
                 const double constrainedRealizationNumber = static_cast<double>(FINAL_CONSTRAINED_REALIZATION - INITIAL_CONSTRAINED_REALIZATION + 1);
 
                 const double averageNormalizedGrowthRateEstimate = averageNormalizedGrowthRateEstimates[i_cut] / constrainedRealizationNumber;
-                const double averageNormalizedGrowthRateCRError = std::sqrt(averageNormalizedGrowthRateCRVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageNormalizedGrowthRateEstimate));
-                const double averageNormalizedGrowthRateMLError = std::sqrt(averageNormalizedGrowthRateMLVariances[i_cut] / constrainedRealizationNumber);
+                const double averageNormalizedGrowthRateShotError = std::sqrt(averageNormalizedGrowthRateShotVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageNormalizedGrowthRateEstimate));
+                const double averageNormalizedGrowthRateDistError = std::sqrt(averageNormalizedGrowthRateDistVariances[i_cut] / constrainedRealizationNumber);
                 const double averageExternalBulkXVelocityEstimate = averageExternalBulkXVelocityEstimates[i_cut] / constrainedRealizationNumber;
-                const double averageExternalBulkXVelocityCRError = std::sqrt(averageExternalBulkXVelocityCRVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageExternalBulkXVelocityEstimate));
-                const double averageExternalBulkXVelocityMLError = std::sqrt(averageExternalBulkXVelocityMLVariances[i_cut] / constrainedRealizationNumber);
+                const double averageExternalBulkXVelocityShotError = std::sqrt(averageExternalBulkXVelocityShotVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageExternalBulkXVelocityEstimate));
+                const double averageExternalBulkXVelocityDistError = std::sqrt(averageExternalBulkXVelocityDistVariances[i_cut] / constrainedRealizationNumber);
                 const double averageExternalBulkYVelocityEstimate = averageExternalBulkYVelocityEstimates[i_cut] / constrainedRealizationNumber;
-                const double averageExternalBulkYVelocityCRError = std::sqrt(averageExternalBulkYVelocityCRVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageExternalBulkYVelocityEstimate));
-                const double averageExternalBulkYVelocityMLError = std::sqrt(averageExternalBulkYVelocityMLVariances[i_cut] / constrainedRealizationNumber);
+                const double averageExternalBulkYVelocityShotError = std::sqrt(averageExternalBulkYVelocityShotVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageExternalBulkYVelocityEstimate));
+                const double averageExternalBulkYVelocityDistError = std::sqrt(averageExternalBulkYVelocityDistVariances[i_cut] / constrainedRealizationNumber);
                 const double averageExternalBulkZVelocityEstimate = averageExternalBulkZVelocityEstimates[i_cut] / constrainedRealizationNumber;
-                const double averageExternalBulkZVelocityCRError = std::sqrt(averageExternalBulkZVelocityCRVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageExternalBulkZVelocityEstimate));
-                const double averageExternalBulkZVelocityMLError = std::sqrt(averageExternalBulkZVelocityMLVariances[i_cut] / constrainedRealizationNumber);
+                const double averageExternalBulkZVelocityShotError = std::sqrt(averageExternalBulkZVelocityShotVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageExternalBulkZVelocityEstimate));
+                const double averageExternalBulkZVelocityDistError = std::sqrt(averageExternalBulkZVelocityDistVariances[i_cut] / constrainedRealizationNumber);
                 const double averageHubbleEstimate = averageHubbleEstimates[i_cut] / constrainedRealizationNumber;
-                const double averageHubbleCRError = std::sqrt(averageHubbleCRVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageHubbleEstimate));
-                const double averageHubbleMLError = std::sqrt(averageHubbleMLVariances[i_cut] / constrainedRealizationNumber);
+                const double averageHubbleShotError = std::sqrt(averageHubbleShotVariances[i_cut] / constrainedRealizationNumber - gsl_pow_2(averageHubbleEstimate));
+                const double averageHubbleDistError = std::sqrt(averageHubbleDistVariances[i_cut] / constrainedRealizationNumber);
                 const double averageReducedChiSquare = averageReducedChiSquares[i_cut] / constrainedRealizationNumber;
 
-                parameterFitAverageFile << std::setprecision(1)
-                                        << smoothingScale << "\t"
-                                        << minRedshiftVelocity << "\t"
-                                        << std::setprecision(5)
-                                        << averageNormalizedGrowthRateEstimate << "\t"
-                                        << averageNormalizedGrowthRateCRError << "\t"
-                                        << averageNormalizedGrowthRateMLError << "\t"
-                                        << std::setprecision(2)
-                                        << averageExternalBulkXVelocityEstimate << "\t"
-                                        << averageExternalBulkXVelocityCRError << "\t"
-                                        << averageExternalBulkXVelocityMLError << "\t"
-                                        << averageExternalBulkYVelocityEstimate << "\t"
-                                        << averageExternalBulkYVelocityCRError << "\t"
-                                        << averageExternalBulkYVelocityMLError << "\t"
-                                        << averageExternalBulkZVelocityEstimate << "\t"
-                                        << averageExternalBulkZVelocityCRError << "\t"
-                                        << averageExternalBulkZVelocityMLError << "\t"
-                                        << std::setprecision(5)
-                                        << averageHubbleEstimate << "\t"
-                                        << averageHubbleCRError << "\t"
-                                        << averageHubbleMLError << "\t"
-                                        << std::setprecision(3)
-                                        << averageReducedChiSquare
-                                        << std::endl;
+                averageParameterFile << std::setprecision(1)
+                                     << smoothingScale << "\t"
+                                     << minRedshiftVelocity << "\t"
+                                     << std::setprecision(5)
+                                     << averageNormalizedGrowthRateEstimate << "\t"
+                                     << averageNormalizedGrowthRateShotError << "\t"
+                                     << averageNormalizedGrowthRateDistError << "\t"
+                                     << std::setprecision(2)
+                                     << averageExternalBulkXVelocityEstimate << "\t"
+                                     << averageExternalBulkXVelocityShotError << "\t"
+                                     << averageExternalBulkXVelocityDistError << "\t"
+                                     << averageExternalBulkYVelocityEstimate << "\t"
+                                     << averageExternalBulkYVelocityShotError << "\t"
+                                     << averageExternalBulkYVelocityDistError << "\t"
+                                     << averageExternalBulkZVelocityEstimate << "\t"
+                                     << averageExternalBulkZVelocityShotError << "\t"
+                                     << averageExternalBulkZVelocityDistError << "\t"
+                                     << std::setprecision(5)
+                                     << averageHubbleEstimate << "\t"
+                                     << averageHubbleShotError << "\t"
+                                     << averageHubbleDistError << "\t"
+                                     << std::setprecision(3)
+                                     << averageReducedChiSquare
+                                     << std::endl;
             }
         }
 
-        parameterFitAverageFile.close();
+        averageParameterFile.close();
     }
 
     fftw_cleanup_threads();
