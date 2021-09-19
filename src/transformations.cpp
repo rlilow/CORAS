@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <iostream>
+#include <string>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // global
@@ -660,6 +661,33 @@ const ReferenceFrameChange LOCAL_GROUP_TO_CMB = {620.49406093409, // Combining D
 const ReferenceFrameChange CMB_TO_LOCAL_GROUP = {-LOCAL_GROUP_TO_CMB.relativeVelocityAmplitude,
                                                  LOCAL_GROUP_TO_CMB.relativeVelocityTheta,
                                                  LOCAL_GROUP_TO_CMB.relativeVelocityPhi};
+
+std::string get_reference_frame_name(const ReferenceFrame referenceFrame)
+{
+  switch (referenceFrame)
+  {
+  case HELIOCENTRIC_FRAME:
+  {
+    return "HC";
+  }
+  case LOCAL_GROUP_FRAME:
+  {
+    return "LG";
+  }
+  case CMB_FRAME:
+  {
+    return "CMB";
+  }
+  default:
+  {
+    std::cout << std::endl
+              << " get_reference_frame_name Error: Invalid choice of reference frame" << std::endl
+              << std::endl;
+
+    exit(EXIT_FAILURE);
+  }
+  }
+}
 
 ReferenceFrameChange get_reference_frame_change(const ReferenceFrame inputFrame, const ReferenceFrame outputFrame)
 {

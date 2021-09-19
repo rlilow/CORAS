@@ -53,33 +53,15 @@ int main(int argc, char **argv)
 
         const ReferenceFrameChange redshiftCatalogInputToReferenceFrame = get_reference_frame_change(REDSHIFT_CATALOG_REDSHIFT_REFERENCE_FRAME, redshiftReferenceFrame);
 
-        std::string redshiftReferenceFrameName;
-
-        if (redshiftReferenceFrame == CMB_FRAME)
-        {
-            redshiftReferenceFrameName = "CMB";
-        }
-        else if (redshiftReferenceFrame == LOCAL_GROUP_FRAME)
-        {
-            redshiftReferenceFrameName = "LG";
-        }
-        else
-        {
-            std::cout << std::endl
-                      << " Error: Invalid choice of reference frame" << std::endl
-                      << std::endl;
-
-            exit(EXIT_FAILURE);
-        }
-
-        const auto time1 = std::chrono::high_resolution_clock::now();
-        std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
-
+        const std::string redshiftReferenceFrameName = get_reference_frame_name(redshiftReferenceFrame);
         const std::string redshiftReferenceFrameComment = "_z" + redshiftReferenceFrameName;
         const std::string reconstructionComment = redshiftReferenceFrameComment + CONFIGURATION_COMMENT;
 
         const std::string cartesianGridDensityContrastFileName = DATA_DIRECTORY + "cartesian_grid_density" + reconstructionComment + ".dat";
         const std::string cartesianGridVelocityFileName = DATA_DIRECTORY + "cartesian_grid_velocity" + reconstructionComment + ".dat";
+
+        const auto time1 = std::chrono::high_resolution_clock::now();
+        std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
 
         std::vector<double> reconstructionRedshiftVelocities, kCorrectionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentKsMagnitudes;
 

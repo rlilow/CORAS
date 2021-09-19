@@ -62,24 +62,7 @@ int main(int argc, char **argv)
         const ReferenceFrameChange distanceCatalogInputToReferenceFrame = get_reference_frame_change(DISTANCE_CATALOG_REDSHIFT_REFERENCE_FRAME, redshiftReferenceFrame);
         const ReferenceFrameChange cmbToReferenceFrame = get_reference_frame_change(CMB_FRAME, redshiftReferenceFrame);
 
-        std::string redshiftReferenceFrameName;
-
-        if (redshiftReferenceFrame == CMB_FRAME)
-        {
-            redshiftReferenceFrameName = "CMB";
-        }
-        else if (redshiftReferenceFrame == LOCAL_GROUP_FRAME)
-        {
-            redshiftReferenceFrameName = "LG";
-        }
-        else
-        {
-            std::cout << std::endl
-                      << " Error: Invalid choice of reference frame" << std::endl
-                      << std::endl;
-
-            exit(EXIT_FAILURE);
-        }
+        const std::string redshiftReferenceFrameName = get_reference_frame_name(redshiftReferenceFrame);
 
         const auto time1 = std::chrono::high_resolution_clock::now();
         std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;

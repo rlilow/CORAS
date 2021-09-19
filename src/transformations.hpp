@@ -381,6 +381,11 @@ extern const ReferenceFrameChange
      */
     CMB_TO_LOCAL_GROUP;
 
+/**
+ * Return the abbreviated name of the ReferenceFrame \a referenceFrameChange as a string.
+ */
+std::string get_reference_frame_name(ReferenceFrame referenceFrame);
+
 ReferenceFrameChange get_reference_frame_change(ReferenceFrame inputFrame, ReferenceFrame outputFrame);
 
 /**

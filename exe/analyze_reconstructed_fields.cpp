@@ -64,28 +64,7 @@ int main(int argc, char **argv)
 
         const ReferenceFrameChange redshiftCatalogInputToReferenceFrame = get_reference_frame_change(REDSHIFT_CATALOG_REDSHIFT_REFERENCE_FRAME, redshiftReferenceFrame);
 
-        std::string redshiftReferenceFrameName;
-
-        if (redshiftReferenceFrame == CMB_FRAME)
-        {
-            redshiftReferenceFrameName = "CMB";
-        }
-        else if (redshiftReferenceFrame == LOCAL_GROUP_FRAME)
-        {
-            redshiftReferenceFrameName = "LG";
-        }
-        else
-        {
-            std::cout << std::endl
-                      << " Error: Invalid choice of reference frame" << std::endl
-                      << std::endl;
-
-            exit(EXIT_FAILURE);
-        }
-
-        const auto time1 = std::chrono::high_resolution_clock::now();
-        std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
-
+        const std::string redshiftReferenceFrameName = get_reference_frame_name(redshiftReferenceFrame);
         const std::string redshiftReferenceFrameComment = "_z" + redshiftReferenceFrameName;
         const std::string realizationRangeComment = "_CR" + std::to_string(INITIAL_CONSTRAINED_REALIZATION) + "-" + std::to_string(FINAL_CONSTRAINED_REALIZATION);
         const std::string reconstructionComment = redshiftReferenceFrameComment + CONFIGURATION_COMMENT;
@@ -96,6 +75,9 @@ int main(int argc, char **argv)
         const std::string angularAveragesFileName = DATA_DIRECTORY + "angular_averages" + averageComment + ".dat";
         const std::string volumeAveragesTophatFileName = DATA_DIRECTORY + "volume_averages_tophat" + averageComment + ".dat";
         const std::string volumeAveragesGaussianFileName = DATA_DIRECTORY + "volume_averages_gaussian" + averageComment + ".dat";
+
+        const auto time1 = std::chrono::high_resolution_clock::now();
+        std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
 
         std::vector<double> reconstructionRedshiftVelocities, kCorrectionRedshiftVelocities, reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, reconstructionApparentKsMagnitudes;
 
