@@ -41,13 +41,6 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
                                                     std::vector<double> &smoothObservedRadialVelocities, std::vector<double> &smoothReconstructedRadialVelocities, std::vector<double> &adaptiveSmoothingScales,
                                                     std::size_t minNeighbourNumber = 8);
 
-void compute_tensor_smoothed_radial_velocity_fields(const std::vector<double> &observedRedshiftVelocities, const std::vector<double> &observedThetaCoordinates, const std::vector<double> &observedPhiCoordinates, const std::vector<double> &observedDistanceModuli, const std::vector<double> &observedDistanceModulusErrors,
-                                                    const SphericalGridFunction &reconstructedRadialVelocity,
-                                                    ReferenceFrameChange refToCMBFrame, double omegaMatter, double hubble, double minSmoothingScale,
-                                                    const double maxRadius, const std::size_t radialBinNumber, const std::size_t thetaBinNumber, const std::size_t phiBinNumber,
-                                                    SphericalGridFunction &smoothedObservedRadialVelocityField, SphericalGridFunction &smoothedReconstructedRadialVelocityField, SphericalGridFunction &adaptiveSmoothingScales,
-                                                    std::size_t minNeighbourNumber = 8);
-
 ///@}
 
 /** @} */

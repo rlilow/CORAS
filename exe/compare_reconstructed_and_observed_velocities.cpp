@@ -163,7 +163,6 @@ int main(int argc, char **argv)
             const std::string smoothComparisonComment = redshiftReferenceFrameComment + smoothComment + CONFIGURATION_COMMENT;
 
             const std::string velocityComparisonTensorSmoothedPointsFileName = DATA_DIRECTORY + "velocity_comparison_tensor_smoothed_points" + smoothComparisonComment + ".dat";
-            const std::string velocityComparisonTensorSmoothedFieldsFileName = DATA_DIRECTORY + "velocity_comparison_tensor_smoothed_fields" + smoothComparisonComment + ".dat";
 
             std::vector<double> smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, adaptiveSmoothingScales;
 
@@ -200,50 +199,6 @@ int main(int argc, char **argv)
             }
 
             velocityComparisonTensorSmoothedPointsFile.close();
-
-            SphericalGridFunction smoothedObservedRadialVelocityField, smoothedReconstructedRadialVelocityField, adaptiveSmoothingScaleField;
-
-            compute_tensor_smoothed_radial_velocity_fields(tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors,
-                                                           reconstructedRadialVelocityMinSmooth,
-                                                           referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, ESTIMATED_DISTANCE_CATALOG_HUBBLE, minTensorSmoothingScale,
-                                                           RECONSTRUCTION_MAX_RADIUS, TENSOR_SMOOTHING_RADIAL_BIN_NUMBER, TENSOR_SMOOTHING_THETA_BIN_NUMBER, TENSOR_SMOOTHING_PHI_BIN_NUMBER,
-                                                           smoothedObservedRadialVelocityField, smoothedReconstructedRadialVelocityField, adaptiveSmoothingScaleField);
-
-            std::ofstream velocityComparisonTensorSmoothedFields(velocityComparisonTensorSmoothedFieldsFileName);
-
-            velocityComparisonTensorSmoothedFields.setf(std::ios::fixed);
-
-            velocityComparisonTensorSmoothedFields << "# "
-                                                   << "radius[Mpc/h]\t"
-                                                   << "theta\t"
-                                                   << "phi\t"
-                                                   << "vObs[km/s]\t"
-                                                   << "vRec[km/s]\t"
-                                                   << "rSmooth[Mpc/h]"
-                                                   << std::endl;
-
-            smoothedObservedRadialVelocityField.evaluate_for_all_grid_points([&](std::size_t i_r, std::size_t i_t, std::size_t i_p) {
-                const double radius = smoothedObservedRadialVelocityField.radial_coordinate(i_r);
-                const double theta = smoothedObservedRadialVelocityField.theta_coordinate(i_t);
-                const double phi = smoothedObservedRadialVelocityField.phi_coordinate(i_p);
-
-                const double observedVelocity = smoothedObservedRadialVelocityField.value(i_r, i_t, i_p);
-                const double reconstructedVelocity = smoothedReconstructedRadialVelocityField.value(i_r, i_t, i_p);
-                const double adaptiveSmoothingScale = adaptiveSmoothingScaleField.value(i_r, i_t, i_p);
-
-                velocityComparisonTensorSmoothedFields << std::setprecision(2)
-                                                       << radius << "\t"
-                                                       << std::setprecision(6)
-                                                       << theta << "\t"
-                                                       << phi << "\t"
-                                                       << std::setprecision(2)
-                                                       << observedVelocity << "\t"
-                                                       << reconstructedVelocity << "\t"
-                                                       << adaptiveSmoothingScale
-                                                       << std::endl;
-            });
-
-            velocityComparisonTensorSmoothedFields.close();
         }
 
         std::vector<double> correlationFunctionComparisonRedshiftVelocities, correlationFunctionComparisonRadialCoordinates, correlationFunctionComparisonThetaCoordinates, correlationFunctionComparisonPhiCoordinates, correlationFunctionComparisonDistanceModuli, correlationFunctionComparisonDistanceModulusErrors;
