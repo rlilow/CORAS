@@ -4,6 +4,8 @@
 #include <cmath>
 #include <string>
 
+#include "src/transformations.hpp"
+
 /**
  * \defgroup CONFIGURATION Configuration
  * 
