@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 
                     prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
                                                   distanceCatalogInputToReferenceFrame, minRedshiftVelocity, DISTANCE_CATALOG_MAX_REDSHIFT_VELOCITY, FIDUCIAL_OMEGA_MATTER,
-                                                  fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
+                                                  fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_DISTANCE_CATALOG_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
                                                   comparisonRedshiftVelocities, comparisonRadialCoordinates, comparisonThetaCoordinates, comparisonPhiCoordinates, comparisonDistanceModuli, comparisonDistanceModulusErrors);
 
                     double normalizedGrowthRateEstimate, externalBulkXVelocityEstimate, externalBulkYVelocityEstimate, externalBulkZVelocityEstimate, reducedChiSquare, hubbleEstimate;
@@ -239,7 +239,7 @@ int main(int argc, char **argv)
 
                     estimate_parameters_via_radial_velocity_comparison(normalizedSurveyEstimateRadialVelocityInterpolator, normalizedRandomNoiseRadialVelocity, cmbToReferenceFrame,
                                                                        comparisonRedshiftVelocities, comparisonThetaCoordinates, comparisonPhiCoordinates, comparisonDistanceModuli, comparisonDistanceModulusErrors,
-                                                                       FIDUCIAL_OMEGA_MATTER, fiducialNormalizedGrowthRate, PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_MIN, PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_MAX, FIDUCIAL_HUBBLE,
+                                                                       FIDUCIAL_OMEGA_MATTER, fiducialNormalizedGrowthRate, PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_MIN, PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_MAX, FIDUCIAL_DISTANCE_CATALOG_HUBBLE,
                                                                        normalizedGrowthRateEstimate, externalBulkXVelocityEstimate, externalBulkYVelocityEstimate, externalBulkZVelocityEstimate, hubbleEstimate,
                                                                        covarianceMatrix, reducedChiSquare);
 

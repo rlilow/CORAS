@@ -30,10 +30,11 @@ const ReferenceFrame DISTANCE_CATALOG_REDSHIFT_REFERENCE_FRAME = HELIOCENTRIC_FR
 constexpr double DISTANCE_CATALOG_MAX_REDSHIFT_VELOCITY = 16000.0; // [km/s]
 constexpr double DISTANCE_CATALOG_OUTLIER_MAX_SIGMA = 5.0;
 
-constexpr double FIDUCIAL_HUBBLE = 0.6736; // Planck 2018 values [Aghanim et al., A&A 641 (2020) A1]
-constexpr double FIDUCIAL_OMEGA_MATTER = 0.3153;
+constexpr double FIDUCIAL_HUBBLE = 0.6736;       // Planck 2018 [Aghanim et al., A&A 641 (2020) A1]
+constexpr double FIDUCIAL_OMEGA_MATTER = 0.3153; // Planck 2018 [Aghanim et al., A&A 641 (2020) A1]
 const double FIDUCIAL_GROWTH_RATE = std::pow(FIDUCIAL_OMEGA_MATTER, 0.55);
-constexpr double FIDUCIAL_FIELD_SMOOTHING_SCALE = 5.0; // [Mpc/h]
+constexpr double FIDUCIAL_FIELD_SMOOTHING_SCALE = 5.0;    // [Mpc/h]
+constexpr double FIDUCIAL_DISTANCE_CATALOG_HUBBLE = 0.75; // CF3 [Tully et al., AJ 152 (2016) 50]
 
 const std::vector<ReferenceFrame> RECONSTRUCTION_REDSHIFT_REFERENCE_FRAMES = {CMB_FRAME, LOCAL_GROUP_FRAME};
 constexpr double RECONSTRUCTION_MAX_RADIUS = 200.0;        // [Mpc/h]

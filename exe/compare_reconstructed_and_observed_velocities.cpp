@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 
         prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
                                       distanceCatalogInputToReferenceFrame, 0.0, DISTANCE_CATALOG_MAX_REDSHIFT_VELOCITY, FIDUCIAL_OMEGA_MATTER,
-                                      fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
+                                      fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_DISTANCE_CATALOG_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
                                       tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonRadialCoordinates, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors);
 
         const auto time2 = std::chrono::high_resolution_clock::now();
@@ -250,7 +250,7 @@ int main(int argc, char **argv)
 
         prepare_distance_catalog_data(inputDistanceCatalogRedshiftVelocities, inputDistanceCatalogLatitudes, inputDistanceCatalogLongitudes, inputDistanceCatalogDistanceModuli, inputDistanceCatalogDistanceModulusErrors,
                                       distanceCatalogInputToReferenceFrame, 0.0, CORRELATION_FUNCTION_MAX_REDSHIFT_VELOCITY, FIDUCIAL_OMEGA_MATTER,
-                                      fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
+                                      fiducialRadialVelocity, cmbToReferenceFrame, FIDUCIAL_DISTANCE_CATALOG_HUBBLE, DISTANCE_CATALOG_OUTLIER_MAX_SIGMA,
                                       correlationFunctionComparisonRedshiftVelocities, correlationFunctionComparisonRadialCoordinates, correlationFunctionComparisonThetaCoordinates, correlationFunctionComparisonPhiCoordinates, correlationFunctionComparisonDistanceModuli, correlationFunctionComparisonDistanceModulusErrors);
 
         const std::string correlationComparisonComment = redshiftReferenceFrameComment + CONFIGURATION_COMMENT;
