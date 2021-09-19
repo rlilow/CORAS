@@ -691,42 +691,62 @@ std::string get_reference_frame_name(const ReferenceFrame referenceFrame)
 
 ReferenceFrameChange get_reference_frame_change(const ReferenceFrame inputFrame, const ReferenceFrame outputFrame)
 {
-  if (inputFrame == outputFrame)
+  switch (inputFrame)
   {
-    return NO_REFERENCE_FRAME_CHANGE;
-  }
-  else if (inputFrame == HELIOCENTRIC_FRAME)
+  case HELIOCENTRIC_FRAME:
   {
-    if (outputFrame == LOCAL_GROUP_FRAME)
+    switch (outputFrame)
+    {
+    case HELIOCENTRIC_FRAME:
+    {
+      return NO_REFERENCE_FRAME_CHANGE;
+    }
+    case LOCAL_GROUP_FRAME:
     {
       return HELIOCENTRIC_TO_LOCAL_GROUP;
     }
-    else if (outputFrame == CMB_FRAME)
+    case CMB_FRAME:
     {
       return HELIOCENTRIC_TO_CMB;
     }
+    }
   }
-  else if (inputFrame == LOCAL_GROUP_FRAME)
+  case LOCAL_GROUP_FRAME:
   {
-    if (outputFrame == HELIOCENTRIC_FRAME)
+    switch (outputFrame)
+    {
+    case HELIOCENTRIC_FRAME:
     {
       return LOCAL_GROUP_TO_HELIOCENTRIC;
     }
-    else if (outputFrame == CMB_FRAME)
+    case LOCAL_GROUP_FRAME:
+    {
+      return NO_REFERENCE_FRAME_CHANGE;
+    }
+    case CMB_FRAME:
     {
       return LOCAL_GROUP_TO_CMB;
     }
+    }
   }
-  else if (inputFrame == CMB_FRAME)
+  case CMB_FRAME:
   {
-    if (outputFrame == HELIOCENTRIC_FRAME)
+    switch (outputFrame)
+    {
+    case HELIOCENTRIC_FRAME:
     {
       return CMB_TO_HELIOCENTRIC;
     }
-    else if (outputFrame == LOCAL_GROUP_FRAME)
+    case LOCAL_GROUP_FRAME:
     {
       return CMB_TO_LOCAL_GROUP;
     }
+    case CMB_FRAME:
+    {
+      return NO_REFERENCE_FRAME_CHANGE;
+    }
+    }
+  }
   }
 
   std::cout << std::endl // if no case matches, exit with error
