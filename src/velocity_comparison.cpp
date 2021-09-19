@@ -298,7 +298,7 @@ void compute_radial_velocity_correlation_functions(const std::vector<double> &ob
 
 void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &observedRedshiftVelocities, const std::vector<double> &observedThetaCoordinates, const std::vector<double> &observedPhiCoordinates, const std::vector<double> &observedDistanceModuli, const std::vector<double> &observedDistanceModulusErrors,
                                                     const SphericalGridFunction &reconstructedRadialVelocity,
-                                                    const ReferenceFrameChange referenceToCMBFrame, const double omegaMatter, const double hubble, const double minSmoothingScale,
+                                                    const ReferenceFrameChange referenceToCMBFrame, const double omegaMatter, const double hubble, const double minSmoothingScale, const double velocityCosmicSigma,
                                                     std::vector<double> &smoothObservedRadialVelocities, std::vector<double> &smoothReconstructedRadialVelocities, std::vector<double> &adaptiveSmoothingScales,
                                                     const std::size_t minNeighbourNumber)
 {
@@ -359,7 +359,7 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
         const double velocityError = distanceModulusError / distanceModulusVelocityDerivative;
 
-        windowFunctionWeights.push_back(1.0 / gsl_pow_2(velocityError));
+        windowFunctionWeights.push_back(1.0 / (gsl_pow_2(velocityError) + gsl_pow_2(velocityCosmicSigma)));
     }
 
     ObjectGrid galaxyGroupGrid(gridLength, gridBinNumber,

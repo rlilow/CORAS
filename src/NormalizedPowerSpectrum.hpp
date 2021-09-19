@@ -1,6 +1,7 @@
 #ifndef CORAS_NORMALISED_POWER_SPECTRUM_H
 #define CORAS_NORMALISED_POWER_SPECTRUM_H
 
+#include <functional>
 #include <vector>
 
 #include <gsl/gsl_interp.h>
@@ -29,11 +30,15 @@ public:
 	double operator()(double k) const;
 	double smoothing_scale() const;
 	double variance() const;
+	double variance(const std::function<double(double k)> &kernel,
+					bool useTophatFilter = true,
+					double integrationAbsoluteError = 0.0, double integrationRelativeError = 1e-5) const;
 
 private:
 	double SmoothingScale;
 	SplineInterpolator Interpolator;
 	double Variance;
+	double MaxWavenumber;
 
 	double tophat_filter_integrand(double k) const;
 	double gaussian_filter_integrand(double k) const;

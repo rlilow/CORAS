@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <gsl/gsl_math.h>
+
 #include "../src/Cartesian1DGridFunction.hpp"
 #include "../src/ConstrainedRealizations.hpp"
 #include "../src/FileTable.hpp"
@@ -164,11 +166,18 @@ int main(int argc, char **argv)
 
             const std::string velocityComparisonTensorSmoothedPointsFileName = DATA_DIRECTORY + "velocity_comparison_tensor_smoothed_points" + smoothComparisonComment + ".dat";
 
+            NormalizedPowerSpectrum normalizedMinTensorSmoothingScalePowerSpectrum(inputWavenumbers, inputPowerSpectrumValues,
+                                                                                   FIDUCIAL_HUBBLE, minTensorSmoothingScale);
+
+            const double sigmaVelocityWeighting = std::sqrt(normalizedMinTensorSmoothingScalePowerSpectrum.variance([](double k) {
+                return gsl_pow_2(ESTIMATED_NORMALIZED_GROWTH_RATE * HUBBLE_NORMALIZATION / k);
+            }, false) / normalizedPowerSpectrum.variance() / 3.0);
+
             std::vector<double> smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, adaptiveSmoothingScales;
 
             compute_tensor_smoothed_radial_velocity_points(tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors,
                                                            reconstructedRadialVelocityMinSmooth,
-                                                           referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, ESTIMATED_DISTANCE_CATALOG_HUBBLE, minTensorSmoothingScale,
+                                                           referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, ESTIMATED_DISTANCE_CATALOG_HUBBLE, minTensorSmoothingScale, sigmaVelocityWeighting,
                                                            smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, adaptiveSmoothingScales);
 
             std::ofstream velocityComparisonTensorSmoothedPointsFile(velocityComparisonTensorSmoothedPointsFileName);

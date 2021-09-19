@@ -18,8 +18,8 @@ NormalizedPowerSpectrum::NormalizedPowerSpectrum(const std::vector<double> &wave
 												 const gsl_interp_type *gslInterpolationType)
 	: SmoothingScale(smoothingScale),
 	  Interpolator(),
-	  Variance()
-
+	  Variance(),
+	  MaxWavenumber()
 {
 	if (wavenumbers.size() != powerSpectrumValues.size())
 	{
@@ -45,12 +45,14 @@ NormalizedPowerSpectrum::NormalizedPowerSpectrum(const std::vector<double> &wave
 		rescaledSpectrumValues.insert(rescaledSpectrumValues.begin(), 0.0);
 	}
 
+	MaxWavenumber = rescaledWavenumbers.back();
+
 	Interpolator = SplineInterpolator(rescaledWavenumbers, rescaledSpectrumValues, gslInterpolationType);
 
 	CQUADIntegrator varianceIntegrator = useTophatFilter ? CQUADIntegrator([&](double k) { return tophat_filter_integrand(k); })
 														 : CQUADIntegrator([&](double k) { return gaussian_filter_integrand(k); });
 
-	varianceIntegrator.integrate(0.0, rescaledWavenumbers.back(), integrationAbsoluteError, integrationRelativeError, Variance); // integrate up to maximal k provided as input
+	varianceIntegrator.integrate(0.0, MaxWavenumber, integrationAbsoluteError, integrationRelativeError, Variance); // integrate up to maximal k provided as input
 }
 
 double NormalizedPowerSpectrum::evaluate(const double k) const
@@ -71,6 +73,20 @@ double NormalizedPowerSpectrum::smoothing_scale() const
 double NormalizedPowerSpectrum::variance() const
 {
 	return Variance;
+}
+
+double NormalizedPowerSpectrum::variance(const std::function<double(double k)> &kernel,
+										 const bool useTophatFilter,
+										 const double integrationAbsoluteError, const double integrationRelativeError) const
+{
+	CQUADIntegrator varianceIntegrator = useTophatFilter ? CQUADIntegrator([&](double k) { return kernel(k) * tophat_filter_integrand(k); })
+														 : CQUADIntegrator([&](double k) { return kernel(k) * gaussian_filter_integrand(k); });
+
+	double variance;
+
+	varianceIntegrator.integrate(0.0, MaxWavenumber, integrationAbsoluteError, integrationRelativeError, variance); // integrate up to maximal k provided as input
+
+	return variance;
 }
 
 double NormalizedPowerSpectrum::tophat_filter_integrand(double k) const
