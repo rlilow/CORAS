@@ -244,13 +244,15 @@ void LinearRSDCorrection::compute_coupling_matrix(const std::function<double(dou
 
                 if (referenceFrame == CMB_FRAME)
                 {
-                    integrand = [&](double r) {
+                    integrand = [&](double r)
+                    {
                         return coupling_matrix_kernel(l, k_ln1, k_ln2, r, selectionFunctionLogDerivative, selectionTimesWeightingFunction, false);
                     };
                 }
                 else if (referenceFrame == LOCAL_GROUP_FRAME)
                 {
-                    integrand = [&](double r) {
+                    integrand = [&](double r)
+                    {
                         return coupling_matrix_kernel(l, k_ln1, k_ln2, r, selectionFunctionLogDerivative, selectionTimesWeightingFunction, true);
                     };
                 }

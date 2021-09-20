@@ -49,9 +49,8 @@ Cartesian2DGridFunction::Cartesian2DGridFunction(const double minXCoordinate, co
 	: Cartesian2DGridFunction(minXCoordinate, maxXCoordinate, xBinNumber,
 							  minYCoordinate, maxYCoordinate, yBinNumber)
 {
-	apply([&](double value, double x, double y) {
-		return func(x, y);
-	});
+	apply([&](double value, double x, double y)
+		  { return func(x, y); });
 }
 
 Cartesian2DGridFunction::Cartesian2DGridFunction(const std::string &fileName)
@@ -375,9 +374,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator+=(const Cartesian2DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		value(xBin, yBin) += otherGridFunction.value(xBin, yBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+								 { value(xBin, yBin) += otherGridFunction.value(xBin, yBin); });
 
 	return *this;
 }
@@ -393,9 +391,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator-=(const Cartesian2DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		value(xBin, yBin) -= otherGridFunction.value(xBin, yBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+								 { value(xBin, yBin) -= otherGridFunction.value(xBin, yBin); });
 
 	return *this;
 }
@@ -411,9 +408,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator*=(const Cartesian2DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		value(xBin, yBin) *= otherGridFunction.value(xBin, yBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+								 { value(xBin, yBin) *= otherGridFunction.value(xBin, yBin); });
 
 	return *this;
 }
@@ -429,9 +425,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator/=(const Cartesian2DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		value(xBin, yBin) /= otherGridFunction.value(xBin, yBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+								 { value(xBin, yBin) /= otherGridFunction.value(xBin, yBin); });
 
 	return *this;
 }
@@ -440,9 +435,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator+=(const double otherV
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-			value(xBin, yBin) += otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+									 { value(xBin, yBin) += otherValue; });
 	}
 
 	return *this;
@@ -452,9 +446,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator-=(const double otherV
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-			value(xBin, yBin) -= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+									 { value(xBin, yBin) -= otherValue; });
 	}
 
 	return *this;
@@ -464,9 +457,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator*=(const double otherV
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-			value(xBin, yBin) *= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+									 { value(xBin, yBin) *= otherValue; });
 	}
 
 	return *this;
@@ -476,9 +468,8 @@ Cartesian2DGridFunction &Cartesian2DGridFunction::operator/=(const double otherV
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-			value(xBin, yBin) /= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+									 { value(xBin, yBin) /= otherValue; });
 	}
 
 	return *this;
@@ -569,9 +560,8 @@ Cartesian2DGridFunction operator+(const Cartesian2DGridFunction &leftGridFunctio
 
 	Cartesian2DGridFunction newCartesian2DGridFunction(leftGridFunction);
 
-	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		newCartesian2DGridFunction.value(xBin, yBin) += rightGridFunction.value(xBin, yBin);
-	});
+	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+															{ newCartesian2DGridFunction.value(xBin, yBin) += rightGridFunction.value(xBin, yBin); });
 
 	return newCartesian2DGridFunction;
 }
@@ -589,9 +579,8 @@ Cartesian2DGridFunction operator-(const Cartesian2DGridFunction &leftGridFunctio
 
 	Cartesian2DGridFunction newCartesian2DGridFunction(leftGridFunction);
 
-	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		newCartesian2DGridFunction.value(xBin, yBin) -= rightGridFunction.value(xBin, yBin);
-	});
+	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+															{ newCartesian2DGridFunction.value(xBin, yBin) -= rightGridFunction.value(xBin, yBin); });
 
 	return newCartesian2DGridFunction;
 }
@@ -609,9 +598,8 @@ Cartesian2DGridFunction operator*(const Cartesian2DGridFunction &leftGridFunctio
 
 	Cartesian2DGridFunction newCartesian2DGridFunction(leftGridFunction);
 
-	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		newCartesian2DGridFunction.value(xBin, yBin) *= rightGridFunction.value(xBin, yBin);
-	});
+	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+															{ newCartesian2DGridFunction.value(xBin, yBin) *= rightGridFunction.value(xBin, yBin); });
 
 	return newCartesian2DGridFunction;
 }
@@ -629,9 +617,8 @@ Cartesian2DGridFunction operator/(const Cartesian2DGridFunction &leftGridFunctio
 
 	Cartesian2DGridFunction newCartesian2DGridFunction(leftGridFunction);
 
-	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		newCartesian2DGridFunction.value(xBin, yBin) /= rightGridFunction.value(xBin, yBin);
-	});
+	newCartesian2DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+															{ newCartesian2DGridFunction.value(xBin, yBin) /= rightGridFunction.value(xBin, yBin); });
 
 	return newCartesian2DGridFunction;
 }
@@ -644,9 +631,8 @@ Cartesian2DGridFunction operator+(const Cartesian2DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue + rightValue;
-		});
+		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue + rightValue; });
 	}
 }
 
@@ -658,9 +644,8 @@ Cartesian2DGridFunction operator-(const Cartesian2DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue - rightValue;
-		});
+		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue - rightValue; });
 	}
 }
 
@@ -672,9 +657,8 @@ Cartesian2DGridFunction operator*(const Cartesian2DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue * rightValue;
-		});
+		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue * rightValue; });
 	}
 }
 
@@ -686,9 +670,8 @@ Cartesian2DGridFunction operator/(const Cartesian2DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue / rightValue;
-		});
+		return Cartesian2DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue / rightValue; });
 	}
 }
 
@@ -699,9 +682,8 @@ Cartesian2DGridFunction operator+(const double leftValue, const Cartesian2DGridF
 
 Cartesian2DGridFunction operator-(const double leftValue, const Cartesian2DGridFunction &rightGridFunction)
 {
-	return Cartesian2DGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue - rightValue;
-	});
+	return Cartesian2DGridFunction(rightGridFunction, [&](double rightValue)
+								   { return leftValue - rightValue; });
 }
 
 Cartesian2DGridFunction operator*(const double leftValue, const Cartesian2DGridFunction &rightGridFunction)
@@ -711,9 +693,8 @@ Cartesian2DGridFunction operator*(const double leftValue, const Cartesian2DGridF
 
 Cartesian2DGridFunction operator/(const double leftValue, const Cartesian2DGridFunction &rightGridFunction)
 {
-	return Cartesian2DGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue / rightValue;
-	});
+	return Cartesian2DGridFunction(rightGridFunction, [&](double rightValue)
+								   { return leftValue / rightValue; });
 }
 
 void transform_cartesian_2D_grid_functions(const Cartesian2DGridFunction &input,
@@ -731,14 +712,15 @@ void transform_cartesian_2D_grid_functions(const Cartesian2DGridFunction &input,
 		fieldTemporary = input;
 	}
 
-	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		double output;
+	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+												{
+													double output;
 
-		trafo(xBin, yBin,
-			  output);
+													trafo(xBin, yBin,
+														  output);
 
-		fieldTemporary.value(xBin, yBin) = output;
-	});
+													fieldTemporary.value(xBin, yBin) = output;
+												});
 
 	if (transformedInPlace)
 	{
@@ -784,15 +766,16 @@ void transform_cartesian_2D_grid_functions(const Cartesian2DGridFunction &input1
 		fieldTemporary2 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		double output1, output2;
+	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+										 {
+											 double output1, output2;
 
-		trafo(xBin, yBin,
-			  output1, output2);
+											 trafo(xBin, yBin,
+												   output1, output2);
 
-		fieldTemporary1.value(xBin, yBin) = output1;
-		fieldTemporary2.value(xBin, yBin) = output2;
-	});
+											 fieldTemporary1.value(xBin, yBin) = output1;
+											 fieldTemporary2.value(xBin, yBin) = output2;
+										 });
 
 	if (transformed1InPlace)
 	{
@@ -860,16 +843,17 @@ void transform_cartesian_2D_grid_functions(const Cartesian2DGridFunction &input1
 		fieldTemporary3 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin) {
-		double output1, output2, output3;
+	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin)
+										 {
+											 double output1, output2, output3;
 
-		trafo(xBin, yBin,
-			  output1, output2, output3);
+											 trafo(xBin, yBin,
+												   output1, output2, output3);
 
-		fieldTemporary1.value(xBin, yBin) = output1;
-		fieldTemporary2.value(xBin, yBin) = output2;
-		fieldTemporary3.value(xBin, yBin) = output3;
-	});
+											 fieldTemporary1.value(xBin, yBin) = output1;
+											 fieldTemporary2.value(xBin, yBin) = output2;
+											 fieldTemporary3.value(xBin, yBin) = output3;
+										 });
 
 	if (transformed1InPlace)
 	{

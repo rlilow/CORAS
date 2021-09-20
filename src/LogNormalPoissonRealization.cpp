@@ -84,7 +84,7 @@ void LogNormalPoissonRealization::generate(const double maxRadius, const std::fu
   const double kMax = fourier_coordinate_1D(BinNumber1D - 1);
 
   Cartesian1DGridFunction logDensityPowerSpectrum(kMin, kMax, BinNumber1D, 0.0);
-  
+
   for (int i_k = 0; i_k < BinNumber1D; ++i_k) // apply the Gaussian log-transform smoothing to the density contrast power spectra and transform them to real space
   {
     const double k = fourier_coordinate_1D(i_k);
@@ -95,7 +95,7 @@ void LogNormalPoissonRealization::generate(const double maxRadius, const std::fu
 
     Spectrum[i_k] = smoothedDensityContrastPowerSpectrum * k * BackwardTrafoNormalization1D; // the multiplication with k appears because the 3D Fourier transform was turned into a radial Fourier transform by integrating out the independent angular parts
   }
-  
+
   fftw_execute(BackwardTrafoPlan1D);
 
   for (int i_r = 0; i_r < BinNumber1D; ++i_r) // transform the resulting density contrast correlation functions to the correlation functions of the log-density, and transform these back into Fourier space
@@ -108,7 +108,7 @@ void LogNormalPoissonRealization::generate(const double maxRadius, const std::fu
 
     Spectrum[i_r] = logDensityCorrelationFunction * r * ForwardTrafoNormalization1D; // the multiplication with r appears because the 3D Fourier transform was turned into a radial Fourier transform by integrating out the independent angular parts
   }
-  
+
   fftw_execute(ForwardTrafoPlan1D);
 
   for (int i_k = 0; i_k < BinNumber1D; ++i_k) // write the resulting log-density power spectra into the respective grid functions
@@ -122,7 +122,7 @@ void LogNormalPoissonRealization::generate(const double maxRadius, const std::fu
       logDensityPowerSpectrum.value(i_k) = logDensityPowerSpectrumValue;
     }
   }
-  
+
   double meanLogDensity = 0.0;
 
   galaxyRadialCoordinatesRealization.clear();
@@ -183,7 +183,7 @@ void LogNormalPoissonRealization::generate(const double maxRadius, const std::fu
       }
     }
   }
-  
+
   fftw_execute(DensityBackwardTrafoPlan3D);
 
   for (int i_x = 0; i_x < BinNumber3D; ++i_x) // transform the resulting real-space log-densities to the corresponding density contrasts, obtain the mock galaxy positions via Poisson sampling, and transform the density contrasts back to Fourier space
@@ -237,7 +237,7 @@ void LogNormalPoissonRealization::generate(const double maxRadius, const std::fu
       }
     }
   }
-  
+
   gsl_rng_free(randomNumberGenerator);
 
   fftw_execute(DensityForwardTrafoPlan3D);
@@ -284,7 +284,7 @@ void LogNormalPoissonRealization::get_fields(const double normalizedGrowthRate, 
   Cartesian3DGridFunction cartesianXVelocityRealization(rMin, rMax, BinNumber3D, rMin, rMax, BinNumber3D, rMin, rMax, BinNumber3D, 0.0);
   Cartesian3DGridFunction cartesianYVelocityRealization(rMin, rMax, BinNumber3D, rMin, rMax, BinNumber3D, rMin, rMax, BinNumber3D, 0.0);
   Cartesian3DGridFunction cartesianZVelocityRealization(rMin, rMax, BinNumber3D, rMin, rMax, BinNumber3D, rMin, rMax, BinNumber3D, 0.0);
-  
+
   for (int i_x = 0; i_x < BinNumber3D; ++i_x) // apply the residual Gaussian smoothing needed to achieve the desired total signal smoothing
   {
     const double kx = fourier_coordinate_3D(i_x);

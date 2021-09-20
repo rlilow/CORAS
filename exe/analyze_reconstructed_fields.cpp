@@ -30,9 +30,8 @@ double gaussian_volume_average(const SphericalGridFunction &field, double effect
     }
     else
     {
-        return field.average([&](double value, double radius, double theta, double phi) {
-            return value * std::pow(2.0 * M_PI * gsl_pow_2(effectiveRadius), -3.0 / 2.0) * std::exp(-gsl_pow_2(radius / effectiveRadius) / 2.0) * 4.0 / 3.0 * M_PI * gsl_pow_3(field.maximal_radius());
-        });
+        return field.average([&](double value, double radius, double theta, double phi)
+                             { return value * std::pow(2.0 * M_PI * gsl_pow_2(effectiveRadius), -3.0 / 2.0) * std::exp(-gsl_pow_2(radius / effectiveRadius) / 2.0) * 4.0 / 3.0 * M_PI * gsl_pow_3(field.maximal_radius()); });
     }
 }
 
@@ -94,7 +93,8 @@ int main(int argc, char **argv)
                               luminosity_evolution_correction_2MRS, k_correction_2MRS,
                               sigmaGalaxyAboveVolumeLimit, volumeLimitGalaxyNumbers);
 
-        auto sigmaGalaxy = [&](double radius) {
+        auto sigmaGalaxy = [&](double radius)
+        {
             if (radius < sigmaGalaxyAboveVolumeLimit.coordinate(0))
             {
                 return sigmaGalaxyAboveVolumeLimit.value(0);
@@ -183,21 +183,17 @@ int main(int argc, char **argv)
         SphericalGridFunction reconstructedYVelocityMinSmoothHighRes(RECONSTRUCTION_MAX_RADIUS, GAUSSIAN_VOLUME_AVERAGE_RADIAL_BIN_NUMBER, RECONSTRUCTION_THETA_BIN_NUMBER, RECONSTRUCTION_PHI_BIN_NUMBER, reconstructedYVelocityMinSmooth);
         SphericalGridFunction reconstructedZVelocityMinSmoothHighRes(RECONSTRUCTION_MAX_RADIUS, GAUSSIAN_VOLUME_AVERAGE_RADIAL_BIN_NUMBER, RECONSTRUCTION_THETA_BIN_NUMBER, RECONSTRUCTION_PHI_BIN_NUMBER, reconstructedZVelocityMinSmooth);
 
-        Cartesian1DGridFunction reconstructedNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-            return gaussian_volume_average(reconstructedNormalizedDensityContrastMinSmoothHighRes, effectiveRadius);
-        });
+        Cartesian1DGridFunction reconstructedNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                             { return gaussian_volume_average(reconstructedNormalizedDensityContrastMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-            return gaussian_volume_average(reconstructedXVelocityMinSmoothHighRes, effectiveRadius);
-        });
+        Cartesian1DGridFunction reconstructedXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                             { return gaussian_volume_average(reconstructedXVelocityMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-            return gaussian_volume_average(reconstructedYVelocityMinSmoothHighRes, effectiveRadius);
-        });
+        Cartesian1DGridFunction reconstructedYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                             { return gaussian_volume_average(reconstructedYVelocityMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-            return gaussian_volume_average(reconstructedZVelocityMinSmoothHighRes, effectiveRadius);
-        });
+        Cartesian1DGridFunction reconstructedZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                             { return gaussian_volume_average(reconstructedZVelocityMinSmoothHighRes, effectiveRadius); });
 
         Cartesian1DGridFunction reconstructedNormalizedDensityContrastAngularAverages = reconstructedNormalizedDensityContrast.angular_average();
         Cartesian1DGridFunction reconstructedXVelocityAngularAverages = reconstructedXVelocity.angular_average();
@@ -234,29 +230,30 @@ int main(int argc, char **argv)
                                              << "vY[km/s]"
                                              << std::endl;
 
-        superGalacticPlaneSlice.evaluate_for_all_grid_points([&](std::size_t i_x, std::size_t i_y) {
-            const double sgx = superGalacticPlaneSlice.x_coordinate(i_x);
-            const double sgy = superGalacticPlaneSlice.x_coordinate(i_y);
+        superGalacticPlaneSlice.evaluate_for_all_grid_points([&](std::size_t i_x, std::size_t i_y)
+                                                             {
+                                                                 const double sgx = superGalacticPlaneSlice.x_coordinate(i_x);
+                                                                 const double sgy = superGalacticPlaneSlice.x_coordinate(i_y);
 
-            double radius, theta, phi;
+                                                                 double radius, theta, phi;
 
-            transform_cartesian_to_spherical_coordinates(sgx, sgy, 0.0,
-                                                         radius, theta, phi);
+                                                                 transform_cartesian_to_spherical_coordinates(sgx, sgy, 0.0,
+                                                                                                              radius, theta, phi);
 
-            const double normalizedDensityContrast = (radius <= RECONSTRUCTION_MAX_RADIUS) ? reconstructedNormalizedDensityContrastSuperGalactic(radius, theta, phi) : 0.0;
-            const double xVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? reconstructedXVelocitySuperGalactic(radius, theta, phi) : 0.0;
-            const double yVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? reconstructedYVelocitySuperGalactic(radius, theta, phi) : 0.0;
+                                                                 const double normalizedDensityContrast = (radius <= RECONSTRUCTION_MAX_RADIUS) ? reconstructedNormalizedDensityContrastSuperGalactic(radius, theta, phi) : 0.0;
+                                                                 const double xVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? reconstructedXVelocitySuperGalactic(radius, theta, phi) : 0.0;
+                                                                 const double yVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? reconstructedYVelocitySuperGalactic(radius, theta, phi) : 0.0;
 
-            superGalacticPlaneReconstructionFile << std::setprecision(2)
-                                                 << sgx << "\t"
-                                                 << sgy << "\t"
-                                                 << std::setprecision(4)
-                                                 << normalizedDensityContrast << "\t"
-                                                 << std::setprecision(2)
-                                                 << xVelocity << "\t"
-                                                 << yVelocity
-                                                 << std::endl;
-        });
+                                                                 superGalacticPlaneReconstructionFile << std::setprecision(2)
+                                                                                                      << sgx << "\t"
+                                                                                                      << sgy << "\t"
+                                                                                                      << std::setprecision(4)
+                                                                                                      << normalizedDensityContrast << "\t"
+                                                                                                      << std::setprecision(2)
+                                                                                                      << xVelocity << "\t"
+                                                                                                      << yVelocity
+                                                                                                      << std::endl;
+                                                             });
 
         superGalacticPlaneReconstructionFile.close();
 
@@ -338,29 +335,30 @@ int main(int argc, char **argv)
                                             << "vY[km/s]"
                                             << std::endl;
 
-                superGalacticPlaneSlice.evaluate_for_all_grid_points([&](std::size_t i_x, std::size_t i_y) {
-                    const double sgx = superGalacticPlaneSlice.x_coordinate(i_x);
-                    const double sgy = superGalacticPlaneSlice.x_coordinate(i_y);
+                superGalacticPlaneSlice.evaluate_for_all_grid_points([&](std::size_t i_x, std::size_t i_y)
+                                                                     {
+                                                                         const double sgx = superGalacticPlaneSlice.x_coordinate(i_x);
+                                                                         const double sgy = superGalacticPlaneSlice.x_coordinate(i_y);
 
-                    double radius, theta, phi;
+                                                                         double radius, theta, phi;
 
-                    transform_cartesian_to_spherical_coordinates(sgx, sgy, 0.0,
-                                                                 radius, theta, phi);
+                                                                         transform_cartesian_to_spherical_coordinates(sgx, sgy, 0.0,
+                                                                                                                      radius, theta, phi);
 
-                    const double normalizedDensityContrast = (radius <= RECONSTRUCTION_MAX_RADIUS) ? noiseNormalizedDensityContrastSuperGalactic(radius, theta, phi) : 0.0;
-                    const double xVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? noiseXVelocitySuperGalactic(radius, theta, phi) : 0.0;
-                    const double yVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? noiseYVelocitySuperGalactic(radius, theta, phi) : 0.0;
+                                                                         const double normalizedDensityContrast = (radius <= RECONSTRUCTION_MAX_RADIUS) ? noiseNormalizedDensityContrastSuperGalactic(radius, theta, phi) : 0.0;
+                                                                         const double xVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? noiseXVelocitySuperGalactic(radius, theta, phi) : 0.0;
+                                                                         const double yVelocity = (radius <= RECONSTRUCTION_MAX_RADIUS) ? noiseYVelocitySuperGalactic(radius, theta, phi) : 0.0;
 
-                    superGalacticPlaneNoiseFile << std::setprecision(2)
-                                                << sgx << "\t"
-                                                << sgy << "\t"
-                                                << std::setprecision(4)
-                                                << normalizedDensityContrast << "\t"
-                                                << std::setprecision(2)
-                                                << xVelocity << "\t"
-                                                << yVelocity
-                                                << std::endl;
-                });
+                                                                         superGalacticPlaneNoiseFile << std::setprecision(2)
+                                                                                                     << sgx << "\t"
+                                                                                                     << sgy << "\t"
+                                                                                                     << std::setprecision(4)
+                                                                                                     << normalizedDensityContrast << "\t"
+                                                                                                     << std::setprecision(2)
+                                                                                                     << xVelocity << "\t"
+                                                                                                     << yVelocity
+                                                                                                     << std::endl;
+                                                                     });
 
                 superGalacticPlaneNoiseFile.close();
             }
@@ -380,21 +378,17 @@ int main(int argc, char **argv)
             noiseYVelocityTophatVolumeAverageVariances += noiseYVelocityTophatVolumeAverage * noiseYVelocityTophatVolumeAverage;
             noiseZVelocityTophatVolumeAverageVariances += noiseZVelocityTophatVolumeAverage * noiseZVelocityTophatVolumeAverage;
 
-            Cartesian1DGridFunction noiseNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-                return gaussian_volume_average(noiseNormalizedDensityContrastMinSmoothHighRes, effectiveRadius);
-            });
+            Cartesian1DGridFunction noiseNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                         { return gaussian_volume_average(noiseNormalizedDensityContrastMinSmoothHighRes, effectiveRadius); });
 
-            Cartesian1DGridFunction noiseXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-                return gaussian_volume_average(noiseXVelocityMinSmoothHighRes, effectiveRadius);
-            });
+            Cartesian1DGridFunction noiseXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                         { return gaussian_volume_average(noiseXVelocityMinSmoothHighRes, effectiveRadius); });
 
-            Cartesian1DGridFunction noiseYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-                return gaussian_volume_average(noiseYVelocityMinSmoothHighRes, effectiveRadius);
-            });
+            Cartesian1DGridFunction noiseYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                         { return gaussian_volume_average(noiseYVelocityMinSmoothHighRes, effectiveRadius); });
 
-            Cartesian1DGridFunction noiseZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius) {
-                return gaussian_volume_average(noiseZVelocityMinSmoothHighRes, effectiveRadius);
-            });
+            Cartesian1DGridFunction noiseZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                         { return gaussian_volume_average(noiseZVelocityMinSmoothHighRes, effectiveRadius); });
 
             noiseNormalizedDensityContrastGaussianVolumeAverageVariances += noiseNormalizedDensityContrastGaussianVolumeAverages * noiseNormalizedDensityContrastGaussianVolumeAverages;
             noiseXVelocityGaussianVolumeAverageVariances += noiseXVelocityGaussianVolumeAverages * noiseXVelocityGaussianVolumeAverages;

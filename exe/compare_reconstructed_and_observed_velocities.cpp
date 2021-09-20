@@ -99,7 +99,8 @@ int main(int argc, char **argv)
                               luminosity_evolution_correction_2MRS, k_correction_2MRS,
                               sigmaGalaxyAboveVolumeLimit, volumeLimitGalaxyNumbers);
 
-        auto sigmaGalaxy = [&](double radius) {
+        auto sigmaGalaxy = [&](double radius)
+        {
             if (radius < sigmaGalaxyAboveVolumeLimit.coordinate(0))
             {
                 return sigmaGalaxyAboveVolumeLimit.value(0);
@@ -150,9 +151,8 @@ int main(int argc, char **argv)
 
         const ReferenceFrameChange fiducialExternalBulkVelocityShift = {fiducialExternalBulkVelocityAmplitude, fiducialExternalBulkVelocityTheta, fiducialExternalBulkVelocityPhi};
 
-        fiducialRadialVelocity.apply([&](double velocity, double radius, double theta, double phi) {
-            return change_reference_frame(velocity, theta, phi, fiducialExternalBulkVelocityShift);
-        });
+        fiducialRadialVelocity.apply([&](double velocity, double radius, double theta, double phi)
+                                     { return change_reference_frame(velocity, theta, phi, fiducialExternalBulkVelocityShift); });
 
         SphericalGridFunction reconstructedRadialVelocity = constrainedRealizations.get_survey_estimate_radial_velocity(estimatedNormalizedGrowthRate, reconstructedFieldSmoothingScale);
 
@@ -163,9 +163,8 @@ int main(int argc, char **argv)
 
         const ReferenceFrameChange estimatedExternalBulkVelocityShift = {estimatedExternalBulkVelocityAmplitude, estimatedExternalBulkVelocityTheta, estimatedExternalBulkVelocityPhi};
 
-        reconstructedRadialVelocity.apply([&](double velocity, double radius, double theta, double phi) {
-            return change_reference_frame(velocity, theta, phi, estimatedExternalBulkVelocityShift);
-        });
+        reconstructedRadialVelocity.apply([&](double velocity, double radius, double theta, double phi)
+                                          { return change_reference_frame(velocity, theta, phi, estimatedExternalBulkVelocityShift); });
 
         std::vector<double> tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonRadialCoordinates, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors;
 
@@ -192,9 +191,10 @@ int main(int argc, char **argv)
             NormalizedPowerSpectrum normalizedMinTensorSmoothingScalePowerSpectrum(inputWavenumbers, inputPowerSpectrumValues,
                                                                                    FIDUCIAL_HUBBLE, minTensorSmoothingScale);
 
-            const double sigmaVelocityWeighting = std::sqrt(normalizedMinTensorSmoothingScalePowerSpectrum.variance([](double k) {
-                return gsl_pow_2(ESTIMATED_NORMALIZED_GROWTH_RATE * HUBBLE_NORMALIZATION / k);
-            }, false) / normalizedPowerSpectrum.variance() / 3.0);
+            const double sigmaVelocityWeighting = std::sqrt(normalizedMinTensorSmoothingScalePowerSpectrum.variance([](double k)
+                                                                                                                    { return gsl_pow_2(ESTIMATED_NORMALIZED_GROWTH_RATE * HUBBLE_NORMALIZATION / k); },
+                                                                                                                    false) /
+                                                            normalizedPowerSpectrum.variance() / 3.0);
 
             std::vector<double> smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, smoothedObservedRadialVelocityErrors, adaptiveSmoothingScales;
 

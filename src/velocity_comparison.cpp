@@ -24,15 +24,18 @@ void estimate_parameters_via_radial_velocity_comparison(const std::function<doub
 
     const std::size_t velocityNumber = redshiftVelocities.size();
 
-    const auto internal_radial_velocity = [&](double normalizedGrowthRate, double radius, double theta, double phi) {
+    const auto internal_radial_velocity = [&](double normalizedGrowthRate, double radius, double theta, double phi)
+    {
         return normalizedGrowthRate * (normalizedWienerRadialVelocity(normalizedGrowthRate, radius, theta, phi) + normalizedNoiseRadialVelocity(radius, theta, phi));
     };
 
-    const auto internal_radial_velocity_growth_rate_derivative = [&](double normalizedGrowthRate, double radius, double theta, double phi) {
+    const auto internal_radial_velocity_growth_rate_derivative = [&](double normalizedGrowthRate, double radius, double theta, double phi)
+    {
         return normalizedWienerRadialVelocity(normalizedGrowthRateEstimate, radius, theta, phi) + normalizedGrowthRateEstimate * (normalizedWienerRadialVelocity(normalizedGrowthRate + normalizedGrowthRateDerivativeDelta, radius, theta, phi) - normalizedWienerRadialVelocity(normalizedGrowthRate - normalizedGrowthRateDerivativeDelta, radius, theta, phi)) / 2.0 / normalizedGrowthRateDerivativeDelta + normalizedNoiseRadialVelocity(radius, theta, phi);
     };
 
-    const auto chi_squared = [&](const gsl_vector *minimizerArguments) {
+    const auto chi_squared = [&](const gsl_vector *minimizerArguments)
+    {
         const double normalizedGrowthRate = std::atan(gsl_vector_get(minimizerArguments, 0)) / M_PI * (normalizedGrowthRateMax - normalizedGrowthRateMin - 2.0 * normalizedGrowthRateDerivativeDelta) + (normalizedGrowthRateMax + normalizedGrowthRateMin) / 2.0;
         const double externalBulkXVelocity = gsl_vector_get(minimizerArguments, 1);
         const double externalBulkYVelocity = gsl_vector_get(minimizerArguments, 2);
@@ -254,7 +257,8 @@ void compute_radial_velocity_correlation_functions(const std::vector<double> &ob
                                false);
 
     galaxyGroupGrid.evaluate_for_all_objects(
-        [&](std::size_t i_g1) {
+        [&](std::size_t i_g1)
+        {
             const double x1 = xCoordinates[i_g1];
             const double y1 = yCoordinates[i_g1];
             const double z1 = zCoordinates[i_g1];
@@ -263,7 +267,8 @@ void compute_radial_velocity_correlation_functions(const std::vector<double> &ob
 
             galaxyGroupGrid.evaluate_for_all_objects_within_distance(
                 i_g1, maxDistance + distanceBinWidth,
-                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2) {
+                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2)
+                {
                     if (i_g2 < i_g1)
                     {
                         const double x2 = xCoordinates[i_g2];
@@ -304,7 +309,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 {
     const double searchDistance = 3.0 * minSmoothingScale;
 
-    auto window_function = [&](double distance, double weight, double smoothingRadius) {
+    auto window_function = [&](double distance, double weight, double smoothingRadius)
+    {
         return weight * std::exp(-gsl_pow_2(distance) / 2.0 / gsl_pow_2(smoothingRadius));
     };
 
@@ -381,7 +387,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
     smoothObservedRadialVelocityErrors = std::vector<double>(consideredObservationsNumber);
 
     galaxyGroupGrid.evaluate_for_all_objects(
-        [&](std::size_t i_g1) {
+        [&](std::size_t i_g1)
+        {
             gsl_vector *R_obs = gsl_vector_calloc(3);
             gsl_vector *R_rec = gsl_vector_calloc(3);
             gsl_vector *aux = gsl_vector_calloc(3);
@@ -391,7 +398,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
             galaxyGroupGrid.evaluate_for_all_objects_within_distance(
                 i_g1, searchDistance,
-                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2) {
+                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2)
+                {
                     const double weight2 = windowFunctionWeights[i_g2];
                     const double W12 = window_function(distance12, weight2, minSmoothingScale);
 
@@ -416,7 +424,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
                 galaxyGroupGrid.evaluate_for_all_objects_within_distance(
                     i_g1, gridLength / 2.0,
-                    [&](double x12, double y12, double z12, double distance12, std::size_t i_g2) {
+                    [&](double x12, double y12, double z12, double distance12, std::size_t i_g2)
+                    {
                         neighbourDistances.push_back(distance12);
                     });
 
@@ -436,7 +445,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
                 galaxyGroupGrid.evaluate_for_all_objects_within_distance(
                     i_g1, adaptiveSearchDistance,
-                    [&](double x12, double y12, double z12, double distance12, std::size_t i_g2) {
+                    [&](double x12, double y12, double z12, double distance12, std::size_t i_g2)
+                    {
                         const double weight2 = windowFunctionWeights[i_g2];
                         const double W12 = window_function(distance12, weight2, adaptiveSmoothingScale);
 
@@ -465,7 +475,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
         });
 
     galaxyGroupGrid.evaluate_for_all_objects(
-        [&](std::size_t i_g1) {
+        [&](std::size_t i_g1)
+        {
             gsl_vector *aux = gsl_vector_calloc(3);
             gsl_matrix *Ainv = Ainv_vector[i_g1];
 
@@ -476,7 +487,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
             galaxyGroupGrid.evaluate_for_all_objects_within_distance(
                 i_g1, adaptiveSearchDistance,
-                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2) {
+                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2)
+                {
                     const double weight2 = windowFunctionWeights[i_g2];
                     const double W12 = window_function(distance12, weight2, adaptiveSmoothingScale);
 

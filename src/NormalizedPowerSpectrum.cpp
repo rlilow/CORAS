@@ -49,8 +49,10 @@ NormalizedPowerSpectrum::NormalizedPowerSpectrum(const std::vector<double> &wave
 
 	Interpolator = SplineInterpolator(rescaledWavenumbers, rescaledSpectrumValues, gslInterpolationType);
 
-	CQUADIntegrator varianceIntegrator = useTophatFilter ? CQUADIntegrator([&](double k) { return tophat_filter_integrand(k); })
-														 : CQUADIntegrator([&](double k) { return gaussian_filter_integrand(k); });
+	CQUADIntegrator varianceIntegrator = useTophatFilter ? CQUADIntegrator([&](double k)
+																		   { return tophat_filter_integrand(k); })
+														 : CQUADIntegrator([&](double k)
+																		   { return gaussian_filter_integrand(k); });
 
 	varianceIntegrator.integrate(0.0, MaxWavenumber, integrationAbsoluteError, integrationRelativeError, Variance); // integrate up to maximal k provided as input
 }
@@ -79,8 +81,10 @@ double NormalizedPowerSpectrum::variance(const std::function<double(double k)> &
 										 const bool useTophatFilter,
 										 const double integrationAbsoluteError, const double integrationRelativeError) const
 {
-	CQUADIntegrator varianceIntegrator = useTophatFilter ? CQUADIntegrator([&](double k) { return kernel(k) * tophat_filter_integrand(k); })
-														 : CQUADIntegrator([&](double k) { return kernel(k) * gaussian_filter_integrand(k); });
+	CQUADIntegrator varianceIntegrator = useTophatFilter ? CQUADIntegrator([&](double k)
+																		   { return kernel(k) * tophat_filter_integrand(k); })
+														 : CQUADIntegrator([&](double k)
+																		   { return kernel(k) * gaussian_filter_integrand(k); });
 
 	double variance;
 

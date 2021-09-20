@@ -366,7 +366,8 @@ void SphericalFourierBesselDecomposition::compute_spherical_fourier_bessel_decom
 
 				if ((l == 0) && (m == 0)) // subtract isotropic contribution from monopole
 				{
-					auto integrand = [&](double r) {
+					auto integrand = [&](double r)
+					{
 						const double k_ln_r = k_ln * r;
 
 						return 2.0 * std::sqrt(M_PI) * r * r * std::tr1::sph_bessel(0, k_ln_r) * isotropicContribution(r);

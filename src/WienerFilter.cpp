@@ -198,7 +198,8 @@ void WienerFilter::compute_noise_matrix(const std::function<double(double)> &sel
                     continue;
                 }
 
-                std::function<double(double)> integrand = [&](double r) {
+                std::function<double(double)> integrand = [&](double r)
+                {
                     return noise_matrix_kernel(l, k_ln1, k_ln2, r, selectionFunction);
                 };
 

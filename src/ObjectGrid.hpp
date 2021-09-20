@@ -25,7 +25,8 @@ public:
         double centralXCoordinate, double centralYCoordinate, double centralZCoordinate,
         const std::vector<double> &xCoordinates, const std::vector<double> &yCoordinates, const std::vector<double> &zCoordinates,
         bool usePeriodicBoundaryConditions = true,
-        const std::function<bool(std::size_t index)> &condition = [](std::size_t) { return true; });
+        const std::function<bool(std::size_t index)> &condition = [](std::size_t)
+        { return true; });
 
     std::size_t object_number() const;
     bool uses_periodic_boundary_conditions() const;

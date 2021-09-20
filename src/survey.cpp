@@ -359,7 +359,8 @@ void estimate_sigma_galaxy(const std::vector<double> &redshiftVelocities, const 
 
     std::size_t galaxyNumber = galaxyGrid.object_number();
 
-    const auto tophatSmoothingKernel = [&](double distance) {
+    const auto tophatSmoothingKernel = [&](double distance)
+    {
       return (distance <= smoothingScale) ? 3.0 / 4.0 / M_PI / gsl_pow_3(smoothingScale)
                                           : 0.0;
     };
@@ -367,7 +368,8 @@ void estimate_sigma_galaxy(const std::vector<double> &redshiftVelocities, const 
     SphericalGridFunction galaxyDensityContrastField(reconstructionRadius, reconstructionRadialBinNumber, reconstructionThetaBinNumber, reconstructionPhiBinNumber);
 
     galaxyDensityContrastField.apply(
-        [&](double value, double radius, double theta, double phi) {
+        [&](double value, double radius, double theta, double phi)
+        {
           double x, y, z;
 
           transform_spherical_to_cartesian_coordinates(radius, theta, phi,
@@ -377,7 +379,8 @@ void estimate_sigma_galaxy(const std::vector<double> &redshiftVelocities, const 
 
           galaxyGrid.evaluate_for_all_objects_within_distance(
               x, y, z, smoothingScale,
-              [&](double relativeX, double relativeY, double relativeZ, double distance, std::size_t i_g) {
+              [&](double relativeX, double relativeY, double relativeZ, double distance, std::size_t i_g)
+              {
                 density += tophatSmoothingKernel(distance);
               });
 

@@ -57,9 +57,8 @@ Cartesian3DGridFunction::Cartesian3DGridFunction(const double minXCoordinate, co
 							  minYCoordinate, maxYCoordinate, yBinNumber,
 							  minZCoordinate, maxZCoordinate, zBinNumber)
 {
-	apply([&](double value, double x, double y, double z) {
-		return func(x, y, z);
-	});
+	apply([&](double value, double x, double y, double z)
+		  { return func(x, y, z); });
 }
 
 Cartesian3DGridFunction::Cartesian3DGridFunction(const std::string &fileName)
@@ -467,9 +466,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator+=(const Cartesian3DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		value(xBin, yBin, zBin) += otherGridFunction.value(xBin, yBin, zBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+								 { value(xBin, yBin, zBin) += otherGridFunction.value(xBin, yBin, zBin); });
 
 	return *this;
 }
@@ -485,9 +483,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator-=(const Cartesian3DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		value(xBin, yBin, zBin) -= otherGridFunction.value(xBin, yBin, zBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+								 { value(xBin, yBin, zBin) -= otherGridFunction.value(xBin, yBin, zBin); });
 
 	return *this;
 }
@@ -503,9 +500,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator*=(const Cartesian3DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		value(xBin, yBin, zBin) *= otherGridFunction.value(xBin, yBin, zBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+								 { value(xBin, yBin, zBin) *= otherGridFunction.value(xBin, yBin, zBin); });
 
 	return *this;
 }
@@ -521,9 +517,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator/=(const Cartesian3DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		value(xBin, yBin, zBin) /= otherGridFunction.value(xBin, yBin, zBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+								 { value(xBin, yBin, zBin) /= otherGridFunction.value(xBin, yBin, zBin); });
 
 	return *this;
 }
@@ -532,9 +527,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator+=(const double otherV
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-			value(xBin, yBin, zBin) += otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+									 { value(xBin, yBin, zBin) += otherValue; });
 	}
 
 	return *this;
@@ -544,9 +538,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator-=(const double otherV
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-			value(xBin, yBin, zBin) -= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+									 { value(xBin, yBin, zBin) -= otherValue; });
 	}
 
 	return *this;
@@ -556,9 +549,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator*=(const double otherV
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-			value(xBin, yBin, zBin) *= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+									 { value(xBin, yBin, zBin) *= otherValue; });
 	}
 
 	return *this;
@@ -568,9 +560,8 @@ Cartesian3DGridFunction &Cartesian3DGridFunction::operator/=(const double otherV
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-			value(xBin, yBin, zBin) /= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+									 { value(xBin, yBin, zBin) /= otherValue; });
 	}
 
 	return *this;
@@ -679,9 +670,8 @@ Cartesian3DGridFunction operator+(const Cartesian3DGridFunction &leftGridFunctio
 
 	Cartesian3DGridFunction newCartesian3DGridFunction(leftGridFunction);
 
-	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		newCartesian3DGridFunction.value(xBin, yBin, zBin) += rightGridFunction.value(xBin, yBin, zBin);
-	});
+	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+															{ newCartesian3DGridFunction.value(xBin, yBin, zBin) += rightGridFunction.value(xBin, yBin, zBin); });
 
 	return newCartesian3DGridFunction;
 }
@@ -699,9 +689,8 @@ Cartesian3DGridFunction operator-(const Cartesian3DGridFunction &leftGridFunctio
 
 	Cartesian3DGridFunction newCartesian3DGridFunction(leftGridFunction);
 
-	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		newCartesian3DGridFunction.value(xBin, yBin, zBin) -= rightGridFunction.value(xBin, yBin, zBin);
-	});
+	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+															{ newCartesian3DGridFunction.value(xBin, yBin, zBin) -= rightGridFunction.value(xBin, yBin, zBin); });
 
 	return newCartesian3DGridFunction;
 }
@@ -719,9 +708,8 @@ Cartesian3DGridFunction operator*(const Cartesian3DGridFunction &leftGridFunctio
 
 	Cartesian3DGridFunction newCartesian3DGridFunction(leftGridFunction);
 
-	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		newCartesian3DGridFunction.value(xBin, yBin, zBin) *= rightGridFunction.value(xBin, yBin, zBin);
-	});
+	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+															{ newCartesian3DGridFunction.value(xBin, yBin, zBin) *= rightGridFunction.value(xBin, yBin, zBin); });
 
 	return newCartesian3DGridFunction;
 }
@@ -739,9 +727,8 @@ Cartesian3DGridFunction operator/(const Cartesian3DGridFunction &leftGridFunctio
 
 	Cartesian3DGridFunction newCartesian3DGridFunction(leftGridFunction);
 
-	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		newCartesian3DGridFunction.value(xBin, yBin, zBin) /= rightGridFunction.value(xBin, yBin, zBin);
-	});
+	newCartesian3DGridFunction.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+															{ newCartesian3DGridFunction.value(xBin, yBin, zBin) /= rightGridFunction.value(xBin, yBin, zBin); });
 
 	return newCartesian3DGridFunction;
 }
@@ -754,9 +741,8 @@ Cartesian3DGridFunction operator+(const Cartesian3DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue + rightValue;
-		});
+		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue + rightValue; });
 	}
 }
 
@@ -768,9 +754,8 @@ Cartesian3DGridFunction operator-(const Cartesian3DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue - rightValue;
-		});
+		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue - rightValue; });
 	}
 }
 
@@ -782,9 +767,8 @@ Cartesian3DGridFunction operator*(const Cartesian3DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue * rightValue;
-		});
+		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue * rightValue; });
 	}
 }
 
@@ -796,9 +780,8 @@ Cartesian3DGridFunction operator/(const Cartesian3DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue / rightValue;
-		});
+		return Cartesian3DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue / rightValue; });
 	}
 }
 
@@ -809,9 +792,8 @@ Cartesian3DGridFunction operator+(const double leftValue, const Cartesian3DGridF
 
 Cartesian3DGridFunction operator-(const double leftValue, const Cartesian3DGridFunction &rightGridFunction)
 {
-	return Cartesian3DGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue - rightValue;
-	});
+	return Cartesian3DGridFunction(rightGridFunction, [&](double rightValue)
+								   { return leftValue - rightValue; });
 }
 
 Cartesian3DGridFunction operator*(const double leftValue, const Cartesian3DGridFunction &rightGridFunction)
@@ -821,9 +803,8 @@ Cartesian3DGridFunction operator*(const double leftValue, const Cartesian3DGridF
 
 Cartesian3DGridFunction operator/(const double leftValue, const Cartesian3DGridFunction &rightGridFunction)
 {
-	return Cartesian3DGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue / rightValue;
-	});
+	return Cartesian3DGridFunction(rightGridFunction, [&](double rightValue)
+								   { return leftValue / rightValue; });
 }
 
 void transform_cartesian_3D_grid_functions(const Cartesian3DGridFunction &input,
@@ -841,14 +822,15 @@ void transform_cartesian_3D_grid_functions(const Cartesian3DGridFunction &input,
 		fieldTemporary = input;
 	}
 
-	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		double output;
+	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+												{
+													double output;
 
-		trafo(xBin, yBin, zBin,
-			  output);
+													trafo(xBin, yBin, zBin,
+														  output);
 
-		fieldTemporary.value(xBin, yBin, zBin) = output;
-	});
+													fieldTemporary.value(xBin, yBin, zBin) = output;
+												});
 
 	if (transformedInPlace)
 	{
@@ -894,15 +876,16 @@ void transform_cartesian_3D_grid_functions(const Cartesian3DGridFunction &input1
 		fieldTemporary2 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		double output1, output2;
+	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+										 {
+											 double output1, output2;
 
-		trafo(xBin, yBin, zBin,
-			  output1, output2);
+											 trafo(xBin, yBin, zBin,
+												   output1, output2);
 
-		fieldTemporary1.value(xBin, yBin, zBin) = output1;
-		fieldTemporary2.value(xBin, yBin, zBin) = output2;
-	});
+											 fieldTemporary1.value(xBin, yBin, zBin) = output1;
+											 fieldTemporary2.value(xBin, yBin, zBin) = output2;
+										 });
 
 	if (transformed1InPlace)
 	{
@@ -970,16 +953,17 @@ void transform_cartesian_3D_grid_functions(const Cartesian3DGridFunction &input1
 		fieldTemporary3 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin) {
-		double output1, output2, output3;
+	output1.evaluate_for_all_grid_points([&](std::size_t xBin, std::size_t yBin, std::size_t zBin)
+										 {
+											 double output1, output2, output3;
 
-		trafo(xBin, yBin, zBin,
-			  output1, output2, output3);
+											 trafo(xBin, yBin, zBin,
+												   output1, output2, output3);
 
-		fieldTemporary1.value(xBin, yBin, zBin) = output1;
-		fieldTemporary2.value(xBin, yBin, zBin) = output2;
-		fieldTemporary3.value(xBin, yBin, zBin) = output3;
-	});
+											 fieldTemporary1.value(xBin, yBin, zBin) = output1;
+											 fieldTemporary2.value(xBin, yBin, zBin) = output2;
+											 fieldTemporary3.value(xBin, yBin, zBin) = output3;
+										 });
 
 	if (transformed1InPlace)
 	{

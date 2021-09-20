@@ -43,7 +43,10 @@ public:
 	SphericalFourierBesselDecomposition(
 		const std::vector<double> &radialCoordinates, const std::vector<double> &thetaCoordinates, const std::vector<double> &phiCoordinates,
 		double maxRadius, double radialResolution, std::size_t maxMultipole,
-		const std::function<double(double radius)> &weightingFunction = [](double) { return 1.0; }, const std::function<double(double radius)> &isotropicContribution = [](double) { return 0.0; });
+		const std::function<double(double radius)> &weightingFunction = [](double)
+		{ return 1.0; },
+		const std::function<double(double radius)> &isotropicContribution = [](double)
+		{ return 0.0; });
 
 	/**
 	 * Constructor instantiating a previously saved SphericalFourierBesselDecomposition from the binary file \a

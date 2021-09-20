@@ -51,9 +51,8 @@ SphericalGridFunction::SphericalGridFunction(const double maxRadius, const std::
 											 const std::function<double(double radius, double theta, double phi)> &func)
 	: SphericalGridFunction(maxRadius, radialBinNumber, thetaBinNumber, phiBinNumber, 0.0)
 {
-	apply([&](double value, double radius, double theta, double phi) {
-		return func(radius, theta, phi);
-	});
+	apply([&](double value, double radius, double theta, double phi)
+		  { return func(radius, theta, phi); });
 }
 
 SphericalGridFunction::SphericalGridFunction(const std::string &fileName)
@@ -557,9 +556,8 @@ SphericalGridFunction &SphericalGridFunction::operator+=(const SphericalGridFunc
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		value(radialBin, thetaBin, phiBin) += otherGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+								 { value(radialBin, thetaBin, phiBin) += otherGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return *this;
 }
@@ -575,9 +573,8 @@ SphericalGridFunction &SphericalGridFunction::operator-=(const SphericalGridFunc
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		value(radialBin, thetaBin, phiBin) -= otherGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+								 { value(radialBin, thetaBin, phiBin) -= otherGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return *this;
 }
@@ -593,9 +590,8 @@ SphericalGridFunction &SphericalGridFunction::operator*=(const SphericalGridFunc
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		value(radialBin, thetaBin, phiBin) *= otherGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+								 { value(radialBin, thetaBin, phiBin) *= otherGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return *this;
 }
@@ -611,9 +607,8 @@ SphericalGridFunction &SphericalGridFunction::operator/=(const SphericalGridFunc
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		value(radialBin, thetaBin, phiBin) /= otherGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+								 { value(radialBin, thetaBin, phiBin) /= otherGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return *this;
 }
@@ -622,9 +617,8 @@ SphericalGridFunction &SphericalGridFunction::operator+=(const double otherValue
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-			value(radialBin, thetaBin, phiBin) += otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+									 { value(radialBin, thetaBin, phiBin) += otherValue; });
 	}
 
 	return *this;
@@ -634,9 +628,8 @@ SphericalGridFunction &SphericalGridFunction::operator-=(const double otherValue
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-			value(radialBin, thetaBin, phiBin) -= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+									 { value(radialBin, thetaBin, phiBin) -= otherValue; });
 	}
 
 	return *this;
@@ -646,9 +639,8 @@ SphericalGridFunction &SphericalGridFunction::operator*=(const double otherValue
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-			value(radialBin, thetaBin, phiBin) *= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+									 { value(radialBin, thetaBin, phiBin) *= otherValue; });
 	}
 
 	return *this;
@@ -658,9 +650,8 @@ SphericalGridFunction &SphericalGridFunction::operator/=(const double otherValue
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-			value(radialBin, thetaBin, phiBin) /= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+									 { value(radialBin, thetaBin, phiBin) /= otherValue; });
 	}
 
 	return *this;
@@ -757,9 +748,8 @@ SphericalGridFunction operator+(const SphericalGridFunction &leftGridFunction, c
 
 	SphericalGridFunction newSphericalGridFunction(leftGridFunction);
 
-	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		newSphericalGridFunction.value(radialBin, thetaBin, phiBin) += rightGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+														  { newSphericalGridFunction.value(radialBin, thetaBin, phiBin) += rightGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return newSphericalGridFunction;
 }
@@ -777,9 +767,8 @@ SphericalGridFunction operator-(const SphericalGridFunction &leftGridFunction, c
 
 	SphericalGridFunction newSphericalGridFunction(leftGridFunction);
 
-	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		newSphericalGridFunction.value(radialBin, thetaBin, phiBin) -= rightGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+														  { newSphericalGridFunction.value(radialBin, thetaBin, phiBin) -= rightGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return newSphericalGridFunction;
 }
@@ -797,9 +786,8 @@ SphericalGridFunction operator*(const SphericalGridFunction &leftGridFunction, c
 
 	SphericalGridFunction newSphericalGridFunction(leftGridFunction);
 
-	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		newSphericalGridFunction.value(radialBin, thetaBin, phiBin) *= rightGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+														  { newSphericalGridFunction.value(radialBin, thetaBin, phiBin) *= rightGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return newSphericalGridFunction;
 }
@@ -817,9 +805,8 @@ SphericalGridFunction operator/(const SphericalGridFunction &leftGridFunction, c
 
 	SphericalGridFunction newSphericalGridFunction(leftGridFunction);
 
-	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		newSphericalGridFunction.value(radialBin, thetaBin, phiBin) /= rightGridFunction.value(radialBin, thetaBin, phiBin);
-	});
+	newSphericalGridFunction.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+														  { newSphericalGridFunction.value(radialBin, thetaBin, phiBin) /= rightGridFunction.value(radialBin, thetaBin, phiBin); });
 
 	return newSphericalGridFunction;
 }
@@ -832,9 +819,8 @@ SphericalGridFunction operator+(const SphericalGridFunction &leftGridFunction, c
 	}
 	else
 	{
-		return SphericalGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue + rightValue;
-		});
+		return SphericalGridFunction(leftGridFunction, [&](double leftValue)
+									 { return leftValue + rightValue; });
 	}
 }
 
@@ -846,9 +832,8 @@ SphericalGridFunction operator-(const SphericalGridFunction &leftGridFunction, c
 	}
 	else
 	{
-		return SphericalGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue - rightValue;
-		});
+		return SphericalGridFunction(leftGridFunction, [&](double leftValue)
+									 { return leftValue - rightValue; });
 	}
 }
 
@@ -860,9 +845,8 @@ SphericalGridFunction operator*(const SphericalGridFunction &leftGridFunction, c
 	}
 	else
 	{
-		return SphericalGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue * rightValue;
-		});
+		return SphericalGridFunction(leftGridFunction, [&](double leftValue)
+									 { return leftValue * rightValue; });
 	}
 }
 
@@ -874,9 +858,8 @@ SphericalGridFunction operator/(const SphericalGridFunction &leftGridFunction, c
 	}
 	else
 	{
-		return SphericalGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue / rightValue;
-		});
+		return SphericalGridFunction(leftGridFunction, [&](double leftValue)
+									 { return leftValue / rightValue; });
 	}
 }
 
@@ -887,9 +870,8 @@ SphericalGridFunction operator+(const double leftValue, const SphericalGridFunct
 
 SphericalGridFunction operator-(const double leftValue, const SphericalGridFunction &rightGridFunction)
 {
-	return SphericalGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue - rightValue;
-	});
+	return SphericalGridFunction(rightGridFunction, [&](double rightValue)
+								 { return leftValue - rightValue; });
 }
 
 SphericalGridFunction operator*(const double leftValue, const SphericalGridFunction &rightGridFunction)
@@ -899,9 +881,8 @@ SphericalGridFunction operator*(const double leftValue, const SphericalGridFunct
 
 SphericalGridFunction operator/(const double leftValue, const SphericalGridFunction &rightGridFunction)
 {
-	return SphericalGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue / rightValue;
-	});
+	return SphericalGridFunction(rightGridFunction, [&](double rightValue)
+								 { return leftValue / rightValue; });
 }
 
 void transform_spherical_grid_functions(const SphericalGridFunction &input,
@@ -919,14 +900,15 @@ void transform_spherical_grid_functions(const SphericalGridFunction &input,
 		fieldTemporary = input;
 	}
 
-	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		double output;
+	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+												{
+													double output;
 
-		trafo(radialBin, thetaBin, phiBin,
-			  output);
+													trafo(radialBin, thetaBin, phiBin,
+														  output);
 
-		fieldTemporary.value(radialBin, thetaBin, phiBin) = output;
-	});
+													fieldTemporary.value(radialBin, thetaBin, phiBin) = output;
+												});
 
 	if (transformedInPlace)
 	{
@@ -972,15 +954,16 @@ void transform_spherical_grid_functions(const SphericalGridFunction &input1, con
 		fieldTemporary2 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		double output1, output2;
+	output1.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+										 {
+											 double output1, output2;
 
-		trafo(radialBin, thetaBin, phiBin,
-			  output1, output2);
+											 trafo(radialBin, thetaBin, phiBin,
+												   output1, output2);
 
-		fieldTemporary1.value(radialBin, thetaBin, phiBin) = output1;
-		fieldTemporary2.value(radialBin, thetaBin, phiBin) = output2;
-	});
+											 fieldTemporary1.value(radialBin, thetaBin, phiBin) = output1;
+											 fieldTemporary2.value(radialBin, thetaBin, phiBin) = output2;
+										 });
 
 	if (transformed1InPlace)
 	{
@@ -1048,16 +1031,17 @@ void transform_spherical_grid_functions(const SphericalGridFunction &input1, con
 		fieldTemporary3 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin) {
-		double output1, output2, output3;
+	output1.evaluate_for_all_grid_points([&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin)
+										 {
+											 double output1, output2, output3;
 
-		trafo(radialBin, thetaBin, phiBin,
-			  output1, output2, output3);
+											 trafo(radialBin, thetaBin, phiBin,
+												   output1, output2, output3);
 
-		fieldTemporary1.value(radialBin, thetaBin, phiBin) = output1;
-		fieldTemporary2.value(radialBin, thetaBin, phiBin) = output2;
-		fieldTemporary3.value(radialBin, thetaBin, phiBin) = output3;
-	});
+											 fieldTemporary1.value(radialBin, thetaBin, phiBin) = output1;
+											 fieldTemporary2.value(radialBin, thetaBin, phiBin) = output2;
+											 fieldTemporary3.value(radialBin, thetaBin, phiBin) = output3;
+										 });
 
 	if (transformed1InPlace)
 	{

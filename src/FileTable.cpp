@@ -55,25 +55,27 @@ void FileTable::read_values_from_file(const std::string &fileName, const char de
 		exit(EXIT_FAILURE);
 	}
 
-	auto ignoreColumn = [&](std::istringstream &lineStream) {
+	auto ignoreColumn = [&](std::istringstream &lineStream)
+	{
 		lineStream.ignore(std::numeric_limits<std::streamsize>::max(), delimiterCharacter);
 	};
 
-	auto parseColumn = (delimiterCharacter == ' ')
-						   ? [](std::istringstream &lineStream) {
-								 std::string columnEntry;
+	auto parseColumn = (delimiterCharacter == ' ') ? std::function<std::string(std::istringstream &)>([](std::istringstream &lineStream)
+																									  {
+																										  std::string columnEntry;
 
-								 lineStream >> columnEntry;
+																										  lineStream >> columnEntry;
 
-								 return columnEntry;
-							 }
-						   : std::function<std::string(std::istringstream &)>([&](std::istringstream &lineStream) {
-								 std::string columnEntry;
+																										  return columnEntry;
+																									  })
+												   : std::function<std::string(std::istringstream &)>([&](std::istringstream &lineStream)
+																									  {
+																										  std::string columnEntry;
 
-								 std::getline(lineStream, columnEntry, delimiterCharacter);
+																										  std::getline(lineStream, columnEntry, delimiterCharacter);
 
-								 return columnEntry;
-							 });
+																										  return columnEntry;
+																									  });
 
 	std::string line;
 

@@ -124,7 +124,8 @@ void ObjectGrid::evaluate_for_all_objects_within_distance(const double xCenter, 
                                                           const std::function<void(double relativeX, double relativeY, double relativeZ, double distance, std::size_t index)> &function) const
 {
     evaluate_for_all_objects_in_sub_grid(xCenter, yCenter, zCenter, maxDistance,
-                                         [&](std::size_t index) {
+                                         [&](std::size_t index)
+                                         {
                                              const double x = x_coordinate(index);
                                              const double y = y_coordinate(index);
                                              const double z = z_coordinate(index);

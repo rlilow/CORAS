@@ -220,7 +220,8 @@ public:
 	 *
 	 * If no argument is given, the volume average of the grid function itself is returned.
 	 */
-	double average(const std::function<double(double value)> &func = [](double value) { return value; }) const;
+	double average(const std::function<double(double value)> &func = [](double value)
+				   { return value; }) const;
 
 	/**
 	 * Return the average of the function \a func, depending on the grid function value and the coordinates, over

@@ -211,7 +211,8 @@ void transform_spherical_to_cartesian_vector_field(const SphericalGridFunction &
   transform_spherical_grid_functions(radialFieldComponents, thetaFieldComponents, phiFieldComponents,
                                      xFieldComponents, yFieldComponents, zFieldComponents,
                                      [&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin,
-                                         double &xComponent, double &yComponent, double &zComponent) {
+                                         double &xComponent, double &yComponent, double &zComponent)
+                                     {
                                        const double theta = radialFieldComponents.theta_coordinate(thetaBin);
                                        const double phi = radialFieldComponents.phi_coordinate(phiBin);
 
@@ -231,7 +232,8 @@ void transform_cartesian_to_spherical_vector_field(const SphericalGridFunction &
   transform_spherical_grid_functions(xFieldComponents, yFieldComponents, zFieldComponents,
                                      radialFieldComponents, thetaFieldComponents, phiFieldComponents,
                                      [&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin,
-                                         double &radialComponent, double &thetaComponent, double &phiComponent) {
+                                         double &radialComponent, double &thetaComponent, double &phiComponent)
+                                     {
                                        const double theta = xFieldComponents.theta_coordinate(thetaBin);
                                        const double phi = xFieldComponents.phi_coordinate(phiBin);
 
@@ -251,7 +253,8 @@ void transform_spherical_to_cartesian_vector_field(const Cartesian3DGridFunction
   transform_cartesian_3D_grid_functions(radialFieldComponents, thetaFieldComponents, phiFieldComponents,
                                         xFieldComponents, yFieldComponents, zFieldComponents,
                                         [&](std::size_t xBin, std::size_t yBin, std::size_t zBin,
-                                            double &xComponent, double &yComponent, double &zComponent) {
+                                            double &xComponent, double &yComponent, double &zComponent)
+                                        {
                                           const double x = radialFieldComponents.x_coordinate(xBin);
                                           const double y = radialFieldComponents.y_coordinate(yBin);
                                           const double z = radialFieldComponents.z_coordinate(zBin);
@@ -277,7 +280,8 @@ void transform_cartesian_to_spherical_vector_field(const Cartesian3DGridFunction
   transform_cartesian_3D_grid_functions(xFieldComponents, yFieldComponents, zFieldComponents,
                                         radialFieldComponents, thetaFieldComponents, phiFieldComponents,
                                         [&](std::size_t xBin, std::size_t yBin, std::size_t zBin,
-                                            double &radialComponent, double &thetaComponent, double &phiComponent) {
+                                            double &radialComponent, double &thetaComponent, double &phiComponent)
+                                        {
                                           const double x = xFieldComponents.x_coordinate(xBin);
                                           const double y = xFieldComponents.y_coordinate(yBin);
                                           const double z = xFieldComponents.z_coordinate(zBin);
@@ -417,7 +421,8 @@ void rotate_scalar_field(const SphericalGridFunction &fieldInput, SphericalGridF
   transform_spherical_grid_functions(fieldInput,
                                      fieldOutput,
                                      [&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin,
-                                         double &output) {
+                                         double &output)
+                                     {
                                        const double radius = fieldInput.radial_coordinate(radialBin);
                                        const double theta = fieldInput.theta_coordinate(thetaBin);
                                        const double phi = fieldInput.phi_coordinate(phiBin);
@@ -439,7 +444,8 @@ void rotate_cartesian_vector_field(const SphericalGridFunction &xFieldInput, con
   transform_spherical_grid_functions(xFieldInput, yFieldInput, zFieldInput,
                                      xFieldOutput, yFieldOutput, zFieldOutput,
                                      [&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin,
-                                         double &xValue, double &yValue, double &zValue) {
+                                         double &xValue, double &yValue, double &zValue)
+                                     {
                                        const double radius = xFieldInput.radial_coordinate(radialBin);
                                        const double theta = xFieldInput.theta_coordinate(thetaBin);
                                        const double phi = xFieldInput.phi_coordinate(phiBin);
@@ -467,7 +473,8 @@ void rotate_spherical_vector_field(const SphericalGridFunction &radialFieldInput
   transform_spherical_grid_functions(radialFieldInput, thetaFieldInput, phiFieldInput,
                                      radialFieldOutput, thetaFieldOutput, phiFieldOutput,
                                      [&](std::size_t radialBin, std::size_t thetaBin, std::size_t phiBin,
-                                         double &radialValue, double &thetaValue, double &phiValue) {
+                                         double &radialValue, double &thetaValue, double &phiValue)
+                                     {
                                        const double radius = radialFieldInput.radial_coordinate(radialBin);
                                        const double theta = radialFieldInput.theta_coordinate(thetaBin);
                                        const double phi = radialFieldInput.phi_coordinate(phiBin);

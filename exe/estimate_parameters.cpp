@@ -88,7 +88,8 @@ int main(int argc, char **argv)
                               luminosity_evolution_correction_2MRS, k_correction_2MRS,
                               sigmaGalaxyAboveVolumeLimit, volumeLimitGalaxyNumbers);
 
-        auto sigmaGalaxy = [&](double radius) {
+        auto sigmaGalaxy = [&](double radius)
+        {
             if (radius < sigmaGalaxyAboveVolumeLimit.coordinate(0))
             {
                 return sigmaGalaxyAboveVolumeLimit.value(0);
@@ -156,9 +157,8 @@ int main(int argc, char **argv)
 
         const ReferenceFrameChange fiducialExternalBulkVelocityShift = {fiducialExternalBulkVelocityAmplitude, fiducialExternalBulkVelocityTheta, fiducialExternalBulkVelocityPhi};
 
-        fiducialRadialVelocity.apply([&](double velocity, double radius, double theta, double phi) {
-            return change_reference_frame(velocity, theta, phi, fiducialExternalBulkVelocityShift);
-        });
+        fiducialRadialVelocity.apply([&](double velocity, double radius, double theta, double phi)
+                                     { return change_reference_frame(velocity, theta, phi, fiducialExternalBulkVelocityShift); });
 
         const auto time2 = std::chrono::high_resolution_clock::now();
         std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(time2 - time1).count() << "s)" << std::endl;

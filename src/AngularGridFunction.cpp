@@ -34,9 +34,8 @@ AngularGridFunction::AngularGridFunction(const std::size_t thetaBinNumber, const
 	: AngularGridFunction(thetaBinNumber, phiBinNumber, 0.0)
 {
 
-	apply([&](double value, double theta, double phi) {
-		return func(theta, phi);
-	});
+	apply([&](double value, double theta, double phi)
+		  { return func(theta, phi); });
 }
 
 AngularGridFunction::AngularGridFunction(const std::string &fileName)
@@ -335,9 +334,8 @@ AngularGridFunction &AngularGridFunction::operator+=(const AngularGridFunction &
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		value(thetaBin, phiBin) += otherGridFunction.value(thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+								 { value(thetaBin, phiBin) += otherGridFunction.value(thetaBin, phiBin); });
 
 	return *this;
 }
@@ -353,9 +351,8 @@ AngularGridFunction &AngularGridFunction::operator-=(const AngularGridFunction &
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		value(thetaBin, phiBin) -= otherGridFunction.value(thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+								 { value(thetaBin, phiBin) -= otherGridFunction.value(thetaBin, phiBin); });
 
 	return *this;
 }
@@ -371,9 +368,8 @@ AngularGridFunction &AngularGridFunction::operator*=(const AngularGridFunction &
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		value(thetaBin, phiBin) *= otherGridFunction.value(thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+								 { value(thetaBin, phiBin) *= otherGridFunction.value(thetaBin, phiBin); });
 
 	return *this;
 }
@@ -389,9 +385,8 @@ AngularGridFunction &AngularGridFunction::operator/=(const AngularGridFunction &
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		value(thetaBin, phiBin) /= otherGridFunction.value(thetaBin, phiBin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+								 { value(thetaBin, phiBin) /= otherGridFunction.value(thetaBin, phiBin); });
 
 	return *this;
 }
@@ -400,9 +395,8 @@ AngularGridFunction &AngularGridFunction::operator+=(const double otherValue)
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-			value(thetaBin, phiBin) += otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+									 { value(thetaBin, phiBin) += otherValue; });
 	}
 
 	return *this;
@@ -412,9 +406,8 @@ AngularGridFunction &AngularGridFunction::operator-=(const double otherValue)
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-			value(thetaBin, phiBin) -= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+									 { value(thetaBin, phiBin) -= otherValue; });
 	}
 
 	return *this;
@@ -424,9 +417,8 @@ AngularGridFunction &AngularGridFunction::operator*=(const double otherValue)
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-			value(thetaBin, phiBin) *= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+									 { value(thetaBin, phiBin) *= otherValue; });
 	}
 
 	return *this;
@@ -436,9 +428,8 @@ AngularGridFunction &AngularGridFunction::operator/=(const double otherValue)
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-			value(thetaBin, phiBin) /= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+									 { value(thetaBin, phiBin) /= otherValue; });
 	}
 
 	return *this;
@@ -519,9 +510,8 @@ AngularGridFunction operator+(const AngularGridFunction &leftGridFunction, const
 
 	AngularGridFunction newAngularGridFunction(leftGridFunction);
 
-	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		newAngularGridFunction.value(thetaBin, phiBin) += rightGridFunction.value(thetaBin, phiBin);
-	});
+	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+														{ newAngularGridFunction.value(thetaBin, phiBin) += rightGridFunction.value(thetaBin, phiBin); });
 
 	return newAngularGridFunction;
 }
@@ -539,9 +529,8 @@ AngularGridFunction operator-(const AngularGridFunction &leftGridFunction, const
 
 	AngularGridFunction newAngularGridFunction(leftGridFunction);
 
-	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		newAngularGridFunction.value(thetaBin, phiBin) -= rightGridFunction.value(thetaBin, phiBin);
-	});
+	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+														{ newAngularGridFunction.value(thetaBin, phiBin) -= rightGridFunction.value(thetaBin, phiBin); });
 
 	return newAngularGridFunction;
 }
@@ -559,9 +548,8 @@ AngularGridFunction operator*(const AngularGridFunction &leftGridFunction, const
 
 	AngularGridFunction newAngularGridFunction(leftGridFunction);
 
-	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		newAngularGridFunction.value(thetaBin, phiBin) *= rightGridFunction.value(thetaBin, phiBin);
-	});
+	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+														{ newAngularGridFunction.value(thetaBin, phiBin) *= rightGridFunction.value(thetaBin, phiBin); });
 
 	return newAngularGridFunction;
 }
@@ -579,9 +567,8 @@ AngularGridFunction operator/(const AngularGridFunction &leftGridFunction, const
 
 	AngularGridFunction newAngularGridFunction(leftGridFunction);
 
-	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		newAngularGridFunction.value(thetaBin, phiBin) /= rightGridFunction.value(thetaBin, phiBin);
-	});
+	newAngularGridFunction.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+														{ newAngularGridFunction.value(thetaBin, phiBin) /= rightGridFunction.value(thetaBin, phiBin); });
 
 	return newAngularGridFunction;
 }
@@ -594,9 +581,8 @@ AngularGridFunction operator+(const AngularGridFunction &leftGridFunction, const
 	}
 	else
 	{
-		return AngularGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue + rightValue;
-		});
+		return AngularGridFunction(leftGridFunction, [&](double leftValue)
+								   { return leftValue + rightValue; });
 	}
 }
 
@@ -608,9 +594,8 @@ AngularGridFunction operator-(const AngularGridFunction &leftGridFunction, const
 	}
 	else
 	{
-		return AngularGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue - rightValue;
-		});
+		return AngularGridFunction(leftGridFunction, [&](double leftValue)
+								   { return leftValue - rightValue; });
 	}
 }
 
@@ -622,9 +607,8 @@ AngularGridFunction operator*(const AngularGridFunction &leftGridFunction, const
 	}
 	else
 	{
-		return AngularGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue * rightValue;
-		});
+		return AngularGridFunction(leftGridFunction, [&](double leftValue)
+								   { return leftValue * rightValue; });
 	}
 }
 
@@ -636,9 +620,8 @@ AngularGridFunction operator/(const AngularGridFunction &leftGridFunction, const
 	}
 	else
 	{
-		return AngularGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue / rightValue;
-		});
+		return AngularGridFunction(leftGridFunction, [&](double leftValue)
+								   { return leftValue / rightValue; });
 	}
 }
 
@@ -649,9 +632,8 @@ AngularGridFunction operator+(const double leftValue, const AngularGridFunction 
 
 AngularGridFunction operator-(const double leftValue, const AngularGridFunction &rightGridFunction)
 {
-	return AngularGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue - rightValue;
-	});
+	return AngularGridFunction(rightGridFunction, [&](double rightValue)
+							   { return leftValue - rightValue; });
 }
 
 AngularGridFunction operator*(const double leftValue, const AngularGridFunction &rightGridFunction)
@@ -661,9 +643,8 @@ AngularGridFunction operator*(const double leftValue, const AngularGridFunction 
 
 AngularGridFunction operator/(const double leftValue, const AngularGridFunction &rightGridFunction)
 {
-	return AngularGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue / rightValue;
-	});
+	return AngularGridFunction(rightGridFunction, [&](double rightValue)
+							   { return leftValue / rightValue; });
 }
 
 void transform_angular_grid_functions(const AngularGridFunction &input,
@@ -681,14 +662,15 @@ void transform_angular_grid_functions(const AngularGridFunction &input,
 		fieldTemporary = input;
 	}
 
-	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		double output;
+	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+												{
+													double output;
 
-		trafo(thetaBin, phiBin,
-			  output);
+													trafo(thetaBin, phiBin,
+														  output);
 
-		fieldTemporary.value(thetaBin, phiBin) = output;
-	});
+													fieldTemporary.value(thetaBin, phiBin) = output;
+												});
 
 	if (transformedInPlace)
 	{
@@ -734,15 +716,16 @@ void transform_angular_grid_functions(const AngularGridFunction &input1, const A
 		fieldTemporary2 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		double output1, output2;
+	output1.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+										 {
+											 double output1, output2;
 
-		trafo(thetaBin, phiBin,
-			  output1, output2);
+											 trafo(thetaBin, phiBin,
+												   output1, output2);
 
-		fieldTemporary1.value(thetaBin, phiBin) = output1;
-		fieldTemporary2.value(thetaBin, phiBin) = output2;
-	});
+											 fieldTemporary1.value(thetaBin, phiBin) = output1;
+											 fieldTemporary2.value(thetaBin, phiBin) = output2;
+										 });
 
 	if (transformed1InPlace)
 	{
@@ -810,16 +793,17 @@ void transform_angular_grid_functions(const AngularGridFunction &input1, const A
 		fieldTemporary3 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin) {
-		double output1, output2, output3;
+	output1.evaluate_for_all_grid_points([&](std::size_t thetaBin, std::size_t phiBin)
+										 {
+											 double output1, output2, output3;
 
-		trafo(thetaBin, phiBin,
-			  output1, output2, output3);
+											 trafo(thetaBin, phiBin,
+												   output1, output2, output3);
 
-		fieldTemporary1.value(thetaBin, phiBin) = output1;
-		fieldTemporary2.value(thetaBin, phiBin) = output2;
-		fieldTemporary3.value(thetaBin, phiBin) = output3;
-	});
+											 fieldTemporary1.value(thetaBin, phiBin) = output1;
+											 fieldTemporary2.value(thetaBin, phiBin) = output2;
+											 fieldTemporary3.value(thetaBin, phiBin) = output3;
+										 });
 
 	if (transformed1InPlace)
 	{

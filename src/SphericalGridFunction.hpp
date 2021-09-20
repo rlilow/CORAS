@@ -199,14 +199,16 @@ public:
 	 *
 	 * If no argument is given, the volume average of the grid function itself is returned.
 	 */
-	double average(const std::function<double(double value)> &func = [](double value) { return value; }) const;
+	double average(const std::function<double(double value)> &func = [](double value)
+				   { return value; }) const;
 
 	/**
 	 * Return a Cartesian1DGridFunction describing the averages of the function \a func, depending on the grid function
 	 * value, over spheres of different radii. The averages are computed for the radii specified by the radial grid
 	 * coordinate axis.
 	 */
-	Cartesian1DGridFunction averages(const std::function<double(double value)> &func = [](double value) { return value; }) const;
+	Cartesian1DGridFunction averages(const std::function<double(double value)> &func = [](double value)
+									 { return value; }) const;
 
 	/**
 	 * Return the average of the function \a func, depending on the grid function value and the coordinates, over the
@@ -225,7 +227,8 @@ public:
 	 * Return a Cartesian1DGridFunction describing the radially dependent average of the function \a func, depending on
 	 * the grid function value, over the whole solid angle.
 	 */
-	Cartesian1DGridFunction angular_average(const std::function<double(double value)> &func = [](double value) { return value; }) const;
+	Cartesian1DGridFunction angular_average(const std::function<double(double value)> &func = [](double value)
+											{ return value; }) const;
 
 	/**
 	 * Return a Cartesian1DGridFunction describing the radially dependent average of the function \a func, depending on

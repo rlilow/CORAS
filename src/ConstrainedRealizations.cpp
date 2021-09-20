@@ -83,15 +83,18 @@ ConstrainedRealizations::ConstrainedRealizations(const std::vector<double> &radi
     const bool surveyWienerFilterFileExists = file_exists(surveyWienerFilterFileName);
     const bool randomWienerFilterFileExists = file_exists(randomWienerFilterFileName);
 
-    const auto selectionTimesWeightingFunction = [&](double radius) {
+    const auto selectionTimesWeightingFunction = [&](double radius)
+    {
         return 1.0 / SigmaGalaxy(radius);
     };
 
-    const auto surveyNoiseWeightingFunction = [&](double radius) {
+    const auto surveyNoiseWeightingFunction = [&](double radius)
+    {
         return SelectionFunction(radius) * gsl_pow_2(SigmaGalaxy(radius));
     };
 
-    const auto randomNoiseWeightingFunction = [&](double radius) {
+    const auto randomNoiseWeightingFunction = [&](double radius)
+    {
         return SelectionFunction(radius);
     };
 
@@ -131,7 +134,8 @@ ConstrainedRealizations::ConstrainedRealizations(const std::vector<double> &radi
         RandomWienerFilter.save_object_to_file(randomWienerFilterFileName);
     }
 
-    const auto surveyWeightingFunction = [&](double radius) {
+    const auto surveyWeightingFunction = [&](double radius)
+    {
         return 1.0 / MeanGalaxyDensity / SelectionFunction(radius) / SigmaGalaxy(radius);
     };
 
@@ -148,13 +152,15 @@ void ConstrainedRealizations::generate(const std::size_t realizationNumber)
                                 RandomGalaxyRadialCoordinates, RandomGalaxyThetaCoordinates, RandomGalaxyPhiCoordinates,
                                 RealizationNumber, RandomNumberGeneratorType);
 
-    const auto randomWeightingFunction = [&](double radius) {
+    const auto randomWeightingFunction = [&](double radius)
+    {
         return 1.0 / MeanGalaxyDensity / SelectionFunction(radius);
     };
 
     RandomSFBD = SphericalFourierBesselDecomposition(RandomGalaxyRadialCoordinates, RandomGalaxyThetaCoordinates, RandomGalaxyPhiCoordinates,
                                                      MaxRadius, RadialResolution, MaxMultipole,
-                                                     randomWeightingFunction, [](double) { return 1.0; });
+                                                     randomWeightingFunction, [](double)
+                                                     { return 1.0; });
 
     RandomWienerFilter.apply_to(RandomSFBD, MeanGalaxyDensity, NormalizedPowerSpectrum, NormalizedPowerSpectrum);
 

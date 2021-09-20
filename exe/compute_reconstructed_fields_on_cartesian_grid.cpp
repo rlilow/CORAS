@@ -78,7 +78,8 @@ int main(int argc, char **argv)
                               luminosity_evolution_correction_2MRS, k_correction_2MRS,
                               sigmaGalaxyAboveVolumeLimit, volumeLimitGalaxyNumbers);
 
-        auto sigmaGalaxy = [&](double radius) {
+        auto sigmaGalaxy = [&](double radius)
+        {
             if (radius < sigmaGalaxyAboveVolumeLimit.coordinate(0))
             {
                 return sigmaGalaxyAboveVolumeLimit.value(0);
@@ -132,28 +133,32 @@ int main(int argc, char **argv)
         Cartesian3DGridFunction reconstructedNormalizedDensityContrastCartesian(-RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
-                                                                                [&](double x, double y, double z) {
+                                                                                [&](double x, double y, double z)
+                                                                                {
                                                                                     return evaluate_in_enclosing_box(reconstructedNormalizedDensityContrastSpherical, x, y, z);
                                                                                 });
 
         Cartesian3DGridFunction reconstructedXVelocityCartesian(-RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
-                                                                [&](double x, double y, double z) {
+                                                                [&](double x, double y, double z)
+                                                                {
                                                                     return evaluate_in_enclosing_box(reconstructedXVelocitySpherical, x, y, z);
                                                                 });
 
         Cartesian3DGridFunction reconstructedYVelocityCartesian(-RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
-                                                                [&](double x, double y, double z) {
+                                                                [&](double x, double y, double z)
+                                                                {
                                                                     return evaluate_in_enclosing_box(reconstructedYVelocitySpherical, x, y, z);
                                                                 });
 
         Cartesian3DGridFunction reconstructedZVelocityCartesian(-RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
                                                                 -RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_MAX_RADIUS, CARTESIAN_GRID_BIN_NUMBER,
-                                                                [&](double x, double y, double z) {
+                                                                [&](double x, double y, double z)
+                                                                {
                                                                     return evaluate_in_enclosing_box(reconstructedZVelocitySpherical, x, y, z);
                                                                 });
 
@@ -173,22 +178,23 @@ int main(int argc, char **argv)
                                   << "vZ[km/s]"
                                   << std::endl;
 
-        reconstructedNormalizedDensityContrastCartesian.evaluate_for_all_grid_points([&](std::size_t i_x, std::size_t i_y, std::size_t i_z) { // to reduce the file size, do not write the coordinates to the file
-            const double normalizedDensityContrast = reconstructedNormalizedDensityContrastCartesian.value(i_x, i_y, i_z);
-            const double xVelocity = reconstructedXVelocityCartesian.value(i_x, i_y, i_z);
-            const double yVelocity = reconstructedYVelocityCartesian.value(i_x, i_y, i_z);
-            const double zVelocity = reconstructedZVelocityCartesian.value(i_x, i_y, i_z);
+        reconstructedNormalizedDensityContrastCartesian.evaluate_for_all_grid_points([&](std::size_t i_x, std::size_t i_y, std::size_t i_z)
+                                                                                     {
+                                                                                         const double normalizedDensityContrast = reconstructedNormalizedDensityContrastCartesian.value(i_x, i_y, i_z);
+                                                                                         const double xVelocity = reconstructedXVelocityCartesian.value(i_x, i_y, i_z);
+                                                                                         const double yVelocity = reconstructedYVelocityCartesian.value(i_x, i_y, i_z);
+                                                                                         const double zVelocity = reconstructedZVelocityCartesian.value(i_x, i_y, i_z);
 
-            cartesianGridDensityContrastFile << std::setprecision(4)
-                                             << normalizedDensityContrast
-                                             << std::endl;
+                                                                                         cartesianGridDensityContrastFile << std::setprecision(4) // to reduce the file size, do not write the coordinates to the file
+                                                                                                                          << normalizedDensityContrast
+                                                                                                                          << std::endl;
 
-            cartesianGridVelocityFile << std::setprecision(2)
-                                      << xVelocity << "\t"
-                                      << yVelocity << "\t"
-                                      << zVelocity
-                                      << std::endl;
-        });
+                                                                                         cartesianGridVelocityFile << std::setprecision(2)
+                                                                                                                   << xVelocity << "\t"
+                                                                                                                   << yVelocity << "\t"
+                                                                                                                   << zVelocity
+                                                                                                                   << std::endl;
+                                                                                     });
 
         cartesianGridDensityContrastFile.close();
         cartesianGridVelocityFile.close();

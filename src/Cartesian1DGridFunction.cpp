@@ -41,9 +41,8 @@ Cartesian1DGridFunction::Cartesian1DGridFunction(const double minCoordinate, con
 												 const std::function<double(double x)> &func)
 	: Cartesian1DGridFunction(minCoordinate, maxCoordinate, binNumber)
 {
-	apply([&](double value, double x) {
-		return func(x);
-	});
+	apply([&](double value, double x)
+		  { return func(x); });
 }
 
 Cartesian1DGridFunction::Cartesian1DGridFunction(const std::string &fileName)
@@ -282,9 +281,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator+=(const Cartesian1DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t bin) {
-		value(bin) += otherGridFunction.value(bin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t bin)
+								 { value(bin) += otherGridFunction.value(bin); });
 
 	return *this;
 }
@@ -300,9 +298,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator-=(const Cartesian1DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t bin) {
-		value(bin) -= otherGridFunction.value(bin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t bin)
+								 { value(bin) -= otherGridFunction.value(bin); });
 
 	return *this;
 }
@@ -318,9 +315,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator*=(const Cartesian1DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t bin) {
-		value(bin) *= otherGridFunction.value(bin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t bin)
+								 { value(bin) *= otherGridFunction.value(bin); });
 
 	return *this;
 }
@@ -336,9 +332,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator/=(const Cartesian1DGr
 		exit(EXIT_FAILURE);
 	}
 
-	evaluate_for_all_grid_points([&](std::size_t bin) {
-		value(bin) /= otherGridFunction.value(bin);
-	});
+	evaluate_for_all_grid_points([&](std::size_t bin)
+								 { value(bin) /= otherGridFunction.value(bin); });
 
 	return *this;
 }
@@ -347,9 +342,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator+=(const double otherV
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t bin) {
-			value(bin) += otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t bin)
+									 { value(bin) += otherValue; });
 	}
 
 	return *this;
@@ -359,9 +353,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator-=(const double otherV
 {
 	if (otherValue != 0.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t bin) {
-			value(bin) -= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t bin)
+									 { value(bin) -= otherValue; });
 	}
 
 	return *this;
@@ -371,9 +364,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator*=(const double otherV
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t bin) {
-			value(bin) *= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t bin)
+									 { value(bin) *= otherValue; });
 	}
 
 	return *this;
@@ -383,9 +375,8 @@ Cartesian1DGridFunction &Cartesian1DGridFunction::operator/=(const double otherV
 {
 	if (otherValue != 1.0) // save computation time by avoiding identity operation
 	{
-		evaluate_for_all_grid_points([&](std::size_t bin) {
-			value(bin) /= otherValue;
-		});
+		evaluate_for_all_grid_points([&](std::size_t bin)
+									 { value(bin) /= otherValue; });
 	}
 
 	return *this;
@@ -458,9 +449,8 @@ Cartesian1DGridFunction operator+(const Cartesian1DGridFunction &leftGridFunctio
 
 	Cartesian1DGridFunction newCartesian1DGridFunction(leftGridFunction);
 
-	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin) {
-		newCartesian1DGridFunction.value(bin) += rightGridFunction.value(bin);
-	});
+	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin)
+															{ newCartesian1DGridFunction.value(bin) += rightGridFunction.value(bin); });
 
 	return newCartesian1DGridFunction;
 }
@@ -478,9 +468,8 @@ Cartesian1DGridFunction operator-(const Cartesian1DGridFunction &leftGridFunctio
 
 	Cartesian1DGridFunction newCartesian1DGridFunction(leftGridFunction);
 
-	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin) {
-		newCartesian1DGridFunction.value(bin) -= rightGridFunction.value(bin);
-	});
+	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin)
+															{ newCartesian1DGridFunction.value(bin) -= rightGridFunction.value(bin); });
 
 	return newCartesian1DGridFunction;
 }
@@ -498,9 +487,8 @@ Cartesian1DGridFunction operator*(const Cartesian1DGridFunction &leftGridFunctio
 
 	Cartesian1DGridFunction newCartesian1DGridFunction(leftGridFunction);
 
-	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin) {
-		newCartesian1DGridFunction.value(bin) *= rightGridFunction.value(bin);
-	});
+	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin)
+															{ newCartesian1DGridFunction.value(bin) *= rightGridFunction.value(bin); });
 
 	return newCartesian1DGridFunction;
 }
@@ -518,9 +506,8 @@ Cartesian1DGridFunction operator/(const Cartesian1DGridFunction &leftGridFunctio
 
 	Cartesian1DGridFunction newCartesian1DGridFunction(leftGridFunction);
 
-	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin) {
-		newCartesian1DGridFunction.value(bin) /= rightGridFunction.value(bin);
-	});
+	newCartesian1DGridFunction.evaluate_for_all_grid_points([&](std::size_t bin)
+															{ newCartesian1DGridFunction.value(bin) /= rightGridFunction.value(bin); });
 
 	return newCartesian1DGridFunction;
 }
@@ -533,9 +520,8 @@ Cartesian1DGridFunction operator+(const Cartesian1DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue + rightValue;
-		});
+		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue + rightValue; });
 	}
 }
 
@@ -547,9 +533,8 @@ Cartesian1DGridFunction operator-(const Cartesian1DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue - rightValue;
-		});
+		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue - rightValue; });
 	}
 }
 
@@ -561,9 +546,8 @@ Cartesian1DGridFunction operator*(const Cartesian1DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue * rightValue;
-		});
+		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue * rightValue; });
 	}
 }
 
@@ -575,9 +559,8 @@ Cartesian1DGridFunction operator/(const Cartesian1DGridFunction &leftGridFunctio
 	}
 	else
 	{
-		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue) {
-			return leftValue / rightValue;
-		});
+		return Cartesian1DGridFunction(leftGridFunction, [&](double leftValue)
+									   { return leftValue / rightValue; });
 	}
 }
 
@@ -588,9 +571,8 @@ Cartesian1DGridFunction operator+(const double leftValue, const Cartesian1DGridF
 
 Cartesian1DGridFunction operator-(const double leftValue, const Cartesian1DGridFunction &rightGridFunction)
 {
-	return Cartesian1DGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue - rightValue;
-	});
+	return Cartesian1DGridFunction(rightGridFunction, [&](double rightValue)
+								   { return leftValue - rightValue; });
 }
 
 Cartesian1DGridFunction operator*(const double leftValue, const Cartesian1DGridFunction &rightGridFunction)
@@ -600,9 +582,8 @@ Cartesian1DGridFunction operator*(const double leftValue, const Cartesian1DGridF
 
 Cartesian1DGridFunction operator/(const double leftValue, const Cartesian1DGridFunction &rightGridFunction)
 {
-	return Cartesian1DGridFunction(rightGridFunction, [&](double rightValue) {
-		return leftValue / rightValue;
-	});
+	return Cartesian1DGridFunction(rightGridFunction, [&](double rightValue)
+								   { return leftValue / rightValue; });
 }
 
 void transform_cartesian_1D_grid_functions(const Cartesian1DGridFunction &input,
@@ -620,14 +601,15 @@ void transform_cartesian_1D_grid_functions(const Cartesian1DGridFunction &input,
 		fieldTemporary = input;
 	}
 
-	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t bin) {
-		double output;
+	fieldTemporary.evaluate_for_all_grid_points([&](std::size_t bin)
+												{
+													double output;
 
-		trafo(bin,
-			  output);
+													trafo(bin,
+														  output);
 
-		fieldTemporary.value(bin) = output;
-	});
+													fieldTemporary.value(bin) = output;
+												});
 
 	if (transformedInPlace)
 	{
@@ -673,15 +655,16 @@ void transform_cartesian_1D_grid_functions(const Cartesian1DGridFunction &input1
 		fieldTemporary2 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t bin) {
-		double output1, output2;
+	output1.evaluate_for_all_grid_points([&](std::size_t bin)
+										 {
+											 double output1, output2;
 
-		trafo(bin,
-			  output1, output2);
+											 trafo(bin,
+												   output1, output2);
 
-		fieldTemporary1.value(bin) = output1;
-		fieldTemporary2.value(bin) = output2;
-	});
+											 fieldTemporary1.value(bin) = output1;
+											 fieldTemporary2.value(bin) = output2;
+										 });
 
 	if (transformed1InPlace)
 	{
@@ -749,16 +732,17 @@ void transform_cartesian_1D_grid_functions(const Cartesian1DGridFunction &input1
 		fieldTemporary3 = input1;
 	}
 
-	output1.evaluate_for_all_grid_points([&](std::size_t bin) {
-		double output1, output2, output3;
+	output1.evaluate_for_all_grid_points([&](std::size_t bin)
+										 {
+											 double output1, output2, output3;
 
-		trafo(bin,
-			  output1, output2, output3);
+											 trafo(bin,
+												   output1, output2, output3);
 
-		fieldTemporary1.value(bin) = output1;
-		fieldTemporary2.value(bin) = output2;
-		fieldTemporary3.value(bin) = output3;
-	});
+											 fieldTemporary1.value(bin) = output1;
+											 fieldTemporary2.value(bin) = output2;
+											 fieldTemporary3.value(bin) = output3;
+										 });
 
 	if (transformed1InPlace)
 	{
