@@ -62,11 +62,11 @@ constexpr double PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_MIN = 0.0;
 constexpr double PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_MAX = 2.0;
 constexpr std::size_t PARAMETER_ESTIMATE_NORMALIZED_GROWTH_RATE_BIN_NUMBER = 21;
 
-constexpr double ESTIMATED_NORMALIZED_GROWTH_RATE = 0.402;    // these parameters have been inferred by comparing the reconstructed velocities from 2MRS with the observed velocities from Cosmicflows-3
-constexpr double ESTIMATED_EXTERNAL_BULK_X_VELOCITY = 107.0;  // [km/s]
-constexpr double ESTIMATED_EXTERNAL_BULK_Y_VELOCITY = -124.0; // [km/s]
-constexpr double ESTIMATED_EXTERNAL_BULK_Z_VELOCITY = -1.0;   // [km/s]
-constexpr double ESTIMATED_DISTANCE_CATALOG_HUBBLE = 0.7272;
+constexpr double ESTIMATED_NORMALIZED_GROWTH_RATE = 0.405;    // these parameters have been inferred by comparing the reconstructed velocities from 2MRS with the observed velocities from Cosmicflows-3, at a smoothing scale of 15 Mpc/h and a minimal redshift cutoff of 2000 km/s, and calibrating them afterwards
+constexpr double ESTIMATED_EXTERNAL_BULK_X_VELOCITY = 95.0;   // [km/s]
+constexpr double ESTIMATED_EXTERNAL_BULK_Y_VELOCITY = -172.0; // [km/s]
+constexpr double ESTIMATED_EXTERNAL_BULK_Z_VELOCITY = 28.0;   // [km/s]
+constexpr double ESTIMATED_DISTANCE_CATALOG_HUBBLE = 0.7499;
 
 constexpr double RECONSTRUCTED_FIELD_SMOOTHING_SCALE = 5.0;     // [Mpc/h]
 constexpr double RECONSTRUCTED_FIELD_MIN_SMOOTHING_SCALE = 1.0; // [Mpc/h]
