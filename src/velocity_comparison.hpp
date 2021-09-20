@@ -38,7 +38,7 @@ void compute_radial_velocity_correlation_functions(const std::vector<double> &ob
 void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &observedRedshiftVelocities, const std::vector<double> &observedThetaCoordinates, const std::vector<double> &observedPhiCoordinates, const std::vector<double> &observedDistanceModuli, const std::vector<double> &observedDistanceModulusErrors,
                                                     const SphericalGridFunction &reconstructedRadialVelocity,
                                                     ReferenceFrameChange refToCMBFrame, double omegaMatter, double hubble, double minSmoothingScale, const double velocityCosmicSigma,
-                                                    std::vector<double> &smoothObservedRadialVelocities, std::vector<double> &smoothReconstructedRadialVelocities, std::vector<double> &adaptiveSmoothingScales,
+                                                    std::vector<double> &smoothObservedRadialVelocities, std::vector<double> &smoothReconstructedRadialVelocities, std::vector<double> &smoothObservedRadialVelocityErrors, std::vector<double> &adaptiveSmoothingScales,
                                                     std::size_t minNeighbourNumber = 8);
 
 ///@}

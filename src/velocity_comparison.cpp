@@ -299,7 +299,7 @@ void compute_radial_velocity_correlation_functions(const std::vector<double> &ob
 void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &observedRedshiftVelocities, const std::vector<double> &observedThetaCoordinates, const std::vector<double> &observedPhiCoordinates, const std::vector<double> &observedDistanceModuli, const std::vector<double> &observedDistanceModulusErrors,
                                                     const SphericalGridFunction &reconstructedRadialVelocity,
                                                     const ReferenceFrameChange referenceToCMBFrame, const double omegaMatter, const double hubble, const double minSmoothingScale, const double velocityCosmicSigma,
-                                                    std::vector<double> &smoothObservedRadialVelocities, std::vector<double> &smoothReconstructedRadialVelocities, std::vector<double> &adaptiveSmoothingScales,
+                                                    std::vector<double> &smoothObservedRadialVelocities, std::vector<double> &smoothReconstructedRadialVelocities, std::vector<double> &smoothObservedRadialVelocityErrors, std::vector<double> &adaptiveSmoothingScales,
                                                     const std::size_t minNeighbourNumber)
 {
     const double searchDistance = 3.0 * minSmoothingScale;
@@ -320,9 +320,11 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
     std::vector<double> zCoordinates;
     std::vector<double> observedRadialVelocities;
     std::vector<double> reconstructedRadialVelocities;
+    std::vector<double> observedRadialVelocityErrors;
     std::vector<double> windowFunctionWeights;
 
     std::vector<gsl_vector *> r_vector;
+    std::vector<gsl_matrix *> Ainv_vector;
 
     for (std::size_t i_g = 0; i_g < observationsNumber; ++i_g)
     {
@@ -340,12 +342,14 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
                                                      x, y, z);
 
         gsl_vector *r = gsl_vector_calloc(3);
+        gsl_matrix *Ainv = gsl_matrix_calloc(3, 3);
 
         gsl_vector_set(r, 0, x / radius);
         gsl_vector_set(r, 1, y / radius);
         gsl_vector_set(r, 2, z / radius);
 
         r_vector.push_back(r);
+        Ainv_vector.push_back(Ainv);
 
         xCoordinates.push_back(x);
         yCoordinates.push_back(y);
@@ -359,6 +363,7 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
         const double velocityError = distanceModulusError / distanceModulusVelocityDerivative;
 
+        observedRadialVelocityErrors.push_back(velocityError);
         windowFunctionWeights.push_back(1.0 / (gsl_pow_2(velocityError) + gsl_pow_2(velocityCosmicSigma)));
     }
 
@@ -373,6 +378,7 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
 
     smoothObservedRadialVelocities = std::vector<double>(consideredObservationsNumber);
     smoothReconstructedRadialVelocities = std::vector<double>(consideredObservationsNumber);
+    smoothObservedRadialVelocityErrors = std::vector<double>(consideredObservationsNumber);
 
     galaxyGroupGrid.evaluate_for_all_objects(
         [&](std::size_t i_g1) {
@@ -444,6 +450,8 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
             gsl_linalg_cholesky_decomp1(A);
             gsl_linalg_cholesky_invert(A);
 
+            gsl_matrix_memcpy(Ainv_vector[i_g1], A);
+
             gsl_blas_dsymv(CblasLower, 1.0, A, R_obs, 0.0, aux);
             gsl_blas_ddot(r_vector[i_g1], aux, &smoothObservedRadialVelocities[i_g1]);
 
@@ -454,6 +462,36 @@ void compute_tensor_smoothed_radial_velocity_points(const std::vector<double> &o
             gsl_vector_free(R_rec);
             gsl_vector_free(aux);
             gsl_matrix_free(A);
+        });
+
+    galaxyGroupGrid.evaluate_for_all_objects(
+        [&](std::size_t i_g1) {
+            gsl_vector *aux = gsl_vector_calloc(3);
+            gsl_matrix *Ainv = Ainv_vector[i_g1];
+
+            const double adaptiveSmoothingScale = adaptiveSmoothingScales[i_g1];
+            const double adaptiveSearchDistance = 3.0 * adaptiveSmoothingScale;
+
+            double smoothObservedRadialVelocityVariance = 0.0;
+
+            galaxyGroupGrid.evaluate_for_all_objects_within_distance(
+                i_g1, adaptiveSearchDistance,
+                [&](double x12, double y12, double z12, double distance12, std::size_t i_g2) {
+                    const double weight2 = windowFunctionWeights[i_g2];
+                    const double W12 = window_function(distance12, weight2, adaptiveSmoothingScale);
+
+                    double W12Tensor;
+
+                    gsl_blas_dsymv(CblasLower, W12, Ainv, r_vector[i_g2], 0.0, aux);
+                    gsl_blas_ddot(r_vector[i_g1], aux, &W12Tensor);
+
+                    smoothObservedRadialVelocityVariance += gsl_pow_2(W12Tensor * observedRadialVelocityErrors[i_g2]) + gsl_pow_2(W12Tensor * (observedRadialVelocities[i_g2] - smoothObservedRadialVelocities[i_g2]));
+                });
+
+            smoothObservedRadialVelocityErrors[i_g1] = std::sqrt(smoothObservedRadialVelocityVariance);
+
+            gsl_vector_free(aux);
+            gsl_matrix_free(Ainv);
         });
 
     for (std::size_t i_g = 0; i_g < consideredObservationsNumber; ++i_g)

@@ -173,12 +173,12 @@ int main(int argc, char **argv)
                 return gsl_pow_2(ESTIMATED_NORMALIZED_GROWTH_RATE * HUBBLE_NORMALIZATION / k);
             }, false) / normalizedPowerSpectrum.variance() / 3.0);
 
-            std::vector<double> smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, adaptiveSmoothingScales;
+            std::vector<double> smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, smoothedObservedRadialVelocityErrors, adaptiveSmoothingScales;
 
             compute_tensor_smoothed_radial_velocity_points(tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors,
                                                            reconstructedRadialVelocityMinSmooth,
                                                            referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, ESTIMATED_DISTANCE_CATALOG_HUBBLE, minTensorSmoothingScale, sigmaVelocityWeighting,
-                                                           smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, adaptiveSmoothingScales);
+                                                           smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, smoothedObservedRadialVelocityErrors, adaptiveSmoothingScales);
 
             std::ofstream velocityComparisonTensorSmoothedPointsFile(velocityComparisonTensorSmoothedPointsFileName);
 
@@ -190,6 +190,7 @@ int main(int argc, char **argv)
                                                        << "phi\t"
                                                        << "vObs[km/s]\t"
                                                        << "vRec[km/s]\t"
+                                                       << "vObs_e[km/s]\t"
                                                        << "rSmooth[Mpc/h]"
                                                        << std::endl;
 
@@ -203,6 +204,7 @@ int main(int argc, char **argv)
                                                            << std::setprecision(2)
                                                            << smoothedObservedRadialVelocities[i_g] << "\t"
                                                            << smoothedReconstructedRadialVelocities[i_g] << "\t"
+                                                           << smoothedObservedRadialVelocityErrors[i_g] << "\t"
                                                            << adaptiveSmoothingScales[i_g]
                                                            << std::endl;
             }
