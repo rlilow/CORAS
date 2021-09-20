@@ -146,7 +146,7 @@ void estimate_parameters_via_radial_velocity_comparison(const std::function<doub
         const double externalBulkXVelocityDerivative = std::sin(theta) * std::cos(phi) * distanceModulusVelocityCorrectionFactor;
         const double externalBulkYVelocityDerivative = std::sin(theta) * std::sin(phi) * distanceModulusVelocityCorrectionFactor;
         const double externalBulkZVelocityDerivative = std::cos(theta) * distanceModulusVelocityCorrectionFactor;
-        const double hubbleDerivative = -5.0 / std::log(10.0) / hubbleEstimate;
+        const double hubbleDerivative = 5.0 / std::log(10.0) / hubbleEstimate;
 
         fisher00 += growthRateDerivative * growthRateDerivative / distanceModulusErrorSquared;
         fisher10 += externalBulkXVelocityDerivative * growthRateDerivative / distanceModulusErrorSquared;
