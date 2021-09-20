@@ -155,11 +155,13 @@ int main(int argc, char **argv)
 
         const auto time2 = std::chrono::high_resolution_clock::now();
         std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(time2 - time1).count() << "s)" << std::endl;
-        std::cout << "Comparing reconstructed and observed velocities..." << std::flush;
 
         for (std::size_t i_s = 0; i_s < TENSOR_SMOOTHING_SCALES.size(); ++i_s)
         {
             const double minTensorSmoothingScale = TENSOR_SMOOTHING_SCALES[i_s];
+
+            const auto timeSmooth1 = std::chrono::high_resolution_clock::now();
+            std::cout << "Computing tensor-smoothed radial velocities with minimal smoothing scale " << minTensorSmoothingScale << " Mpc/h..." << std::flush;
 
             const std::string smoothComment = "_rSmoothMin" + std::to_string(minTensorSmoothingScale);
             const std::string smoothComparisonComment = redshiftReferenceFrameComment + smoothComment + CONFIGURATION_COMMENT;
@@ -210,7 +212,13 @@ int main(int argc, char **argv)
             }
 
             velocityComparisonTensorSmoothedPointsFile.close();
+
+            const auto timeSmooth2 = std::chrono::high_resolution_clock::now();
+            std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(timeSmooth2 - timeSmooth1).count() << "s)" << std::endl;
         }
+
+        const auto timeCorr1 = std::chrono::high_resolution_clock::now();
+        std::cout << "Computing radial velocity correlation functions..." << std::flush;
 
         std::vector<double> correlationFunctionComparisonRedshiftVelocities, correlationFunctionComparisonRadialCoordinates, correlationFunctionComparisonThetaCoordinates, correlationFunctionComparisonPhiCoordinates, correlationFunctionComparisonDistanceModuli, correlationFunctionComparisonDistanceModulusErrors;
 
@@ -254,8 +262,8 @@ int main(int argc, char **argv)
 
         velocityComparisonCorrelationFunctionsFile.close();
 
-        const auto time3 = std::chrono::high_resolution_clock::now();
-        std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(time3 - time2).count() << "s)" << std::endl;
+        const auto timeCorr2 = std::chrono::high_resolution_clock::now();
+        std::cout << " done (" << std::chrono::duration_cast<std::chrono::seconds>(timeCorr2 - timeCorr1).count() << "s)" << std::endl;
     }
 
     return 0;
