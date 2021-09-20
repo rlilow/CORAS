@@ -58,6 +58,28 @@ int main(int argc, char **argv)
         const ReferenceFrameChange referenceToCMBFrame = get_reference_frame_change(redshiftReferenceFrame, CMB_FRAME);
 
         const std::string redshiftReferenceFrameName = get_reference_frame_name(redshiftReferenceFrame);
+        const std::string redshiftReferenceFrameComment = "_z" + redshiftReferenceFrameName;
+        const std::string realizationRangeComment = "_CR" + std::to_string(INITIAL_CONSTRAINED_REALIZATION) + "-" + std::to_string(FINAL_CONSTRAINED_REALIZATION);
+        const std::string averageComment = redshiftReferenceFrameComment + realizationRangeComment + CONFIGURATION_COMMENT;
+
+        const std::string parameterFileName = DATA_DIRECTORY + "parameters" + averageComment + ".dat";
+
+        const FileTable parameterFitAverageFile(parameterFileName, 18, '\t');
+
+        const auto normalizedGrowthRateEstimates = parameterFitAverageFile.column<double>(2);
+        const auto externalBulkXVelocityEstimates = parameterFitAverageFile.column<double>(5);
+        const auto externalBulkYVelocityEstimates = parameterFitAverageFile.column<double>(8);
+        const auto externalBulkZVelocityEstimates = parameterFitAverageFile.column<double>(11);
+        const auto hubbleEstimates = parameterFitAverageFile.column<double>(14);
+
+        const std::size_t comparisonCutIndex = VELOCITY_COMPARISON_PARAMETER_ESTIMATE_SMOOTHING_SCALE_INDEX * PARAMETER_ESTIMATE_SMOOTHING_SCALES.size() + VELOCITY_COMPARISON_PARAMETER_ESTIMATE_MIN_REDSHIFT_VELOCITY_INDEX;
+        const double reconstructedFieldSmoothingScale = PARAMETER_ESTIMATE_SMOOTHING_SCALES[VELOCITY_COMPARISON_PARAMETER_ESTIMATE_SMOOTHING_SCALE_INDEX];
+
+        const double estimatedNormalizedGrowthRate = normalizedGrowthRateEstimates[comparisonCutIndex];
+        const double estimatedExternalBulkXVelocity = externalBulkXVelocityEstimates[comparisonCutIndex];
+        const double estimatedExternalBulkYVelocity = externalBulkYVelocityEstimates[comparisonCutIndex];
+        const double estimatedExternalBulkZVelocity = externalBulkZVelocityEstimates[comparisonCutIndex];
+        const double estimatedDistanceCatalogHubble = hubbleEstimates[comparisonCutIndex];
 
         const auto time1 = std::chrono::high_resolution_clock::now();
         std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
@@ -97,7 +119,6 @@ int main(int argc, char **argv)
 
         const double meanGalaxyDensity = estimate_mean_density(RECONSTRUCTION_MAX_RADIUS, reconstructionRadialCoordinates, selectionFunction);
 
-        const std::string redshiftReferenceFrameComment = "_z" + redshiftReferenceFrameName;
         const std::string precomputedRSDCorrectionAndWienerFilterComment = redshiftReferenceFrameComment + CONFIGURATION_COMMENT;
 
         ConstrainedRealizations constrainedRealizations(reconstructionRadialCoordinates, reconstructionThetaCoordinates, reconstructionPhiCoordinates, redshiftReferenceFrame,
@@ -133,16 +154,16 @@ int main(int argc, char **argv)
             return change_reference_frame(velocity, theta, phi, fiducialExternalBulkVelocityShift);
         });
 
-        SphericalGridFunction reconstructedRadialVelocityMinSmooth = constrainedRealizations.get_survey_estimate_radial_velocity(ESTIMATED_NORMALIZED_GROWTH_RATE, RECONSTRUCTED_FIELD_MIN_SMOOTHING_SCALE);
+        SphericalGridFunction reconstructedRadialVelocity = constrainedRealizations.get_survey_estimate_radial_velocity(estimatedNormalizedGrowthRate, reconstructedFieldSmoothingScale);
 
         double estimatedExternalBulkVelocityAmplitude, estimatedExternalBulkVelocityTheta, estimatedExternalBulkVelocityPhi;
 
-        transform_cartesian_to_spherical_coordinates(ESTIMATED_EXTERNAL_BULK_X_VELOCITY, ESTIMATED_EXTERNAL_BULK_Y_VELOCITY, ESTIMATED_EXTERNAL_BULK_Z_VELOCITY,
+        transform_cartesian_to_spherical_coordinates(estimatedExternalBulkXVelocity, estimatedExternalBulkYVelocity, estimatedExternalBulkZVelocity,
                                                      estimatedExternalBulkVelocityAmplitude, estimatedExternalBulkVelocityTheta, estimatedExternalBulkVelocityPhi);
 
         const ReferenceFrameChange estimatedExternalBulkVelocityShift = {estimatedExternalBulkVelocityAmplitude, estimatedExternalBulkVelocityTheta, estimatedExternalBulkVelocityPhi};
 
-        reconstructedRadialVelocityMinSmooth.apply([&](double velocity, double radius, double theta, double phi) {
+        reconstructedRadialVelocity.apply([&](double velocity, double radius, double theta, double phi) {
             return change_reference_frame(velocity, theta, phi, estimatedExternalBulkVelocityShift);
         });
 
@@ -178,8 +199,8 @@ int main(int argc, char **argv)
             std::vector<double> smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, smoothedObservedRadialVelocityErrors, adaptiveSmoothingScales;
 
             compute_tensor_smoothed_radial_velocity_points(tensorSmoothingComparisonRedshiftVelocities, tensorSmoothingComparisonThetaCoordinates, tensorSmoothingComparisonPhiCoordinates, tensorSmoothingComparisonDistanceModuli, tensorSmoothingComparisonDistanceModulusErrors,
-                                                           reconstructedRadialVelocityMinSmooth,
-                                                           referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, ESTIMATED_DISTANCE_CATALOG_HUBBLE, minTensorSmoothingScale, sigmaVelocityWeighting,
+                                                           reconstructedRadialVelocity,
+                                                           referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, estimatedDistanceCatalogHubble, minTensorSmoothingScale, sigmaVelocityWeighting,
                                                            smoothedObservedRadialVelocities, smoothedReconstructedRadialVelocities, smoothedObservedRadialVelocityErrors, adaptiveSmoothingScales);
 
             std::ofstream velocityComparisonTensorSmoothedPointsFile(velocityComparisonTensorSmoothedPointsFileName);
@@ -234,8 +255,8 @@ int main(int argc, char **argv)
         Cartesian1DGridFunction observedRadialVelocityCorrelationFunction, reconstructedRadialVelocityCorrelationFunction, residualRadialVelocityCorrelationFunction;
 
         compute_radial_velocity_correlation_functions(correlationFunctionComparisonRedshiftVelocities, correlationFunctionComparisonThetaCoordinates, correlationFunctionComparisonPhiCoordinates, correlationFunctionComparisonDistanceModuli,
-                                                      reconstructedRadialVelocityMinSmooth,
-                                                      referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, ESTIMATED_DISTANCE_CATALOG_HUBBLE,
+                                                      reconstructedRadialVelocity,
+                                                      referenceToCMBFrame, FIDUCIAL_OMEGA_MATTER, estimatedDistanceCatalogHubble,
                                                       CORRELATION_FUNCTION_MAX_DISTANCE, CORRELATION_FUNCTION_DISTANCE_BIN_NUMBER,
                                                       observedRadialVelocityCorrelationFunction, reconstructedRadialVelocityCorrelationFunction, residualRadialVelocityCorrelationFunction);
 

@@ -78,7 +78,10 @@ const std::vector<std::size_t> SGP_NOISE_REALIZATIONS = {1, 2};
 
 const std::size_t GAUSSIAN_VOLUME_AVERAGE_RADIAL_BIN_NUMBER = 401;
 
-const std::vector<double> TENSOR_SMOOTHING_SCALES = {15.0, 30.0}; // [Mpc/h]
+constexpr std::size_t VELOCITY_COMPARISON_PARAMETER_ESTIMATE_SMOOTHING_SCALE_INDEX = 0;
+constexpr std::size_t VELOCITY_COMPARISON_PARAMETER_ESTIMATE_MIN_REDSHIFT_VELOCITY_INDEX = 2;
+
+const std::vector<double> TENSOR_SMOOTHING_SCALES = {5.0, 10.0, 15.0, 20.0, 25.0, 30.0}; // [Mpc/h]
 constexpr std::size_t TENSOR_SMOOTHING_RADIAL_BIN_NUMBER = 21;
 constexpr std::size_t TENSOR_SMOOTHING_THETA_BIN_NUMBER = 61;
 constexpr std::size_t TENSOR_SMOOTHING_PHI_BIN_NUMBER = 121;
