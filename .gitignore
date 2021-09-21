@@ -38,8 +38,11 @@ doc
 # Data
 data/*
 !data/2MRS_group_member_catalog.dat
-!CF3_group_catalog.dat
-!CosmicEmu_spectrum_Planck18.dat
+!data/CF3_group_catalog.dat
+!data/CosmicEmu_spectrum_Planck18.dat
+!data/parameters_zCMB_CR1-50.dat
+!data/parameters_zLG_CR1-50.dat
+!data/calibrated_parameters_CR1-50.dat
 
 # Hidden files
 .*
