@@ -13,7 +13,7 @@ As a nuisance parameter, it also fixes the Hubble constant used to translate obs
 
 The methodology behind CORAS, its application to the Two-Micron All-Sky Redshift Survey (2MRS), and the comparison to the velocities inferred from the galaxy distance catalog Cosmicflows-3 are described in detail in the following publication:
 
-> Robert Lilow & Adi Nusser, [arXiv:2102.07291](https://arxiv.org/abs/2102.07291)
+> Robert Lilow & Adi Nusser, [MNRAS](https://doi.org/10.1093/mnras/stab2009) 507, 1557–1581 (2021)
 
 If you want to use or modify CORAS or any data generated with it, please cite this publication and link to this repository.
 
@@ -42,9 +42,24 @@ and the power spectrum emulator Cosmic Emu in
 
 The original 2MRS data are available alongside their publications, the 2MRS group catalog and Cosmicflows-3 are available in the [Extragalactic Distance Database](http://edd.ifa.hawaii.edu), and Cosmic Emu is available in [this repository](https://github.com/lanl/CosmicEmu).
 
+### Inferred parameters
+
+In addition, the `data` directory contains the aforementioned inferred parameters: normalized growth rate, external bulk flow contribution and distance catalog Hubble constant.
+As described in detail in [Lilow & Nusser (2021)](https://doi.org/10.1093/mnras/stab2009), these have been inferred for different choices of the smoothing scale r_s applied to the reconstructed velocity field and the minimal redshift velocity cz_min considered in the comparison:
+
+> 5 Mpc/h <= r_s <= 30 Mpc/h  
+> 0 km/s <= cz_min <= 2000 km/s
+
+The raw parameter estimates, averaged over 50 constrained realizations and obtained using either CMB- and Local Group-frame input redshifts, are listed in `parameters_zCMB_CR1-50.dat` and `parameters_zLG_CR1-50.dat`, respectively.
+These files can also be generated using the `estimate_parameters.x` executable, as described in more detail below in the section **Running the code**.
+
+As described in detail in [Lilow & Nusser (2021)](https://doi.org/10.1093/mnras/stab2009), the raw parameter estimates are subject to an r_s-dependent bias and potentially other systematic errors.
+These are accounted for by calibrating the raw estimates against a suite of semi-analytic mock galaxy catalogues mimicking the environment of the Local Group.
+The resulting calibrated parameters are listed in `calibrated_parameters_CR1-50.dat`.
+
 ### Reconstructed fields on a grid
 
-The reconstructed normalized density contrast and peculiar velocity fields on a grid, described in [Lilow & Nusser (2021)](https://arxiv.org/abs/2102.07291), are available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0).
+The reconstructed normalized density contrast and peculiar velocity fields on a grid, described in [Lilow & Nusser (2021)](https://doi.org/10.1093/mnras/stab2009), are available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0).
 The normalized density contrast is the density contrast divided by sigma_8.
 The peculiar velocity field is with respect to the CMB frame, and its components point along the Galactic coordinate axes.
 Both fields have been smoothed with a 5 Mpc/h Gaussian, and were reconstructed using observed redshifts in the Local Group (LG) frame.
@@ -146,10 +161,14 @@ They do the following:
     
 - `compare_reconstructed_and_observed_velocities.x`  
   Compare the reconstructed and observed radial velocities for given normalized growth rate, external bulk flow contribution and distance catalog Hubble constant.
-  This computes the tensor-smoothed values of both velocity fields as well as their correlation functions.
+  This computes the tensor-smoothed values of both velocity fields evaluated at the positions of the Cosmicflows-3 groups as well as their correlation functions.
+  This executable uses the raw parameter estimates listed in the files `data/parameters_zCMB_CR1-50.dat` and `data/parameters_zLG_CR1-50.dat` as input.
+  If the settings in `configuration.hpp` are changed, it is thus necessary to re-run `estimate_parameters.x` before `compare_reconstructed_and_observed_velocities.x`.
     
 - `estimate_parameters.x`  
   Compute the normalized growth rate, the external bulk flow contribution and the distance catalog Hubble constant via a maximum-likelihood comparison of the reconstructed and observed radial velocities.
+  The raw parameter estimate files `data/parameters_zCMB_CR1-50.dat` and `data/parameters_zLG_CR1-50.dat` described above in the **Data** section have been computed with this executable and the default settings.
+
 
 ## Development and contributing
 The Doxygen documentation of the code is still incomplete and will be extended in the near future.
