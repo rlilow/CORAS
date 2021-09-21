@@ -50,7 +50,7 @@ As described in detail in [Lilow & Nusser (2021)](https://doi.org/10.1093/mnras/
 > 5 Mpc/h <= r_s <= 30 Mpc/h  
 > 0 km/s <= cz_min <= 2000 km/s
 
-The raw parameter estimates, averaged over 50 constrained realizations and obtained using either CMB- and Local Group-frame input redshifts, are listed in `parameters_zCMB_CR1-50.dat` and `parameters_zLG_CR1-50.dat`, respectively.
+The raw parameter estimates, averaged over 50 constrained realizations and obtained using either observed redshifts in the CMB or Local Group (LG) frame, are listed in `parameters_zCMB_CR1-50.dat` and `parameters_zLG_CR1-50.dat`, respectively.
 These files can also be generated using the `estimate_parameters.x` executable, as described in more detail below in the section **Running the code**.
 
 As described in detail in [Lilow & Nusser (2021)](https://doi.org/10.1093/mnras/stab2009), the raw parameter estimates are subject to an r_s-dependent bias and potentially other systematic errors.
@@ -62,7 +62,7 @@ The resulting calibrated parameters are listed in `calibrated_parameters_CR1-50.
 The reconstructed normalized density contrast and peculiar velocity fields on a grid, described in [Lilow & Nusser (2021)](https://doi.org/10.1093/mnras/stab2009), are available in this [Dropbox folder](https://www.dropbox.com/sh/3nebvt1lskxshtu/AAByegavgA_-l1x118tZkaSAa?dl=0).
 The normalized density contrast is the density contrast divided by sigma_8.
 The peculiar velocity field is with respect to the CMB frame, and its components point along the Galactic coordinate axes.
-Both fields have been smoothed with a 5 Mpc/h Gaussian, and were reconstructed using observed redshifts in the Local Group (LG) frame.
+Both fields have been smoothed with a 5 Mpc/h Gaussian, and were reconstructed using either observed redshifts in the CMB or LG frame (denoted by `zCMB` and `zLG`, respectively, in the file name).
 
 They are discretized on a regular 201^3 Cartesian grid in comoving Galactic coordinates, with each coordinate running from -200 Mpc/h to +200 Mpc/h in steps of 2 Mpc/h.
 The field values at the coordinates (x_i, y_j, z_k) with
