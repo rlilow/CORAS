@@ -185,27 +185,27 @@ int main(int argc, char **argv)
         SphericalGridFunction reconstructedYVelocityMinSmoothHighRes(RECONSTRUCTION_MAX_RADIUS, GAUSSIAN_VOLUME_AVERAGE_RADIAL_BIN_NUMBER, RECONSTRUCTION_THETA_BIN_NUMBER, RECONSTRUCTION_PHI_BIN_NUMBER, reconstructedYVelocityMinSmooth);
         SphericalGridFunction reconstructedZVelocityMinSmoothHighRes(RECONSTRUCTION_MAX_RADIUS, GAUSSIAN_VOLUME_AVERAGE_RADIAL_BIN_NUMBER, RECONSTRUCTION_THETA_BIN_NUMBER, RECONSTRUCTION_PHI_BIN_NUMBER, reconstructedZVelocityMinSmooth);
 
-        Cartesian1DGridFunction reconstructedNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                                             { return gaussian_volume_average(reconstructedNormalizedDensityContrastMinSmoothHighRes, effectiveRadius); });
+        const Cartesian1DGridFunction reconstructedNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                                   { return gaussian_volume_average(reconstructedNormalizedDensityContrastMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                             { return gaussian_volume_average(reconstructedXVelocityMinSmoothHighRes, effectiveRadius); });
+        const Cartesian1DGridFunction reconstructedXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                   { return gaussian_volume_average(reconstructedXVelocityMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                             { return gaussian_volume_average(reconstructedYVelocityMinSmoothHighRes, effectiveRadius); });
+        const Cartesian1DGridFunction reconstructedYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                   { return gaussian_volume_average(reconstructedYVelocityMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                             { return gaussian_volume_average(reconstructedZVelocityMinSmoothHighRes, effectiveRadius); });
+        const Cartesian1DGridFunction reconstructedZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                   { return gaussian_volume_average(reconstructedZVelocityMinSmoothHighRes, effectiveRadius); });
 
-        Cartesian1DGridFunction reconstructedNormalizedDensityContrastAngularAverages = reconstructedNormalizedDensityContrast.angular_average();
-        Cartesian1DGridFunction reconstructedXVelocityAngularAverages = reconstructedXVelocity.angular_average();
-        Cartesian1DGridFunction reconstructedYVelocityAngularAverages = reconstructedYVelocity.angular_average();
-        Cartesian1DGridFunction reconstructedZVelocityAngularAverages = reconstructedZVelocity.angular_average();
+        const Cartesian1DGridFunction reconstructedNormalizedDensityContrastAngularAverages = reconstructedNormalizedDensityContrast.angular_average();
+        const Cartesian1DGridFunction reconstructedXVelocityAngularAverages = reconstructedXVelocity.angular_average();
+        const Cartesian1DGridFunction reconstructedYVelocityAngularAverages = reconstructedYVelocity.angular_average();
+        const Cartesian1DGridFunction reconstructedZVelocityAngularAverages = reconstructedZVelocity.angular_average();
 
-        Cartesian1DGridFunction reconstructedNormalizedDensityContrastTophatVolumeAverages = reconstructedNormalizedDensityContrastMinSmooth.averages();
-        Cartesian1DGridFunction reconstructedXVelocityTophatVolumeAverages = reconstructedXVelocityMinSmooth.averages();
-        Cartesian1DGridFunction reconstructedYVelocityTophatVolumeAverages = reconstructedYVelocityMinSmooth.averages();
-        Cartesian1DGridFunction reconstructedZVelocityTophatVolumeAverages = reconstructedZVelocityMinSmooth.averages();
+        const Cartesian1DGridFunction reconstructedNormalizedDensityContrastTophatVolumeAverages = reconstructedNormalizedDensityContrastMinSmooth.averages();
+        const Cartesian1DGridFunction reconstructedXVelocityTophatVolumeAverages = reconstructedXVelocityMinSmooth.averages();
+        const Cartesian1DGridFunction reconstructedYVelocityTophatVolumeAverages = reconstructedYVelocityMinSmooth.averages();
+        const Cartesian1DGridFunction reconstructedZVelocityTophatVolumeAverages = reconstructedZVelocityMinSmooth.averages();
 
         SphericalGridFunction reconstructedNormalizedDensityContrastSuperGalactic, reconstructedXVelocitySuperGalactic, reconstructedYVelocitySuperGalactic, reconstructedZVelocitySuperGalactic;
 
@@ -370,27 +370,27 @@ int main(int argc, char **argv)
             noiseYVelocityVariance += noiseYVelocity * noiseYVelocity;
             noiseZVelocityVariance += noiseZVelocity * noiseZVelocity;
 
-            Cartesian1DGridFunction noiseNormalizedDensityContrastTophatVolumeAverage = noiseNormalizedDensityContrastMinSmooth.averages();
-            Cartesian1DGridFunction noiseXVelocityTophatVolumeAverage = noiseXVelocityMinSmooth.averages();
-            Cartesian1DGridFunction noiseYVelocityTophatVolumeAverage = noiseYVelocityMinSmooth.averages();
-            Cartesian1DGridFunction noiseZVelocityTophatVolumeAverage = noiseZVelocityMinSmooth.averages();
+            const Cartesian1DGridFunction noiseNormalizedDensityContrastTophatVolumeAverage = noiseNormalizedDensityContrastMinSmooth.averages();
+            const Cartesian1DGridFunction noiseXVelocityTophatVolumeAverage = noiseXVelocityMinSmooth.averages();
+            const Cartesian1DGridFunction noiseYVelocityTophatVolumeAverage = noiseYVelocityMinSmooth.averages();
+            const Cartesian1DGridFunction noiseZVelocityTophatVolumeAverage = noiseZVelocityMinSmooth.averages();
 
             noiseNormalizedDensityContrastTophatVolumeAverageVariances += noiseNormalizedDensityContrastTophatVolumeAverage * noiseNormalizedDensityContrastTophatVolumeAverage;
             noiseXVelocityTophatVolumeAverageVariances += noiseXVelocityTophatVolumeAverage * noiseXVelocityTophatVolumeAverage;
             noiseYVelocityTophatVolumeAverageVariances += noiseYVelocityTophatVolumeAverage * noiseYVelocityTophatVolumeAverage;
             noiseZVelocityTophatVolumeAverageVariances += noiseZVelocityTophatVolumeAverage * noiseZVelocityTophatVolumeAverage;
 
-            Cartesian1DGridFunction noiseNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                                         { return gaussian_volume_average(noiseNormalizedDensityContrastMinSmoothHighRes, effectiveRadius); });
+            const Cartesian1DGridFunction noiseNormalizedDensityContrastGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                                               { return gaussian_volume_average(noiseNormalizedDensityContrastMinSmoothHighRes, effectiveRadius); });
 
-            Cartesian1DGridFunction noiseXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                         { return gaussian_volume_average(noiseXVelocityMinSmoothHighRes, effectiveRadius); });
+            const Cartesian1DGridFunction noiseXVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                               { return gaussian_volume_average(noiseXVelocityMinSmoothHighRes, effectiveRadius); });
 
-            Cartesian1DGridFunction noiseYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                         { return gaussian_volume_average(noiseYVelocityMinSmoothHighRes, effectiveRadius); });
+            const Cartesian1DGridFunction noiseYVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                               { return gaussian_volume_average(noiseYVelocityMinSmoothHighRes, effectiveRadius); });
 
-            Cartesian1DGridFunction noiseZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
-                                                                         { return gaussian_volume_average(noiseZVelocityMinSmoothHighRes, effectiveRadius); });
+            const Cartesian1DGridFunction noiseZVelocityGaussianVolumeAverages(0.0, RECONSTRUCTION_MAX_RADIUS, RECONSTRUCTION_RADIAL_BIN_NUMBER, [&](double effectiveRadius)
+                                                                               { return gaussian_volume_average(noiseZVelocityMinSmoothHighRes, effectiveRadius); });
 
             noiseNormalizedDensityContrastGaussianVolumeAverageVariances += noiseNormalizedDensityContrastGaussianVolumeAverages * noiseNormalizedDensityContrastGaussianVolumeAverages;
             noiseXVelocityGaussianVolumeAverageVariances += noiseXVelocityGaussianVolumeAverages * noiseXVelocityGaussianVolumeAverages;
@@ -403,15 +403,15 @@ int main(int argc, char **argv)
 
         const double realizationNumber = static_cast<double>(FINAL_CONSTRAINED_REALIZATION - INITIAL_CONSTRAINED_REALIZATION + 1);
 
-        Cartesian1DGridFunction noiseNormalizedDensityContrastAngularAverageVariances = noiseNormalizedDensityContrastVariance.angular_average() / realizationNumber;
-        Cartesian1DGridFunction noiseXVelocityAngularAverageVariances = noiseXVelocityVariance.angular_average() / realizationNumber;
-        Cartesian1DGridFunction noiseYVelocityAngularAverageVariances = noiseYVelocityVariance.angular_average() / realizationNumber;
-        Cartesian1DGridFunction noiseZVelocityAngularAverageVariances = noiseZVelocityVariance.angular_average() / realizationNumber;
+        const Cartesian1DGridFunction noiseNormalizedDensityContrastAngularAverageVariances = noiseNormalizedDensityContrastVariance.angular_average() / realizationNumber;
+        const Cartesian1DGridFunction noiseXVelocityAngularAverageVariances = noiseXVelocityVariance.angular_average() / realizationNumber;
+        const Cartesian1DGridFunction noiseYVelocityAngularAverageVariances = noiseYVelocityVariance.angular_average() / realizationNumber;
+        const Cartesian1DGridFunction noiseZVelocityAngularAverageVariances = noiseZVelocityVariance.angular_average() / realizationNumber;
 
-        Cartesian1DGridFunction normalizedDensityContrastReconstructionError(noiseNormalizedDensityContrastAngularAverageVariances, [](double variance)
-                                                                             { return std::sqrt(variance); });
-        Cartesian1DGridFunction velocityComponentReconstructionError((noiseXVelocityAngularAverageVariances + noiseYVelocityAngularAverageVariances + noiseZVelocityAngularAverageVariances) / 3.0, [](double variance)
-                                                                     { return std::sqrt(variance); });
+        const Cartesian1DGridFunction normalizedDensityContrastReconstructionError(noiseNormalizedDensityContrastAngularAverageVariances, [](double variance)
+                                                                                   { return std::sqrt(variance); });
+        const Cartesian1DGridFunction velocityComponentReconstructionError((noiseXVelocityAngularAverageVariances + noiseYVelocityAngularAverageVariances + noiseZVelocityAngularAverageVariances) / 3.0, [](double variance)
+                                                                           { return std::sqrt(variance); });
 
         normalizedDensityContrastReconstructionError.save_object_to_file(normalizedDensityContrastReconstructionErrorFileName);
         velocityComponentReconstructionError.save_object_to_file(velocityComponentReconstructionErrorFileName);
