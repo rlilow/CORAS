@@ -450,11 +450,11 @@ int main(int argc, char **argv)
                                  << "radius[Mpc/h]\t"
                                  << "deltaNorm\t"
                                  << "deltaNorm_e\t"
-                                 << "vX\t[km/s]"
+                                 << "vX[km/s]\t"
                                  << "vX_e[km/s]\t"
-                                 << "vY\t[km/s]"
+                                 << "vY[km/s]\t"
                                  << "vY_e[km/s]\t"
-                                 << "vZ\t[km/s]"
+                                 << "vZ[km/s]\t"
                                  << "vZ_e[km/s]"
                                  << std::endl;
 
@@ -462,11 +462,11 @@ int main(int argc, char **argv)
                                    << "radius[Mpc/h]\t"
                                    << "deltaNorm\t"
                                    << "deltaNorm_e\t"
-                                   << "vX\t[km/s]"
+                                   << "vX[km/s]\t"
                                    << "vX_e[km/s]\t"
-                                   << "vY\t[km/s]"
+                                   << "vY[km/s]\t"
                                    << "vY_e[km/s]\t"
-                                   << "vZ\t[km/s]"
+                                   << "vZ[km/s]\t"
                                    << "vZ_e[km/s]"
                                    << std::endl;
 
