@@ -74,6 +74,8 @@ int main(int argc, char **argv)
         const std::string angularAveragesFileName = DATA_DIRECTORY + "angular_averages" + averageComment + ".dat";
         const std::string volumeAveragesTophatFileName = DATA_DIRECTORY + "volume_averages_tophat" + averageComment + ".dat";
         const std::string volumeAveragesGaussianFileName = DATA_DIRECTORY + "volume_averages_gaussian" + averageComment + ".dat";
+        const std::string normalizedDensityContrastReconstructionErrorFileName = DATA_DIRECTORY + "normalized_density_contrast_reconstruction_error" + averageComment + ".bin";
+        const std::string velocityComponentReconstructionErrorFileName = DATA_DIRECTORY + "velocity_component_reconstruction_error" + averageComment + ".bin";
 
         const auto time1 = std::chrono::high_resolution_clock::now();
         std::cout << "Preparing " << redshiftReferenceFrameName << " reference frame..." << std::flush;
@@ -405,6 +407,14 @@ int main(int argc, char **argv)
         Cartesian1DGridFunction noiseXVelocityAngularAverageVariances = noiseXVelocityVariance.angular_average() / realizationNumber;
         Cartesian1DGridFunction noiseYVelocityAngularAverageVariances = noiseYVelocityVariance.angular_average() / realizationNumber;
         Cartesian1DGridFunction noiseZVelocityAngularAverageVariances = noiseZVelocityVariance.angular_average() / realizationNumber;
+
+        Cartesian1DGridFunction normalizedDensityContrastReconstructionError(noiseNormalizedDensityContrastAngularAverageVariances, [](double variance)
+                                                                             { return std::sqrt(variance); });
+        Cartesian1DGridFunction velocityComponentReconstructionError((noiseXVelocityAngularAverageVariances + noiseYVelocityAngularAverageVariances + noiseZVelocityAngularAverageVariances) / 3.0, [](double variance)
+                                                                     { return std::sqrt(variance); });
+
+        normalizedDensityContrastReconstructionError.save_object_to_file(normalizedDensityContrastReconstructionErrorFileName);
+        velocityComponentReconstructionError.save_object_to_file(velocityComponentReconstructionErrorFileName);
 
         noiseNormalizedDensityContrastTophatVolumeAverageVariances /= realizationNumber;
         noiseXVelocityTophatVolumeAverageVariances /= realizationNumber;

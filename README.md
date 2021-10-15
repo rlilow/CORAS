@@ -80,7 +80,8 @@ These files can also be generated using the `compute_reconstructed_fields_on_car
 ### Reconstructed velocities of Cosmicflows-3 galaxies and groups
 
 The reconstructed peculiar velocities at the positions of the Cosmicflows-3 galaxies and their associated groups are available in the [Extragalactic Distance Database](http://edd.ifa.hawaii.edu) in the table _Lilow-Nusser CF3 Peculiar Velocities_.
-Both the galaxy and group velocities have been obtained by evaluating the velocity field at the comoving LG-frame redshift distance to the group.
+These have been obtained from the velocity field reconstructed using observed redshifts in the LG frame.
+Both the galaxy and group velocities have been evaluated at the comoving redshift distance to the group.
 This minimizes the Malmquist bias and reduces the contamination by incoherent small-scale motions (e.g. fingers-of-god).
 Thus, the only difference between galaxy and group velocities is the angular position at which they have been evaluated.
 The table also contains the uncertainty in the peculiar velocity components, estimated from the scatter between 50 constrained realizations.
@@ -94,6 +95,8 @@ Each galaxy has a flag indicating the following:
 - flag = 0: All remaining galaxies.
 
 Of the total 17647 galaxies only 20 have flag = -1 and 76 have flag = 1.
+
+These reconstructed Cosmicflows-3 velocities, errors and flags (as well as those based on the reconstruction using observed redshifts in the CMB frame) can also be generated using the `compute_reconstructed_velocities_for_CF3_galaxies.x` executable, as described in more detail below in the section **Running the code**.
 
 ## Installation
 
@@ -158,6 +161,12 @@ They do the following:
 - `analyze_reconstructed_fields.x`  
   Analyze the reconstructed density and velocity fields for given normalized growth rate and external bulk flow contribution.
   Among other things, this computes both fields on a slice through the supergalactic plane, and their standard deviations as a function of radius.
+    
+- `compute_reconstructed_velocities_for_CF3_galaxies.x`  
+  Compute the reconstructed velocities and their errors at the positions of the Cosmicflows-3 galaxies and their associated groups.
+  Precomputed velocity errors are used if this executable is run again or if `analyze_reconstructed_fields.x` has been run before and if the parameter `ANALYSIS_USE_PRECOMPUTED_RECONSTRUCTION_ERRORS` in `configuration.hpp` is set to `true`.
+  This drastically reduces the execution time, as it avoids generating a set of constrained realizations to re-compute these errors.
+  The reconstructed Cosmicflows-3 velocities described above in the **Data** section have been computed with this executable and the default settings.
     
 - `compare_reconstructed_and_observed_velocities.x`  
   Compare the reconstructed and observed radial velocities for given normalized growth rate, external bulk flow contribution and distance catalog Hubble constant.

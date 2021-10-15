@@ -19,7 +19,8 @@ const std::string DATA_DIRECTORY = "data/";
 
 const std::string FIDUCIAL_POWER_SPECTRUM_FILE_NAME = "data/CosmicEmu_spectrum_Planck18.dat";
 const std::string REDSHIFT_CATALOG_FILE_NAME = "data/2MRS_group_member_catalog.dat";
-const std::string DISTANCE_CATALOG_FILE_NAME = "data/CF3_group_catalog.dat";
+const std::string DISTANCE_CATALOG_GROUPS_FILE_NAME = "data/CF3_group_catalog.dat";
+const std::string DISTANCE_CATALOG_GALAXIES_FILE_NAME = "data/CF3_group_member_catalog.dat";
 
 const ReferenceFrame REDSHIFT_CATALOG_REDSHIFT_REFERENCE_FRAME = HELIOCENTRIC_FRAME;
 constexpr bool REDSHIFT_CATALOG_COLLAPSE_FINGERS_OF_GOD = true;
@@ -89,6 +90,8 @@ constexpr std::size_t TENSOR_SMOOTHING_PHI_BIN_NUMBER = 121;
 constexpr double CORRELATION_FUNCTION_MAX_DISTANCE = 100.0; // [Mpc/h]
 constexpr std::size_t CORRELATION_FUNCTION_DISTANCE_BIN_NUMBER = 21;
 constexpr double CORRELATION_FUNCTION_MAX_REDSHIFT_VELOCITY = 10000.0; // [km/s]
+
+constexpr bool ANALYSIS_USE_PRECOMPUTED_RECONSTRUCTION_ERRORS = true;
 
 /** @} */
 
