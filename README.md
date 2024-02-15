@@ -103,7 +103,8 @@ These reconstructed Cosmicflows-3 velocities, errors and flags (as well as those
 ### Install dependencies
 Before compiling the code, the following dependencies need to be installed:
 
-- compiler supporting at least C++11 (e.g. gcc 7 or clang 5)
+- [GCC](https://gcc.gnu.org/)
+- [GNU Make](https://www.gnu.org/software/make/)
 - [GNU Scientific Library](https://www.gnu.org/software/gsl/) (GSL)
 - [FFTW3](http://www.fftw.org/)
 
